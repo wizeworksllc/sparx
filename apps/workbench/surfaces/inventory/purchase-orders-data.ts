@@ -21,7 +21,7 @@
 // other editor: type freely, one Save, one dirty guard.
 // ══════════════════════════════════════════════════════════════════════════
 
-import { useMutation, useQuery, useQueryClient } from '@sparx/query';
+import { useMutation, useQuery, useQueryClient } from '@wizeworks/query';
 import { api } from '../../lib/api/client';
 import { type Tone } from './data';
 

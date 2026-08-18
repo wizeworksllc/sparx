@@ -3,7 +3,7 @@ import * as React from 'react';
 import Link from 'next/link';
 import { UserPlus } from 'lucide-react';
 import { Badge, Button, Text } from '@wizeworks/silicaui-react';
-import { getInvitationDetail, getSession, type InvitationDetail } from '@sparx/auth';
+import { getInvitationDetail, getSession, type InvitationDetail } from '@wizeworks/auth';
 import { AuthShell } from '../../components/auth-shell';
 import { roleLabel } from '../../surfaces/team/roles';
 import {
@@ -16,7 +16,7 @@ export const metadata: Metadata = { title: 'Accept invitation · sparx Workbench
 export const dynamic = 'force-dynamic';
 
 // Team-invitation acceptance (docs/114 §A.4). The invite email links here with
-// `?invitation=<id>` (built by services/api-rest team routes + the Better Auth
+// `?invitation=<id>` (built by wizeworks/services/api-rest team routes + the Better Auth
 // org-plugin invite email, both on the app.sparx.works origin). It renders for
 // logged-out recipients too, so it lives at the app root — never behind the shell
 // session gate. It resolves the invitation, then branches on auth state:

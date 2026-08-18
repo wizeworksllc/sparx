@@ -18,7 +18,7 @@
 // a silent cap reads as "this product doesn't exist."
 
 import { useMemo, useState } from 'react';
-import { useQuery } from '@sparx/query';
+import { useQuery } from '@wizeworks/query';
 import { Button, Combobox, Text } from '@wizeworks/silicaui-react';
 import { X } from 'lucide-react';
 import { api } from '../../lib/api/client';

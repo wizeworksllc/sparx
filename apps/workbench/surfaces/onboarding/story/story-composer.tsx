@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { Button } from '@wizeworks/silicaui-react';
-import { EMPTY_STORY, STORY_EXAMPLES, industryOf, type StoryState } from '@sparx/story-schemas';
+import { EMPTY_STORY, STORY_EXAMPLES, industryOf, type StoryState } from '@wizeworks/story-schemas';
 import {
   handleSlug,
   pickBlueprint,

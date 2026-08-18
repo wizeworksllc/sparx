@@ -50,7 +50,7 @@ export default function ConceptsPage() {
         { id: 'data', label: 'One data layer' },
         { id: 'surfaces', label: 'The surfaces' },
       ]}
-      editPath="apps/web/app/docs/concepts/page.tsx"
+      editPath="sparx/apps/web/app/docs/concepts/page.tsx"
       updated="2026-06-05"
       prev={{ title: 'Quickstart', href: '/docs/quickstart' }}
       next={{ title: 'Authentication', href: '/docs/authentication' }}

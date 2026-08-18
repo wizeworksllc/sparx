@@ -7,7 +7,7 @@ import { getModuleColor } from './primitives';
  * section on the page renders, defined once.
  *
  * THE THREE COST HUES ARE THE PRODUCT'S, NOT THE PAGE'S. `costTone` mirrors
- * `kindColor` in [apps/workbench/surfaces/finance/format.ts] exactly: cost of the
+ * `kindColor` in [sparx/apps/workbench/surfaces/finance/format.ts] exactly: cost of the
  * work is `warning`, wages are `info`, running costs borrow `module-chat`
  * (violet). The workbench file carries the reasoning — `success` collides with
  * the Finance module green, `error` means broken rather than expensive,
@@ -28,29 +28,29 @@ export const M = getModuleColor('finance');
 export type CostKind = 'work' | 'wages' | 'running';
 
 const COST_TONE: Record<CostKind, string> = {
-    work: 'text-warning',
-    wages: 'text-info',
-    running: 'text-module-chat',
+  work: 'text-warning',
+  wages: 'text-info',
+  running: 'text-module-chat',
 };
 
 const COST_FILL: Record<CostKind, string> = {
-    work: 'bg-warning',
-    wages: 'bg-info',
-    running: 'bg-module-chat',
+  work: 'bg-warning',
+  wages: 'bg-info',
+  running: 'bg-module-chat',
 };
 
 export function costTone(kind: CostKind): string {
-    return COST_TONE[kind];
+  return COST_TONE[kind];
 }
 
 export function costFill(kind: CostKind): string {
-    return COST_FILL[kind];
+  return COST_FILL[kind];
 }
 
 /** Positive is Finance's own green; negative is `error`. Both are real ink
  *  tokens, so both flip correctly inside a `data-theme="dark"` island. */
 export function netTone(negative: boolean): string {
-    return negative ? 'text-error' : 'text-success';
+  return negative ? 'text-error' : 'text-success';
 }
 
 /**
@@ -64,49 +64,49 @@ export function netTone(negative: boolean): string {
  * exactly the thing being sold.
  */
 export function MoneyRow({
-    label,
-    value,
-    kind,
-    emphasis,
-    tone,
+  label,
+  value,
+  kind,
+  emphasis,
+  tone,
 }: {
-    label: ReactNode;
-    value: string;
-    /** Renders the kind's color swatch and tints the figure. */
-    kind?: CostKind;
-    /** The netted line — bigger, and it owns the row. */
-    emphasis?: boolean;
-    /** Override the figure's ink (the net line, which is green or red by sign). */
-    tone?: string;
+  label: ReactNode;
+  value: string;
+  /** Renders the kind's color swatch and tints the figure. */
+  kind?: CostKind;
+  /** The netted line — bigger, and it owns the row. */
+  emphasis?: boolean;
+  /** Override the figure's ink (the net line, which is green or red by sign). */
+  tone?: string;
 }) {
-    const figureTone = tone ?? (kind ? costTone(kind) : undefined);
-    return (
-        <div className="flex items-baseline justify-between gap-6 py-2.5">
-            <span className="flex min-w-0 items-center gap-2.5">
-                {kind ? (
-                    <span className={`${costFill(kind)} h-2.5 w-2.5 shrink-0 rounded-full`} aria-hidden />
-                ) : null}
-                {emphasis ? (
-                    <Heading level={3} size={4}>
-                        {label}
-                    </Heading>
-                ) : (
-                    <Text as="span">{label}</Text>
-                )}
-            </span>
-            <span
-                className={[
-                    'shrink-0 font-medium tabular-nums',
-                    emphasis ? 'text-2xl' : 'text-md',
-                    figureTone ?? '',
-                ]
-                    .filter(Boolean)
-                    .join(' ')}
-            >
-                {value}
-            </span>
-        </div>
-    );
+  const figureTone = tone ?? (kind ? costTone(kind) : undefined);
+  return (
+    <div className="flex items-baseline justify-between gap-6 py-2.5">
+      <span className="flex min-w-0 items-center gap-2.5">
+        {kind ? (
+          <span className={`${costFill(kind)} h-2.5 w-2.5 shrink-0 rounded-full`} aria-hidden />
+        ) : null}
+        {emphasis ? (
+          <Heading level={3} size={4}>
+            {label}
+          </Heading>
+        ) : (
+          <Text as="span">{label}</Text>
+        )}
+      </span>
+      <span
+        className={[
+          'shrink-0 font-medium tabular-nums',
+          emphasis ? 'text-2xl' : 'text-md',
+          figureTone ?? '',
+        ]
+          .filter(Boolean)
+          .join(' ')}
+      >
+        {value}
+      </span>
+    </div>
+  );
 }
 
 /**
@@ -118,11 +118,11 @@ export function MoneyRow({
  * this job make money — which is its own color axis and never module identity.
  */
 export function MarginBadge({ rate, negative }: { rate: string; negative: boolean }) {
-    return (
-        <Badge color={negative ? 'error' : 'success'} size="sm" className="shrink-0 tabular-nums">
-            {rate}
-        </Badge>
-    );
+  return (
+    <Badge color={negative ? 'error' : 'success'} size="sm" className="shrink-0 tabular-nums">
+      {rate}
+    </Badge>
+  );
 }
 
 /**
@@ -134,24 +134,24 @@ export function MarginBadge({ rate, negative }: { rate: string; negative: boolea
  * every later section drop the words and keep the color.
  */
 export function CostLegend() {
-    const kinds: { kind: CostKind; label: string; example: string }[] = [
-        { kind: 'work', label: 'Cost of the work', example: 'parts, materials, a subcontractor' },
-        { kind: 'wages', label: 'Wages', example: 'the hours that went into it' },
-        { kind: 'running', label: 'Running costs', example: 'rent, fuel, software, insurance' },
-    ];
-    return (
-        <ul className="flex list-none flex-col gap-3 p-0 sm:flex-row sm:flex-wrap sm:gap-x-8">
-            {kinds.map((k) => (
-                <li key={k.kind} className="flex items-baseline gap-2.5">
-                    <span
-                        className={`${costFill(k.kind)} relative top-[3px] h-2.5 w-2.5 shrink-0 rounded-full`}
-                        aria-hidden
-                    />
-                    <Text as="span">
-                        <span className="font-medium">{k.label}</span> — {k.example}
-                    </Text>
-                </li>
-            ))}
-        </ul>
-    );
+  const kinds: { kind: CostKind; label: string; example: string }[] = [
+    { kind: 'work', label: 'Cost of the work', example: 'parts, materials, a subcontractor' },
+    { kind: 'wages', label: 'Wages', example: 'the hours that went into it' },
+    { kind: 'running', label: 'Running costs', example: 'rent, fuel, software, insurance' },
+  ];
+  return (
+    <ul className="flex list-none flex-col gap-3 p-0 sm:flex-row sm:flex-wrap sm:gap-x-8">
+      {kinds.map((k) => (
+        <li key={k.kind} className="flex items-baseline gap-2.5">
+          <span
+            className={`${costFill(k.kind)} relative top-[3px] h-2.5 w-2.5 shrink-0 rounded-full`}
+            aria-hidden
+          />
+          <Text as="span">
+            <span className="font-medium">{k.label}</span> — {k.example}
+          </Text>
+        </li>
+      ))}
+    </ul>
+  );
 }

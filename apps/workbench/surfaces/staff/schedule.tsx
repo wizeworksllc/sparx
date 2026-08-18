@@ -471,7 +471,7 @@ export function ScheduleSurface({ ctx }: { ctx: SurfaceContext }) {
       {/* A shift is four fields and seconds of work, there is no shift surface to
           return to, and the week behind it is exactly the context you need while
           filling it in — so this is one of the few places a dialog beats a pane
-          (apps/workbench/CLAUDE.md). */}
+          (sparx/apps/workbench/CLAUDE.md). */}
       <Dialog
         open={editing !== null}
         onOpenChange={(open) => {

@@ -12,7 +12,7 @@
 // already typed almost never is.
 
 import { useMemo } from 'react';
-import { useQuery } from '@sparx/query';
+import { useQuery } from '@wizeworks/query';
 import { Combobox } from '@wizeworks/silicaui-react';
 import { api } from '../../lib/api/client';
 

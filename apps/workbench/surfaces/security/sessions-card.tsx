@@ -28,7 +28,7 @@ import {
   Tooltip,
   useToast,
 } from '@wizeworks/silicaui-react';
-import { authClient } from '@sparx/auth/client';
+import { authClient } from '@wizeworks/auth/client';
 import { LogOut, MonitorSmartphone, ShieldOff } from 'lucide-react';
 import { useConfirm } from '../../lib/confirm';
 import { FormSection } from '../../components/form-section';

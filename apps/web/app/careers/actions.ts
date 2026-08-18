@@ -1,6 +1,6 @@
 'use server';
 
-// Server action for the /careers apply form. Runs on apps/web's server and calls
+// Server action for the /careers apply form. Runs on sparx/apps/web's server and calls
 // the platform's own public API (POST /v1/public/careers/apply) server-to-server —
 // so the browser never touches api-rest directly (no CORS, no exposed origin) and
 // the visitor IP is forwarded as opt-in proof. The application (plus its résumé
@@ -95,7 +95,7 @@ export async function submitApplication(
   const resume = resumeResult ?? undefined;
 
   // Forward the visitor IP: this action runs server-side, so request.ip at the API
-  // would otherwise be the apps/web pod, not the applicant.
+  // would otherwise be the sparx/apps/web pod, not the applicant.
   const h = await headers();
   const forwardedFor = h.get('x-forwarded-for') ?? h.get('x-real-ip') ?? '';
 

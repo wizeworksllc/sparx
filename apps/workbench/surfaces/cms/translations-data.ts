@@ -45,8 +45,8 @@ import {
   useQuery,
   useQueryClient,
   type UseQueryOptions,
-} from '@sparx/query';
-import { ApiError } from '@sparx/api-client';
+} from '@wizeworks/query';
+import { ApiError } from '@wizeworks/api-client';
 import { api } from '../../lib/api/client';
 
 /* ── Shapes ─────────────────────────────────────────────────────────────── */

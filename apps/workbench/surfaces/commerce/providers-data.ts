@@ -5,7 +5,7 @@
 //
 // A payment provider is the service that actually takes a customer's money and
 // passes it to you. sparx supports several, described in a data-driven catalog
-// the server owns (@sparx/payments GATEWAY_CATALOG). A shop:
+// the server owns (@wizeworks/payments GATEWAY_CATALOG). A shop:
 //
 //   • picks ONE active gateway (which one checkout uses);
 //   • for "bring your own" gateways, saves their API keys, encrypted at rest —
@@ -24,8 +24,8 @@
 //   ['commerce','payments','credentials']  the tenant's saved (masked) keys
 // ══════════════════════════════════════════════════════════════════════════
 
-import { useMutation, useQuery, useQueryClient } from '@sparx/query';
-import { ApiError } from '@sparx/api-client';
+import { useMutation, useQuery, useQueryClient } from '@wizeworks/query';
+import { ApiError } from '@wizeworks/api-client';
 import { api } from '../../lib/api/client';
 
 /* ── Shapes (mirror api-rest payments lib) ──────────────────────────────── */

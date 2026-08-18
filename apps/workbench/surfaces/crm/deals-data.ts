@@ -9,7 +9,7 @@
 // mutation, separate from a plain edit.
 //
 // Local wire types mirror the CRM's `CreateDealInput` / `UpdateDealInput` (Zod in
-// `@sparx/crm-schemas`), named here because that package is not a dependency; the
+// `@wizeworks/crm-schemas`), named here because that package is not a dependency; the
 // server validates authoritatively.
 //
 //   ['crm','deals']              root
@@ -17,8 +17,8 @@
 //   ['crm','deals', id]          one deal, in full
 // ══════════════════════════════════════════════════════════════════════════
 
-import { useMutation, useQuery, useQueryClient } from '@sparx/query';
-import { ApiError } from '@sparx/api-client';
+import { useMutation, useQuery, useQueryClient } from '@wizeworks/query';
+import { ApiError } from '@wizeworks/api-client';
 import { api } from '../../lib/api/client';
 import type { StageType } from './pipelines-data';
 

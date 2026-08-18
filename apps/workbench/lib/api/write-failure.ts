@@ -14,7 +14,7 @@
 // theirs and needs no apology — just "you're offline". Then the ones they can
 // fix. Then ours, which gets a plain admission rather than a euphemism.
 
-import { ApiError } from '@sparx/api-client';
+import { ApiError } from '@wizeworks/api-client';
 
 export interface WriteFailure {
   /** The sentence shown to the operator. Complete, jargon-free, actionable. */

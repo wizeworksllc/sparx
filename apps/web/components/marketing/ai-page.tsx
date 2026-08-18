@@ -20,7 +20,7 @@ import { Faq, type FaqItem } from './faq';
  * data over MCP, for your team). This page sells the customer-facing tool: the
  * Live Chat AI first-responder that greets a tenant's website visitors, answers
  * from their LIVE catalog + policies, and hands off to a human the moment it's
- * unsure. Grounded in the real behavior of services/api-rest chat/ai-handler.ts.
+ * unsure. Grounded in the real behavior of wizeworks/services/api-rest chat/ai-handler.ts.
  *
  * Honest, load-bearing framing (never soften it): sparx runs ZERO AI on its own
  * credential — the tenant brings their own Anthropic/OpenAI key (encrypted). No

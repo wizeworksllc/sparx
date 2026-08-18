@@ -9,9 +9,9 @@
 // condensed display face on the live site shows up as plain sans in the editor
 // (the "why is the builder font different from the site?" bug).
 //
-// The live storefront loads the same families with an SSR `<link>` (apps/site);
+// The live storefront loads the same families with an SSR `<link>` (wizeworks/apps/site);
 // here we inject the equivalent client-side. Both build the family list with the
-// SHARED `themeFontFamilies` + `brandFontHref` (@sparx/site-themes) so the two can't
+// SHARED `themeFontFamilies` + `brandFontHref` (@wizeworks/site-themes) so the two can't
 // drift on which faces load.
 //
 // Upsert-only, never removed. The workbench is a multi-pane dock: the site Editor
@@ -22,7 +22,7 @@
 // leave it. Keyed by the shared id so re-mounts and the second pane are idempotent.
 
 import { useEffect } from 'react';
-import { brandFontHref } from '@sparx/site-themes';
+import { brandFontHref } from '@wizeworks/site-themes';
 
 const LINK_ID = 'sparx-canvas-brand-fonts';
 

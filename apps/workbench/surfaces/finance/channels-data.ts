@@ -2,7 +2,7 @@
 
 // Channels data — takings split by where the sale happened, over a date window.
 
-import { useQuery } from '@sparx/query';
+import { useQuery } from '@wizeworks/query';
 import { api } from '../../lib/api/client';
 
 export interface ChannelRow {

@@ -5,7 +5,7 @@
 //
 // Why a proxy instead of calling api-rest directly from the browser: api-rest
 // has no CORS, so a cross-origin browser fetch would be blocked. Routing through
-// the marketplace's own origin keeps it first-party. Mirrors apps/site's proxy;
+// the marketplace's own origin keeps it first-party. Mirrors wizeworks/apps/site's proxy;
 // sparx.market is a single host (no per-tenant cookie), but the same transport
 // shape keeps the client helpers identical.
 

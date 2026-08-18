@@ -4,7 +4,7 @@
 # Produces a minimal standalone bundle (~150MB) on Node 24 alpine.
 #
 # Built from the repo root context (per .github/workflows/build-images-gcp.yml):
-#   docker build -f apps/web/Dockerfile -t sparx/web:tag .
+#   docker build -f sparx/apps/web/Dockerfile -t sparx/web:tag .
 
 ARG NODE_VERSION=24-alpine
 
@@ -21,44 +21,44 @@ COPY pnpm-workspace.yaml pnpm-lock.yaml package.json tsconfig.base.json ./
 # Root `patchedDependencies` is hashed before resolution, so the patch files are
 # needed even when this filter excludes the package they patch.
 COPY patches ./patches
-COPY apps/web/package.json apps/web/
-COPY packages/app-kit/package.json packages/app-kit/
-COPY packages/ui/package.json packages/ui/
-COPY packages/brand/package.json packages/brand/
-# @sparx/forms — client form-validation engine behind silica's FieldStatus (react peer only).
-COPY packages/forms/package.json packages/forms/
-COPY packages/legal/package.json packages/legal/
-COPY packages/attribution/package.json packages/attribution/
-COPY packages/chat-widget/package.json packages/chat-widget/
-COPY packages/site-themes/package.json packages/site-themes/
-COPY packages/story-schemas/package.json packages/story-schemas/
+COPY sparx/apps/web/package.json sparx/apps/web/
+COPY wizeworks/packages/app-kit/package.json wizeworks/packages/app-kit/
+COPY wizeworks/packages/ui/package.json wizeworks/packages/ui/
+COPY sparx/packages/brand/package.json sparx/packages/brand/
+# @wizeworks/forms — client form-validation engine behind silica's FieldStatus (react peer only).
+COPY wizeworks/packages/forms/package.json wizeworks/packages/forms/
+COPY wizeworks/packages/legal/package.json wizeworks/packages/legal/
+COPY wizeworks/packages/attribution/package.json wizeworks/packages/attribution/
+COPY wizeworks/packages/chat-widget/package.json wizeworks/packages/chat-widget/
+COPY wizeworks/packages/site-themes/package.json wizeworks/packages/site-themes/
+COPY wizeworks/packages/story-schemas/package.json wizeworks/packages/story-schemas/
 # The vendor registry behind /migrate — the hub, each per-vendor page and the OG
 # route all read it at render time, so it is a boot-time dep, not a build aid.
-COPY packages/migration/package.json packages/migration/
+COPY wizeworks/packages/migration/package.json wizeworks/packages/migration/
 # The market's component previews render real catalog nodes — globals.css also
 # @imports/@sources silica-catalog by relative path, so BOTH must be present.
-COPY packages/builder-schemas/package.json packages/builder-schemas/
-COPY packages/silica-catalog/package.json packages/silica-catalog/
-COPY packages/silica-corrections/package.json packages/silica-corrections/
+COPY wizeworks/packages/builder-schemas/package.json wizeworks/packages/builder-schemas/
+COPY wizeworks/packages/silica-catalog/package.json wizeworks/packages/silica-catalog/
+COPY wizeworks/packages/silica-corrections/package.json wizeworks/packages/silica-corrections/
 
 # Install only the @sparx/web subgraph (its deps + transitive workspace deps).
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
     pnpm install --frozen-lockfile --filter @sparx/web...
 
-COPY packages/app-kit packages/app-kit
-COPY packages/ui packages/ui
-COPY packages/brand packages/brand
-COPY packages/forms packages/forms
-COPY packages/legal packages/legal
-COPY packages/attribution packages/attribution
-COPY packages/chat-widget packages/chat-widget
-COPY packages/site-themes packages/site-themes
-COPY packages/story-schemas packages/story-schemas
-COPY packages/migration packages/migration
-COPY packages/builder-schemas packages/builder-schemas
-COPY packages/silica-catalog packages/silica-catalog
-COPY packages/silica-corrections packages/silica-corrections
-COPY apps/web apps/web
+COPY wizeworks/packages/app-kit wizeworks/packages/app-kit
+COPY wizeworks/packages/ui wizeworks/packages/ui
+COPY sparx/packages/brand sparx/packages/brand
+COPY wizeworks/packages/forms wizeworks/packages/forms
+COPY wizeworks/packages/legal wizeworks/packages/legal
+COPY wizeworks/packages/attribution wizeworks/packages/attribution
+COPY wizeworks/packages/chat-widget wizeworks/packages/chat-widget
+COPY wizeworks/packages/site-themes wizeworks/packages/site-themes
+COPY wizeworks/packages/story-schemas wizeworks/packages/story-schemas
+COPY wizeworks/packages/migration wizeworks/packages/migration
+COPY wizeworks/packages/builder-schemas wizeworks/packages/builder-schemas
+COPY wizeworks/packages/silica-catalog wizeworks/packages/silica-catalog
+COPY wizeworks/packages/silica-corrections wizeworks/packages/silica-corrections
+COPY sparx/apps/web sparx/apps/web
 
 # PostHog analytics — NEXT_PUBLIC_* is inlined at build time, so the key must be
 # present during `next build`; runtime env can't reach an already-bundled client
@@ -97,4 +97,4 @@ USER nextjs
 
 EXPOSE 3000
 
-CMD ["node", "apps/web/server.js"]
+CMD ["node", "sparx/apps/web/server.js"]

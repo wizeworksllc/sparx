@@ -11,14 +11,14 @@
 // and its own key tree, and never edits media.ts (which the editor depends on).
 //
 // api-rest is snake_case on the wire (see serializeAsset in
-// services/api-rest/src/routes/v1/media/assets.ts). Field names are kept
+// wizeworks/services/api-rest/src/routes/v1/media/assets.ts). Field names are kept
 // verbatim off the wire and mapped ONCE, here, into the camelCase shape a
 // surface renders — so there is one spelling of each fact between server and
 // screen, and the list and the detail can never disagree about a field.
 // ══════════════════════════════════════════════════════════════════════════
 
-import { useMutation, useQuery, useQueryClient } from '@sparx/query';
-import { ApiError } from '@sparx/api-client';
+import { useMutation, useQuery, useQueryClient } from '@wizeworks/query';
+import { ApiError } from '@wizeworks/api-client';
 import { api } from '../../lib/api/client';
 
 /* ── What a file is, in the terms this surface groups by ─────────────────── */

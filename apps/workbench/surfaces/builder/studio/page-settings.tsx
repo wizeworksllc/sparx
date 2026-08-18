@@ -76,7 +76,7 @@ import {
   Textarea,
 } from '@wizeworks/silicaui-react';
 import { ChevronDown, ImageOff, ImagePlus, Trash2 } from 'lucide-react';
-import { FRAME_NONE } from '@sparx/builder-schemas';
+import { FRAME_NONE } from '@wizeworks/builder-schemas';
 import { useMediaPicker } from '../../cms/media-picker';
 import { usePageSettings, useProductTypeChoices, type PageSettingsDto } from './data';
 

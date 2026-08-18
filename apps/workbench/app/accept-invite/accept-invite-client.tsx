@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
 import { Alert, Button } from '@wizeworks/silicaui-react';
-import { signOut } from '@sparx/auth/client';
+import { signOut } from '@wizeworks/auth/client';
 import { acceptInvitation, resendInviteVerification } from './actions';
 
 // The interactive controls on /accept-invite. The server component has already

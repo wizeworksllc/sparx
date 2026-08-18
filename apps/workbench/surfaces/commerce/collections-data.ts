@@ -13,7 +13,7 @@
 //
 // A rules-based collection stores a `CollectionRuleSet` — `{ match, predicates }`
 // — and this UI is the PRODUCER of a format the rule compiler consumes. The
-// types AND the Zod validator come straight from `@sparx/commerce-schemas`, so
+// types AND the Zod validator come straight from `@wizeworks/commerce-schemas`, so
 // the editor cannot drift from the contract: `buildRuleSet` runs the real schema
 // before a save, and a shape the compiler would reject never reaches the server.
 //
@@ -29,12 +29,12 @@
 // has to appear in all of them.
 // ══════════════════════════════════════════════════════════════════════════
 
-import { useMutation, useQuery, useQueryClient } from '@sparx/query';
-import { ApiError } from '@sparx/api-client';
+import { useMutation, useQuery, useQueryClient } from '@wizeworks/query';
+import { ApiError } from '@wizeworks/api-client';
 // The Zod validator (a VALUE), aliased so it never clashes with the same-named
 // inferred TYPE below. `buildRuleSet` runs `.safeParse` on what the editor made.
-import { CollectionRuleSet as CollectionRuleSetSchema } from '@sparx/commerce-schemas';
-import type { CollectionPredicate, CollectionRuleSet } from '@sparx/commerce-schemas';
+import { CollectionRuleSet as CollectionRuleSetSchema } from '@wizeworks/commerce-schemas';
+import type { CollectionPredicate, CollectionRuleSet } from '@wizeworks/commerce-schemas';
 import { api } from '../../lib/api/client';
 
 // The picker reader the product filing tab uses. Re-exported so callers import

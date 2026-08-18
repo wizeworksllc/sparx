@@ -2,7 +2,7 @@ import * as React from 'react';
 
 /**
  * Renderers for the canonical, press-ready brand artwork that ships under
- * apps/web/public/brand/ (the static files derived from @sparx/brand's mark
+ * sparx/apps/web/public/brand/ (the static files derived from @sparx/brand's mark
  * geometry). The <Wordmark> component renders the same lockup live from vector
  * paths; these render the static PNG/SVG files for press downloads and previews,
  * with the "x" in the brand spark color.

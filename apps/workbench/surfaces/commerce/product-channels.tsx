@@ -44,7 +44,7 @@ import {
   useToast,
 } from '@wizeworks/silicaui-react';
 import { useConfirm } from '../../lib/confirm';
-import { MARKET_CATEGORIES } from '@sparx/commerce-schemas';
+import { MARKET_CATEGORIES } from '@wizeworks/commerce-schemas';
 import { Globe2, Link2Off, ServerCrash, Store } from 'lucide-react';
 import { PaneToolbar, PANE_SHELL } from '../../components/pane-toolbar';
 import { RefreshButton } from '../../components/refresh-button';

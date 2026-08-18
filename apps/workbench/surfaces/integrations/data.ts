@@ -20,10 +20,10 @@
 // hosted onboarding) — this panel routes to them rather than reimplementing five
 // connect experiences.
 
-import { useQuery } from '@sparx/query';
+import { useQuery } from '@wizeworks/query';
 import { api } from '../../lib/api/client';
 
-/** Mirrors @sparx/integrations. `subscription_billing` and `identity` are absent
+/** Mirrors @wizeworks/integrations. `subscription_billing` and `identity` are absent
  *  because nothing implements either — see the note on IntegrationCategory there. */
 export type IntegrationCategory =
   | 'payments'

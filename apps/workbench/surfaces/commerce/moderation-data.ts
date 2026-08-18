@@ -23,8 +23,8 @@
 // product's facet and leave this queue stale.
 // ══════════════════════════════════════════════════════════════════════════
 
-import { useMutation, useQuery, useQueryClient, type QueryClient } from '@sparx/query';
-import { ApiError } from '@sparx/api-client';
+import { useMutation, useQuery, useQueryClient, type QueryClient } from '@wizeworks/query';
+import { ApiError } from '@wizeworks/api-client';
 import { api } from '../../lib/api/client';
 import { PRODUCTS_KEY } from './products-data';
 
@@ -77,7 +77,7 @@ export interface QueueQuestion {
 }
 
 /** One most-saved variant. The shape mirrors the existing
- *  `GET /v1/commerce/wishlists/analytics` (services/api-rest .../commerce/lists.ts),
+ *  `GET /v1/commerce/wishlists/analytics` (wizeworks/services/api-rest .../commerce/lists.ts),
  *  which resolves product + variant identity inline. */
 export interface WishlistTopVariant {
   variantId: string;

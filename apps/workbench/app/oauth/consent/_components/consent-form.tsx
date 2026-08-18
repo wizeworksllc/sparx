@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Badge, Button, Switch, Text } from '@wizeworks/silicaui-react';
-import type { McpScopeMeta } from '@sparx/auth';
+import type { McpScopeMeta } from '@wizeworks/auth';
 
 export interface ConsentFormProps {
   /** Hidden authorize params to echo back to the submit route. */

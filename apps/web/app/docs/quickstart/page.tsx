@@ -136,7 +136,7 @@ export default function QuickstartPage() {
         { id: 'faq', label: 'Frequently asked' },
         { id: 'next', label: 'Next steps' },
       ]}
-      editPath="apps/web/app/docs/quickstart/page.tsx"
+      editPath="sparx/apps/web/app/docs/quickstart/page.tsx"
       updated="2026-06-05"
       prev={{ title: 'Introduction', href: '/docs' }}
       next={{ title: 'Authentication', href: '/docs/authentication' }}

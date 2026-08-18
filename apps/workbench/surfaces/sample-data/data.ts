@@ -10,12 +10,12 @@
 // marked as a sample server-side, so Clear can find it all without touching a
 // single real record.
 
-import { useMutation, useQuery, useQueryClient } from '@sparx/query';
+import { useMutation, useQuery, useQueryClient } from '@wizeworks/query';
 import type { WorkbenchModule } from '../../components/module-scope';
 
 import { api } from '../../lib/api/client';
 
-/** Per-entity counts — mirrors `SampleDataCounts` from @sparx/db. */
+/** Per-entity counts — mirrors `SampleDataCounts` from @wizeworks/db. */
 export interface SampleDataCounts {
   products: number;
   collections: number;
@@ -37,7 +37,7 @@ export interface SampleDataCounts {
   toolCalls: number;
 }
 
-/** Mirrors `SampleDataStatus` from @sparx/db. */
+/** Mirrors `SampleDataStatus` from @wizeworks/db. */
 export interface SampleDataStatus {
   industry: string | null;
   packIndustry: string;

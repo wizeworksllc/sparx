@@ -1,6 +1,23 @@
-// Re-export of the shared platform legal-doc versions (docs/42 §6). The single
-// source of truth now lives in `@sparx/legal` so api-rest + @sparx/auth can
-// import the same versions the marketing pages render. Kept as a local alias
-// so the page imports (`@/lib/legal-versions`) don't churn.
+// sparx's legal document versions, for the pages that render them.
+//
+// The single source of truth is `@wizeworks/legal`, which holds one entry PER
+// BRAND — the acceptance recorder used to write sparx's versions against every
+// tenant regardless of which product they signed up through, and keying it by
+// brand is what fixed that. These pages are sparx's, so they pin sparx's entry
+// once here rather than passing a brand string on every page.
 
-export * from '@sparx/legal';
+import { brandLegal, type LegalDocVersion } from '@wizeworks/legal';
+
+const SPARX = brandLegal('sparx');
+
+/** Versions for the four documents sparx publishes. Non-optional at this alias:
+ *  sparx publishes all four, so a missing one is a mistake worth failing on
+ *  rather than rendering a page with no effective date. */
+export const LEGAL_DOC_VERSIONS = SPARX.versions as Record<
+  'terms' | 'privacy' | 'dpa' | 'aup',
+  LegalDocVersion
+>;
+
+export const SUBPROCESSORS_VERSION = SPARX.subprocessors;
+
+export type { LegalDocVersion, LegalDocType } from '@wizeworks/legal';

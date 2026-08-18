@@ -1,11 +1,11 @@
-# apps/workbench
+# sparx/apps/workbench
 
 Read [docs/123-workbench.md](../../docs/123-workbench.md) before building a surface here.
 
 ## Color: read the root DESIGN.md
 
 [../../DESIGN.md](../../DESIGN.md) is the **platform** design language — one system across the
-workbench, `apps/web` and `apps/market` — and is binding for every surface in this app. Read it
+workbench, `sparx/apps/web` and `sparx/apps/market` — and is binding for every surface in this app. Read it
 before you type a `color=` prop.
 
 The one-line version: **neutral has to be earned, exactly like a modal.** There are 27 registered

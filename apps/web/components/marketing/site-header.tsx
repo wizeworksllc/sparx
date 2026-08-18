@@ -19,7 +19,7 @@ import {
   NavigationMenuLink,
   NavigationMenuTrigger,
 } from '@wizeworks/silicaui-react';
-import { Wordmark } from '@sparx/ui';
+import { Wordmark } from '@sparx/brand/react';
 import { ModuleGlyph, ModulesMegaContent, MODULE_NAV } from './modules-menu';
 
 export interface SiteHeaderProps {

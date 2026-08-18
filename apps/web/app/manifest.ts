@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 
 // PWA manifest for the marketing site. Served at /manifest.webmanifest and
 // auto-linked by Next from the metadata layer. The android-chrome icons live
-// in apps/web/public/.
+// in sparx/apps/web/public/.
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'sparx',

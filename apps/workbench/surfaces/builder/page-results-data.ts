@@ -15,58 +15,58 @@
 // see one site's revenue against the other's home page.
 // ══════════════════════════════════════════════════════════════════════════
 
-import { useQuery } from '@sparx/query';
+import { useQuery } from '@wizeworks/query';
 import { api } from '../../lib/api/client';
 
 /* ── Shapes (mirrors PagePerformanceReport in api-rest) ─────────────────── */
 
 export interface PageResultRow {
-    pageId: string;
-    name: string;
-    /** The path as authored. For a collection template this is the template's own
-     *  address, NOT where visitors land — `pathPrefix` is. */
-    path: string;
-    /** Set only for a template that renders many records: the route those records
-     *  are served under. Its figures are the sum of every path beneath it. */
-    pathPrefix: string | null;
-    /** How many separate addresses the figures cover — 1 for an ordinary page, and
-     *  for a template, how many of its records anyone actually visited. */
-    pathsCovered: number;
-    views: number;
-    visitors: number;
-    orders: number;
-    revenueCents: number;
-    /** Orders per visitor as a percentage. NULL when nobody came — a page with no
-     *  visitors has no conversion rate, and 0% would read as failure. */
-    conversionPct: number | null;
-    /** Average real-user load time in ms, over `loadSamples` measurements. Null when
-     *  no visitor's browser reported one; never render null as fast. */
-    loadMs: number | null;
-    loadSamples: number;
-    seoScore: number | null;
-    seoGrade: string | null;
-    seoFixFirst: string | null;
-    noindex: boolean;
+  pageId: string;
+  name: string;
+  /** The path as authored. For a collection template this is the template's own
+   *  address, NOT where visitors land — `pathPrefix` is. */
+  path: string;
+  /** Set only for a template that renders many records: the route those records
+   *  are served under. Its figures are the sum of every path beneath it. */
+  pathPrefix: string | null;
+  /** How many separate addresses the figures cover — 1 for an ordinary page, and
+   *  for a template, how many of its records anyone actually visited. */
+  pathsCovered: number;
+  views: number;
+  visitors: number;
+  orders: number;
+  revenueCents: number;
+  /** Orders per visitor as a percentage. NULL when nobody came — a page with no
+   *  visitors has no conversion rate, and 0% would read as failure. */
+  conversionPct: number | null;
+  /** Average real-user load time in ms, over `loadSamples` measurements. Null when
+   *  no visitor's browser reported one; never render null as fast. */
+  loadMs: number | null;
+  loadSamples: number;
+  seoScore: number | null;
+  seoGrade: string | null;
+  seoFixFirst: string | null;
+  noindex: boolean;
 }
 
 /** Traffic on an address no page in the editor owns — a product, a post, a legal
  *  page. Present so the totals reconcile with the traffic card. */
 export interface UnownedPathRow {
-    path: string;
-    views: number;
-    visitors: number;
-    orders: number;
-    revenueCents: number;
+  path: string;
+  views: number;
+  visitors: number;
+  orders: number;
+  revenueCents: number;
 }
 
 export interface PageResultsReport {
-    range: { from: string; to: string };
-    pages: PageResultRow[];
-    otherPaths: UnownedPathRow[];
-    /** False when Commerce is off — the money columns are hidden rather than shown
-     *  permanently empty. */
-    commerce: boolean;
-    totals: { views: number; visitors: number; orders: number; revenueCents: number };
+  range: { from: string; to: string };
+  pages: PageResultRow[];
+  otherPaths: UnownedPathRow[];
+  /** False when Commerce is off — the money columns are hidden rather than shown
+   *  permanently empty. */
+  commerce: boolean;
+  totals: { views: number; visitors: number; orders: number; revenueCents: number };
 }
 
 /* ── Reading ────────────────────────────────────────────────────────────── */
@@ -74,9 +74,9 @@ export interface PageResultsReport {
 /** The windows worth offering. Shorter than a week is noise on most sites; longer
  *  than a quarter stops being about anything the owner recently changed. */
 export const RESULT_WINDOWS = [
-    { days: 7, label: 'Last 7 days' },
-    { days: 30, label: 'Last 30 days' },
-    { days: 90, label: 'Last 90 days' },
+  { days: 7, label: 'Last 7 days' },
+  { days: 30, label: 'Last 30 days' },
+  { days: 90, label: 'Last 90 days' },
 ] as const;
 
 export type ResultWindow = (typeof RESULT_WINDOWS)[number]['days'];
@@ -91,15 +91,15 @@ export const PAGE_RESULTS_KEY = ['builder', 'analytics', 'pages'] as const;
  * the same period.
  */
 export function usePageResults(days: ResultWindow) {
-    const from = new Date(Date.now() - (days - 1) * 86_400_000).toISOString();
-    return useQuery({
-        queryKey: [...PAGE_RESULTS_KEY, days],
-        queryFn: () =>
-            api.get<PageResultsReport>(`/v1/builder/analytics/pages?from=${encodeURIComponent(from)}`),
-        // Traffic figures are hours-fresh at best; refetching them on every focus
-        // would spend a full four-module join to redraw the same numbers.
-        staleTime: 60_000,
-    });
+  const from = new Date(Date.now() - (days - 1) * 86_400_000).toISOString();
+  return useQuery({
+    queryKey: [...PAGE_RESULTS_KEY, days],
+    queryFn: () =>
+      api.get<PageResultsReport>(`/v1/builder/analytics/pages?from=${encodeURIComponent(from)}`),
+    // Traffic figures are hours-fresh at best; refetching them on every focus
+    // would spend a full four-module join to redraw the same numbers.
+    staleTime: 60_000,
+  });
 }
 
 /* ── Reading the numbers out loud ───────────────────────────────────────── */
@@ -107,19 +107,19 @@ export function usePageResults(days: ResultWindow) {
 const NUMBER = new Intl.NumberFormat();
 
 export function formatCount(value: number): string {
-    return NUMBER.format(value);
+  return NUMBER.format(value);
 }
 
 export function formatMoney(cents: number, currency = 'USD'): string {
-    return new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(cents / 100);
+  return new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(cents / 100);
 }
 
 /** Load time as a person would say it. Seconds past one second, because "2.4
  *  seconds" lands and "2412 ms" does not. */
 export function formatLoad(ms: number | null): string {
-    if (ms == null) return 'Not measured';
-    if (ms < 1000) return `${String(ms)} ms`;
-    return `${(ms / 1000).toFixed(1)} seconds`;
+  if (ms == null) return 'Not measured';
+  if (ms < 1000) return `${String(ms)} ms`;
+  return `${(ms / 1000).toFixed(1)} seconds`;
 }
 
 /**
@@ -130,16 +130,16 @@ export function formatLoad(ms: number | null): string {
  * is paint "we have no idea" the same color as "fast".
  */
 export function loadTone(ms: number | null): 'success' | 'warning' | 'error' | 'neutral' {
-    if (ms == null) return 'neutral';
-    if (ms <= 2500) return 'success';
-    if (ms <= 4000) return 'warning';
-    return 'error';
+  if (ms == null) return 'neutral';
+  if (ms <= 2500) return 'success';
+  if (ms <= 4000) return 'warning';
+  return 'error';
 }
 
 /** The search grade's color, on the SEO module's own 0–100 scale. */
 export function seoTone(score: number | null): 'success' | 'warning' | 'error' | 'neutral' {
-    if (score == null) return 'neutral';
-    if (score >= 80) return 'success';
-    if (score >= 50) return 'warning';
-    return 'error';
+  if (score == null) return 'neutral';
+  if (score >= 80) return 'success';
+  if (score >= 50) return 'warning';
+  return 'error';
 }

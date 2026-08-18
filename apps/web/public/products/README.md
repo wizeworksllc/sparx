@@ -5,7 +5,7 @@ and the checkout summary inside the annotated checkout frame. They fill the slot
 that was a grey `bg-base-300` square, so the fake storefronts read as real shops
 rather than wireframes.
 
-One file per product in [`apps/web/lib/example-businesses.ts`](../../lib/example-businesses.ts);
+One file per product in [`sparx/apps/web/lib/example-businesses.ts`](../../lib/example-businesses.ts);
 the filename matches the `image` field on that product. Adding a product to a
 business means adding a file here.
 

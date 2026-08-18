@@ -5,7 +5,7 @@
 //
 // NOT the same product as sparx.market. This catalog sells blueprints, themes,
 // integrations, and components TO businesses building a site; sparx.market is a
-// separate deployed app (apps/market) where shoppers buy products FROM those
+// separate deployed app (sparx/apps/market) where shoppers buy products FROM those
 // businesses, reverse-proxied on its own domain by Caddy. An earlier plan had
 // sparx.market 301 into this path — that was abandoned when the marketplace
 // became its own app, so do not reintroduce a redirect between the two.

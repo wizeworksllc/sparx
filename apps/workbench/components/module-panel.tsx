@@ -54,6 +54,15 @@ interface ModulePanelProps {
    * work, so the control isn't disabled, it's absent.
    */
   pinnable?: boolean;
+  /**
+   * How wide the panel draws itself. 'panel' is silica's own sidebar width and
+   * is what the desktop shell wants: its wrapper animates a fixed width open and
+   * shut, so the panel must not stretch. 'fill' is for the mobile sheet, where
+   * the panel IS the sheet — left at the default it rendered a 256px list inside
+   * a full-width drawer, with every row's tap target narrower than the surface
+   * it appeared to be part of.
+   */
+  width?: 'panel' | 'fill';
 }
 
 function targetFor(event: { shiftKey: boolean; altKey: boolean }): OpenTarget {
@@ -108,6 +117,7 @@ export function ModulePanel({
   onTogglePin,
   onDismiss,
   pinnable = true,
+  width = 'panel',
 }: ModulePanelProps) {
   const { controller } = useWorkbench();
   // The SAME navigation the rail and the mobile drawer read, not a second call
@@ -192,7 +202,11 @@ export function ModulePanel({
         collapsed={false}
         color="module"
         aria-label={`${label} navigation`}
-        className="h-full bg-transparent"
+        // BOTH the wrapper and this matter: the desktop shell owns the
+        // open/close animation and therefore the CLIP width, while silica's
+        // Sidebar sizes itself from its own `--sidebar-w`. In the mobile sheet
+        // there is no wrapper to clip to, so the panel takes the whole width.
+        className={`h-full bg-transparent ${width === 'fill' ? 'w-full [--sidebar-w:100%]' : ''}`}
       >
         <SidebarHeader>
           <SidebarHeaderBrand>

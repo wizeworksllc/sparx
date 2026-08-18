@@ -9,7 +9,7 @@
 import { useState, type FormEvent } from 'react';
 import Link from 'next/link';
 import { KeyRound } from 'lucide-react';
-import { authClient } from '@sparx/auth/client';
+import { authClient } from '@wizeworks/auth/client';
 import {
   Alert,
   Button,

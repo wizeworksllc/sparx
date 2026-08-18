@@ -1,12 +1,12 @@
-// Public marketplace data layer for apps/web (docs/60 §9, Phase 5). The marketing
+// Public marketplace data layer for sparx/apps/web (docs/60 §9, Phase 5). The marketing
 // site reads the UNAUTHENTICATED catalog API — `GET /v1/public/marketplace/*` —
 // which runs the catalog read under `withSystem` (no tenant), so the
 // `marketplace_visibility` RLS policy returns only published+public rows. No
 // per-tenant overlay (install/applied/connected state) exists on this surface;
 // the funnel hands acquisition off to signup (`signUpHref`).
 //
-// Types are a LOCAL mirror of the @sparx/marketplace-schemas contract, kept here
-// so apps/web takes no new workspace dependency (matching the dashboard's local
+// Types are a LOCAL mirror of the @wizeworks/marketplace-schemas contract, kept here
+// so sparx/apps/web takes no new workspace dependency (matching the dashboard's local
 // mirror). Keep in lockstep with packages/marketplace-schemas. The `install`
 // field is intentionally absent — it never appears on the public surface.
 //
@@ -20,7 +20,7 @@ import { renderComponentPreview } from './component-preview-render';
 // public routes need no auth. Falls back to the local api-rest port for dev.
 const API_BASE = process.env.SPARX_API_REST_URL ?? 'http://localhost:3100';
 
-// The dashboard origin the signup funnel lives on. apps/web is sparx.works; the
+// The dashboard origin the signup funnel lives on. sparx/apps/web is sparx.works; the
 // dashboard is app.sparx.works — so the hand-off is an ABSOLUTE cross-origin URL.
 const APP_BASE = process.env.SPARX_APP_URL ?? 'https://app.sparx.works';
 

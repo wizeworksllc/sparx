@@ -38,7 +38,7 @@ import {
   useToast,
 } from '@wizeworks/silicaui-react';
 import { Receipt } from 'lucide-react';
-import { useMutation, useQuery } from '@sparx/query';
+import { useMutation, useQuery } from '@wizeworks/query';
 import { api } from '../../lib/api/client';
 import { FormSection } from '../../components/form-section';
 import { afterCommit } from '../../lib/defer';

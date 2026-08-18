@@ -13,7 +13,7 @@
 import { Button, EmptyState } from '@wizeworks/silicaui-react';
 import { Award, Lock, ServerCrash } from 'lucide-react';
 import { PANE_SHELL } from '../../components/pane-toolbar';
-import { ApiError } from '@sparx/api-client';
+import { ApiError } from '@wizeworks/api-client';
 
 /** A centred message that fills the pane — for the states where there is no list
  *  or form to show. Always inside a PANE_SHELL so the chrome matches a loaded

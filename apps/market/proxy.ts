@@ -1,6 +1,6 @@
 // Edge proxy (Next.js `proxy` file convention — formerly `middleware`).
 //
-// Unlike the tenant storefront (apps/site), sparx.market is a SINGLE public
+// Unlike the tenant storefront (wizeworks/apps/site), sparx.market is a SINGLE public
 // host — there is no per-tenant / per-property host routing to resolve at the
 // edge. The marketplace catalog is cross-tenant: every request hits the same
 // site and the seller's tenant is resolved per-listing in the data layer, not

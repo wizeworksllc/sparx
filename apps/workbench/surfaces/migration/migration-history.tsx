@@ -18,7 +18,7 @@ import { PaneToolbar, PANE_SHELL } from '../../components/pane-toolbar';
 import { RefreshButton } from '../../components/refresh-button';
 import type { SurfaceContext } from '../../lib/surfaces/registry';
 import { entityLabel, runTone, useMigrationRuns, type RunSummary } from './data';
-import type { CanonicalEntity } from '@sparx/migration';
+import type { CanonicalEntity } from '@wizeworks/migration';
 
 function when(iso: string): string {
   const date = new Date(iso);

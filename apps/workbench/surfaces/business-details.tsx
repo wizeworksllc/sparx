@@ -12,7 +12,7 @@
 // so there is no validation gate, only a Save.
 
 import { useEffect, useMemo, useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@sparx/query';
+import { useMutation, useQuery, useQueryClient } from '@wizeworks/query';
 import {
   Alert,
   AlertActions,

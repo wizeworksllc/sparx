@@ -1,4 +1,4 @@
-// Public bootcamp data layer for apps/web (docs/114 §B.5/§B.6/§B.8). Reads the
+// Public bootcamp data layer for sparx/apps/web (docs/114 §B.5/§B.6/§B.8). Reads the
 // UNAUTHENTICATED bootcamp API — `GET /v1/public/bootcamps` (directory + facets)
 // and `GET /v1/public/bootcamps/:slug` (detail) — which run under the published
 // RLS policy (status='published'), so only live listings come back.

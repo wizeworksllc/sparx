@@ -12,7 +12,7 @@
 // audit, so it already appears.
 
 import { useMemo } from 'react';
-import { useQuery } from '@sparx/query';
+import { useQuery } from '@wizeworks/query';
 import { api } from './client';
 
 export interface ActivityItem {
@@ -65,7 +65,7 @@ export interface ActivityItem {
  *     working through their own day. The timeline on the booking has them.
  *
  * Scheduling writes its audit trail from the SERVICE, not the route —
- * `recordBookingEvent` in packages/scheduling/src/booking-history.ts, which is
+ * `recordBookingEvent` in wizeworks/packages/scheduling/src/booking-history.ts, which is
  * also what feeds GET /v1/scheduling/bookings/:id/timeline. The Pub/Sub publish
  * beside it (publishBookingEvent) is a separate channel for the worker; do not
  * add audit writes at the call sites, they are already there.

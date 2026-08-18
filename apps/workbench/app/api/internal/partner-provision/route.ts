@@ -1,6 +1,6 @@
 import { timingSafeEqual } from 'node:crypto';
 import { NextResponse } from 'next/server';
-import { provisionInvitedOwner, SignUpError } from '@sparx/auth';
+import { provisionInvitedOwner, SignUpError } from '@wizeworks/auth';
 
 // Internal, service-to-service provisioning of an operator-approved partner's
 // account (docs/114 §B.2). Better Auth lives in this workbench process

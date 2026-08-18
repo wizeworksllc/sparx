@@ -1,9 +1,9 @@
-import { auth } from '@sparx/auth';
+import { auth } from '@wizeworks/auth';
 import { toNextJsHandler } from 'better-auth/next-js';
 
 // Better Auth catches every /api/auth/* request: sign-in, sign-up, session
 // lookup, etc. Mounting it here means the client SDK (better-auth/react inside
-// @sparx/auth/client) needs no baseURL config.
+// @wizeworks/auth/client) needs no baseURL config.
 //
 // The session cookie this issues is HOST-ONLY to workbench.sparx.works. That is
 // deliberate, not an oversight: the alternative — widening the staff cookie to

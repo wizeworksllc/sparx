@@ -20,12 +20,12 @@
 // which one is in charge.
 //
 // Shapes mirror api-rest's tax-service row types; inputs satisfy the Zod schemas
-// in @sparx/commerce-schemas.
+// in @wizeworks/commerce-schemas.
 // ══════════════════════════════════════════════════════════════════════════
 
-import { useMutation, useQuery, useQueryClient } from '@sparx/query';
-import { ApiError } from '@sparx/api-client';
-import type { NexusType } from '@sparx/commerce-schemas';
+import { useMutation, useQuery, useQueryClient } from '@wizeworks/query';
+import { ApiError } from '@wizeworks/api-client';
+import type { NexusType } from '@wizeworks/commerce-schemas';
 import { api } from '../../lib/api/client';
 
 export type { NexusType };

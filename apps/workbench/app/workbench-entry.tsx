@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { getSession } from '@sparx/auth';
+import { getSession } from '@wizeworks/auth';
 import { WorkbenchShell } from '../components/workbench-shell';
 
 // The one way into the workbench, shared by `/` and by every address under it.

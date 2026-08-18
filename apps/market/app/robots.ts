@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 
 import { SITE_ORIGIN, absoluteUrl } from '@/lib/site';
 
-// AI / answer-engine crawlers we explicitly welcome (mirrors apps/web, docs/50).
+// AI / answer-engine crawlers we explicitly welcome (mirrors sparx/apps/web, docs/50).
 // sparx.market is a public shopping destination — it wants maximum discovery
 // surface, so it opts INTO answer-engine + model crawlers. The `*` rule already
 // permits everyone; these named groups make the intent explicit and are the

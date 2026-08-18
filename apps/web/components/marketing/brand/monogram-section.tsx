@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Card, CardBody } from '@wizeworks/silicaui-react';
-import { AppIcon, SparxMark } from '@sparx/ui';
+import { AppIcon, SparxMark } from '@sparx/brand/react';
 import { Code, Section, SectionHeader, Text } from '../primitives';
 import { CopyValue } from './interactive';
 
@@ -58,7 +58,7 @@ export function MonogramSection() {
             <Text size={13.5}>
               In product UI the mark renders via <Code>&lt;Spark&gt;</Code> (or its{' '}
               <Code>&lt;SparxMark&gt;</Code> alias) and the icon via <Code>&lt;AppIcon&gt;</Code> —
-              both from <Code>@sparx/ui</Code>, drawing paths defined once in{' '}
+              both from <Code>@wizeworks/ui</Code>, drawing paths defined once in{' '}
               <Code>@sparx/brand</Code>. As a favicon, where CSS variables can’t resolve, each app
               ships static files with the hexes inlined, generated from that same geometry by{' '}
               <Code>scripts/generate-brand-icons.mjs</Code>.

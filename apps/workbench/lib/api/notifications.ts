@@ -7,11 +7,11 @@
 //
 // Rows are written by the automation engine's `platform.notify` action, so what
 // appears here is governed by tenant-editable rules rather than hardcoded in a
-// worker — see packages/automation/src/actions/notify.ts.
+// worker — see wizeworks/packages/automation/src/actions/notify.ts.
 
 import { useMemo } from 'react';
 import { useToast } from '@wizeworks/silicaui-react';
-import { useMutation, useQuery, useQueryClient } from '@sparx/query';
+import { useMutation, useQuery, useQueryClient } from '@wizeworks/query';
 import { api } from './client';
 
 export type NotificationSeverity = 'info' | 'success' | 'warning' | 'danger';

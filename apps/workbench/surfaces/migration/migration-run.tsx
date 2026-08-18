@@ -53,7 +53,7 @@ import {
   type CanonicalEntity,
   type MappedEntity,
   type ValidationIssue,
-} from '@sparx/migration';
+} from '@wizeworks/migration';
 import { ColumnMapper } from './column-mapper';
 import { LiveConnection, type LivePull } from './live-connection';
 import { ReportProblemButton } from '../../components/feedback/report-problem-button';

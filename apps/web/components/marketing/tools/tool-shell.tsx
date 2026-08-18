@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Badge, Heading, Text } from '@wizeworks/silicaui-react';
-import { ModuleProvider } from '@sparx/ui';
+import { ModuleProvider } from '@wizeworks/ui';
 import { getModule } from '@/lib/modules';
 import { Band } from '../band';
 import { getModuleColor } from '../primitives';
@@ -17,7 +17,7 @@ import { TrustRow } from './trust-row';
  * related strip) wraps the interactive client tool passed as `children`; Nav and
  * Footer come from the root layout. The tool area stays wrapped in
  * `<ModuleProvider>` so its controls adopt the module hue — silica has no
- * equivalent, so that one `@sparx/ui` import stays.
+ * equivalent, so that one `@wizeworks/ui` import stays.
  *
  * ## The hero used to pick its color by hashing the URL
  *
@@ -56,76 +56,76 @@ import { TrustRow } from './trust-row';
  * where as a full-bleed background they were the thing forcing 24px type.
  */
 export function ToolShell({ tool, children }: { tool: ToolMeta; children: React.ReactNode }) {
-    const color = getModuleColor(tool.module);
-    const mod = getModule(tool.module);
-    const Icon = tool.icon;
+  const color = getModuleColor(tool.module);
+  const mod = getModule(tool.module);
+  const Icon = tool.icon;
 
-    return (
-        <>
-            <ToolJsonLd tool={tool} />
-            <main>
-                <Band tone="dark" flush>
-                    <div className="flex flex-col gap-12">
-                        <div className="flex flex-col gap-7">
-                            <nav aria-label="Breadcrumb" className="flex items-center gap-2">
-                                <a href="/tools" className="text-md text-primary font-medium">
-                                    Free tools
-                                </a>
-                                <span aria-hidden className="text-md">
-                                    /
-                                </span>
-                                <span className="text-md font-medium">{tool.name}</span>
-                            </nav>
+  return (
+    <>
+      <ToolJsonLd tool={tool} />
+      <main>
+        <Band tone="dark" flush>
+          <div className="flex flex-col gap-12">
+            <div className="flex flex-col gap-7">
+              <nav aria-label="Breadcrumb" className="flex items-center gap-2">
+                <a href="/tools" className="text-md text-primary font-medium">
+                  Free tools
+                </a>
+                <span aria-hidden className="text-md">
+                  /
+                </span>
+                <span className="text-md font-medium">{tool.name}</span>
+              </nav>
 
-                            <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
-                                {/* Fill + its PAIRED ink, as one choice. A module hue is a FILL
+              <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
+                {/* Fill + its PAIRED ink, as one choice. A module hue is a FILL
                     color — several measure ~2:1 as text — so the way to show one
                     at size is to fill a shape and write on top in its own
                     `-content`. */}
-                                <span
-                                    aria-hidden
-                                    className={`inline-flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl ${color.bg} ${color.content}`}
-                                >
-                                    <Icon size={30} strokeWidth={1.6} />
-                                </span>
+                <span
+                  aria-hidden
+                  className={`inline-flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl ${color.bg} ${color.content}`}
+                >
+                  <Icon size={30} strokeWidth={1.6} />
+                </span>
 
-                                <div className="flex min-w-0 flex-col items-start gap-5">
-                                    <Heading
-                                        level={1}
-                                        size="display"
-                                        className="text-5xl leading-[0.98] tracking-tight sm:text-6xl"
-                                    >
-                                        {tool.name}
-                                        <span className={color.ink}>.</span>
-                                    </Heading>
-                                    {/* `text-xl`, not the old `text-2xl`. That size was a contrast
+                <div className="flex min-w-0 flex-col items-start gap-5">
+                  <Heading
+                    level={1}
+                    size="display"
+                    className="text-5xl leading-[0.98] tracking-tight sm:text-6xl"
+                  >
+                    {tool.name}
+                    <span className={color.ink}>.</span>
+                  </Heading>
+                  {/* `text-xl`, not the old `text-2xl`. That size was a contrast
                       workaround for the brand band, not a typographic decision;
                       on the dark island a normal lede is legible on its own. */}
-                                    <Text variant="lead" className="text-base-content max-w-2xl text-xl">
-                                        {tool.tagline}
-                                    </Text>
-                                    {mod ? (
-                                        <Badge color={`module-${tool.module}`} variant="solid" size="lg">
-                                            {`Part of ${mod.label}`}
-                                        </Badge>
-                                    ) : null}
-                                </div>
-                            </div>
-                        </div>
+                  <Text variant="lead" className="text-base-content max-w-2xl text-xl">
+                    {tool.tagline}
+                  </Text>
+                  {mod ? (
+                    <Badge color={`module-${tool.module}`} variant="solid" size="lg">
+                      {`Part of ${mod.label}`}
+                    </Badge>
+                  ) : null}
+                </div>
+              </div>
+            </div>
 
-                        <TrustRow />
-                    </div>
-                </Band>
+            <TrustRow />
+          </div>
+        </Band>
 
-                <Band tone="page">
-                    <ModuleProvider module={tool.module}>{children}</ModuleProvider>
-                </Band>
+        <Band tone="page">
+          <ModuleProvider module={tool.module}>{children}</ModuleProvider>
+        </Band>
 
-                <ToolLearn tool={tool} />
-                <ToolLadder tool={tool} />
-                <ToolUpsell tool={tool} />
-                <RelatedTools currentSlug={tool.slug} />
-            </main>
-        </>
-    );
+        <ToolLearn tool={tool} />
+        <ToolLadder tool={tool} />
+        <ToolUpsell tool={tool} />
+        <RelatedTools currentSlug={tool.slug} />
+      </main>
+    </>
+  );
 }

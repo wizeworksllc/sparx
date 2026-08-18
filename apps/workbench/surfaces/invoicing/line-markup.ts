@@ -3,7 +3,7 @@
 // A markup / pass-through line is not priced by a typed unit price; it is priced
 // LIVE from a cost basis + a markup directive (a saved rule or an ad-hoc markup),
 // off the SAME pure engine as catalog/quote markup (`applyMarkupRule` in
-// @sparx/commerce-schemas), so the two never drift. The resolved directive is
+// @wizeworks/commerce-schemas), so the two never drift. The resolved directive is
 // sent with the line and the server re-prices authoritatively and snapshots the
 // result — what's computed here is a faithful preview of that answer.
 //
@@ -19,7 +19,7 @@ import {
   type BandMethod,
   type LineMarkupInput,
   type MarkupRuleSpec,
-} from '@sparx/commerce-schemas';
+} from '@wizeworks/commerce-schemas';
 import type { DraftLine } from './totals';
 
 export const ADHOC = 'adhoc';

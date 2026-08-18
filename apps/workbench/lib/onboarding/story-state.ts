@@ -1,6 +1,6 @@
 // Pure reducers over the shared story model.
 //
-// The clause grammar and the `StoryState` model itself live in @sparx/story-schemas
+// The clause grammar and the `StoryState` model itself live in @wizeworks/story-schemas
 // (a genuine shared package, not dashboard code — the marketing hero renders the
 // same model read-only). This file adds the parts that need the workbench's module
 // catalog: the module set a story implies, the prose we persist, and the
@@ -21,7 +21,7 @@ import {
   type ClauseVoice,
   type TenseKey,
   type AudienceKey,
-} from '@sparx/story-schemas';
+} from '@wizeworks/story-schemas';
 import { SWITCHBOARD_MODULES, MODULE_BY_KEY, moduleLock } from './modules';
 import type { PersistedStory, WizardBlueprint } from './types';
 

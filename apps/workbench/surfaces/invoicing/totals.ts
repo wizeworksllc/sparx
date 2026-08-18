@@ -1,12 +1,12 @@
 // Line + document totals, mirrored from the server.
 //
-// The authority is packages/crm/src/services/billing-totals.ts — the server
+// The authority is wizeworks/packages/crm/src/services/billing-totals.ts — the server
 // recomputes every figure on write and its answer is what gets persisted. This
 // exists ONLY so the editor can show a running total while typing, before
 // anything is saved.
 //
-// It is deliberately a mirror rather than an import: @sparx/crm pulls in
-// @sparx/db (Prisma), so it cannot be bundled into a browser app. If the two
+// It is deliberately a mirror rather than an import: @wizeworks/crm pulls in
+// @wizeworks/db (Prisma), so it cannot be bundled into a browser app. If the two
 // ever disagree the server wins by construction — the moment a save lands, the
 // document's real totals replace whatever was on screen.
 //
@@ -14,7 +14,7 @@
 // rate, charged on the post-discount amount; resolution order is
 // lines → subtotal → discount → tax → shipping → surcharge → total.
 
-import type { LineMarkupInput } from '@sparx/commerce-schemas';
+import type { LineMarkupInput } from '@wizeworks/commerce-schemas';
 
 /** The server's frozen record of how a markup/pass-through line was priced —
  *  enough to re-seed the editor and show the margin it locked in. */

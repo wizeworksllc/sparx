@@ -36,7 +36,7 @@ export interface ExampleProduct {
    * slot that used to be a grey `bg-base-300` square, which is what made those
    * frames read as wireframes rather than shops.
    *
-   * Path under `apps/web/public/products/`, licence and per-file provenance in
+   * Path under `sparx/apps/web/public/products/`, licence and per-file provenance in
    * that directory's README. Required, not optional: a fixture set where some
    * products have a photo and some do not is worse than one where none do.
    */
@@ -125,7 +125,7 @@ export interface ExampleCrm {
    * `bg-module-crm bg-soft text-module-crm`, i.e. the accent inked over a 15%
    * tint of itself, measured 2.15:1.
    *
-   * Path under `apps/web/public/people/`; licence and provenance in that
+   * Path under `sparx/apps/web/public/people/`; licence and provenance in that
    * directory's README. Faces sit high in a standing portrait, so the avatar
    * crops with `object-top` rather than centre.
    */
@@ -202,7 +202,7 @@ export interface ExampleB2b {
  * `percentage_markup`/`multiplier`/`flat_markup`/`fixed_margin` pricing rules,
  * the submitted → shipped → delivered routed-order status, the per-supplier
  * profitability table cost/revenue/profit/margin) — see docs/14 (Dropship PRD),
- * `@sparx/dropship`, and the apps/dashboard dropship module. Dropship works
+ * `@wizeworks/dropship`, and the apps/dashboard dropship module. Dropship works
  * alongside Commerce: imported products land in your catalog, and the orders
  * your store takes route automatically back to the right supplier.
  */

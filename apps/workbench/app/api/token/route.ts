@@ -21,7 +21,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { SignJWT } from 'jose';
-import { requireSession } from '@sparx/auth';
+import { requireSession } from '@wizeworks/auth';
 
 export const dynamic = 'force-dynamic';
 

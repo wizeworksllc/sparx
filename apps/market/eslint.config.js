@@ -1,8 +1,8 @@
-// apps/market ESLint — extends root + the same "no raw Tailwind re-skinning
-// in feature code" enforcement as apps/site / apps/web. Layout chrome composes
+// sparx/apps/market ESLint — extends root + the same "no raw Tailwind re-skinning
+// in feature code" enforcement as wizeworks/apps/site / apps/web. Layout chrome composes
 // silicaui primitives; layout/spacing/positioning utilities pass through.
 
-import rootConfig from '../../eslint.config.js';
+import rootConfig from '../../../eslint.config.js';
 
 export default [
   ...rootConfig,

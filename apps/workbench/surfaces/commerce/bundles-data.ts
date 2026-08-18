@@ -15,8 +15,8 @@
 //   ['commerce','bundles', id]          one bundle, with its components
 // ══════════════════════════════════════════════════════════════════════════
 
-import { useMutation, useQuery, useQueryClient } from '@sparx/query';
-import { ApiError } from '@sparx/api-client';
+import { useMutation, useQuery, useQueryClient } from '@wizeworks/query';
+import { ApiError } from '@wizeworks/api-client';
 import { api } from '../../lib/api/client';
 // The read shapes are the product layer's — one definition, shared, so the
 // bundle a product-scoped pane reads and the one this list reads cannot drift.

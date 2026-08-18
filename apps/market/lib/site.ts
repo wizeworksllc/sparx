@@ -1,6 +1,6 @@
 // The canonical public origin for sparx.market.
 //
-// Unlike the tenant storefront (apps/site), which resolves its host per request
+// Unlike the tenant storefront (wizeworks/apps/site), which resolves its host per request
 // from the Host header, sparx.market is a SINGLE public site on one fixed
 // domain — so its origin is a constant, not request-derived.
 //

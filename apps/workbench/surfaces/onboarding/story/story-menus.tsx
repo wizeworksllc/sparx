@@ -12,7 +12,7 @@ import {
   AUDIENCE_ORDER,
   type TenseKey,
   type AudienceKey,
-} from '@sparx/story-schemas';
+} from '@wizeworks/story-schemas';
 import { MODULE_BY_KEY } from '../../../lib/onboarding/modules';
 import { resolveModules, type StoryState } from '../../../lib/onboarding/story-state';
 import { IndustryIcon } from './story-tokens';

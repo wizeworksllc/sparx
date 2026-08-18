@@ -2,7 +2,7 @@
 //
 // A billing document and its lines are SEPARATE writes. POST/PATCH
 // /v1/invoicing/documents ignores a `lines` array entirely (see
-// CreateBillingDocumentInput in packages/crm-schemas/src/invoicing.ts — there is
+// CreateBillingDocumentInput in wizeworks/packages/crm-schemas/src/invoicing.ts — there is
 // no `lines` key); lines only move through
 // POST/PATCH/DELETE /v1/invoicing/documents/:id/lines[/:lineId].
 //

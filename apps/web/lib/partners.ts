@@ -1,4 +1,4 @@
-// Public partner-directory data layer for apps/web (docs/114 §B.6/§B.8). The
+// Public partner-directory data layer for sparx/apps/web (docs/114 §B.6/§B.8). The
 // marketing site reads the UNAUTHENTICATED partner API — `GET /v1/public/partners`
 // — which runs under the published-directory RLS policy (status='active' AND
 // directory_visible), so only listable partners come back. No per-tenant overlay.
@@ -144,7 +144,7 @@ export async function fetchPartnerSlugs(): Promise<string[]> {
   return slugs;
 }
 
-/** Tier display metadata — label + the @sparx/ui Badge color slot. Certified
+/** Tier display metadata — label + the @wizeworks/ui Badge color slot. Certified
  *  wears the platform Ember (primary, top of directory); registered reads as a
  *  reviewed cyan/info; informal is a neutral, unverified pill. */
 export const TIER_META: Record<PartnerTier, { label: string; color: string }> = {

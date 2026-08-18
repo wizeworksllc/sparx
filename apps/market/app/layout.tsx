@@ -1,7 +1,7 @@
 // sparx.market root layout.
 //
 // sparx.market is a SINGLE public host — sparx's own first-party shopping
-// destination — so there's no per-tenant theme resolution (cf. apps/site). It
+// destination — so there's no per-tenant theme resolution (cf. wizeworks/apps/site). It
 // wears the sparx brand directly via the `sparx` silicaui theme (the shared
 // @sparx/brand package): Geist for body/mono, Inter for the wordmark (--font-wordmark,
 // which the local <Wordmark> consumes). Every page is framed in the marketplace
@@ -11,7 +11,7 @@ import type { Metadata } from 'next';
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import { Inter } from 'next/font/google';
-import { ChunkReloadGuard } from '@sparx/app-kit';
+import { ChunkReloadGuard } from '@wizeworks/app-kit';
 
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';

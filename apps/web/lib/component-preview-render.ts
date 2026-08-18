@@ -8,26 +8,26 @@
 // keys (`title`/`price`/`image`/…). Rendered with NO host, a bound `<img>` loses its
 // `src` (the engine defers it to a resolution that never runs) and a `repeat` shows a
 // single template row — so a preview would have broken images and empty grids. This
-// host feeds the SAME shape the site's resolver does (`@sparx/builder-schemas`
+// host feeds the SAME shape the site's resolver does (`@wizeworks/builder-schemas`
 // `createSilicaResolver`), but over a fixed set of neutral SAMPLE records, so every
 // section renders populated + truthful with zero tenant data. Images resolve to a
 // neutral static placeholder tile (see SAMPLE_IMAGE — a component preview must not imply
 // a specific business's photography). Static marketing sections bind nothing and render
 // their authored copy regardless — the host only affects the bound ones.
 
-import { renderSilicaBody, PLACEHOLDER_IMAGE } from '@sparx/silica-catalog';
+import { renderSilicaBody, PLACEHOLDER_IMAGE } from '@wizeworks/silica-catalog';
 import {
   createSilicaResolver,
   defaultSilicaFormat,
   type DataSources,
-} from '@sparx/builder-schemas';
+} from '@wizeworks/builder-schemas';
 import type { Node } from '@wizeworks/silicaui-html';
 
 /** The neutral placeholder tile every sample image points at. It is a STATIC FILE
  *  (a relative URL), NOT silica-catalog's `PLACEHOLDER_IMAGE` data-URI: `toHtml`'s
  *  attribute sanitizer strips `data:` srcs entirely (only http(s)/relative survive),
  *  so the inline placeholder never renders through the projection. Served from
- *  apps/web/public; a component preview must not imply a specific business's photos. */
+ *  sparx/apps/web/public; a component preview must not imply a specific business's photos. */
 const SAMPLE_IMAGE = '/marketplace/sample-image.svg';
 
 /** Neutral sample wordmarks for the logo wall (see below). Not real brands — just

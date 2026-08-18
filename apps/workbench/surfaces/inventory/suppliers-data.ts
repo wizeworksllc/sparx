@@ -20,7 +20,7 @@
 // "how a price is written" across the whole module.
 // ══════════════════════════════════════════════════════════════════════════
 
-import { useMutation, useQuery, useQueryClient } from '@sparx/query';
+import { useMutation, useQuery, useQueryClient } from '@wizeworks/query';
 import { api } from '../../lib/api/client';
 import { isNotFound, stockErrorMessage, type Tone } from './data';
 

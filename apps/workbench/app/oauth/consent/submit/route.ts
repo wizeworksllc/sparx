@@ -17,7 +17,7 @@ import {
   signConsentGrant,
   OIDC_BASE_SCOPES,
   type StaffRole,
-} from '@sparx/auth';
+} from '@wizeworks/auth';
 import {
   parseAuthorizeParams,
   validateAuthorizeRequest,

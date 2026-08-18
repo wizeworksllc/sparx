@@ -18,7 +18,7 @@ import { Component, Suspense, useEffect, type ErrorInfo, type ReactNode } from '
 import { AlertTriangle } from 'lucide-react';
 import { Button } from '@wizeworks/silicaui-react';
 import { useConfirm } from '../lib/confirm';
-import { isChunkLoadError, reloadOnceForStaleBuild } from '@sparx/app-kit';
+import { isChunkLoadError, reloadOnceForStaleBuild } from '@wizeworks/app-kit';
 import { productName } from '../lib/product';
 import { reportCrash } from '../lib/analytics';
 import { PaneModuleProvider } from './module-beta-notice';

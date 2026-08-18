@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
 /* ─── code samples (kept as consts so the JSX below stays readable) ─── */
 
-const FILE_TREE = `packages/blueprints/
+const FILE_TREE = `wizeworks/packages/blueprints/
   src/
     blueprints/
       retail-store-blog.ts     ← the manifest (one file per template)
@@ -290,7 +290,7 @@ node(customType('promo_banner'), {
   props: { $ref: { version: 1 }, heading: 'Spring refresh — 20% off', buttonLabel: 'Shop the sale', buttonHref: '/collections/featured' },
 }),`;
 
-const REGISTER_CODE = `// packages/blueprints/src/registry.ts
+const REGISTER_CODE = `// wizeworks/packages/blueprints/src/registry.ts
 import { retailStoreBlog } from './blueprints/retail-store-blog';
 import { yourTemplate }    from './blueprints/your-template';   // ← add
 
@@ -327,7 +327,7 @@ export default function BuildingATemplatePage() {
         { id: 'gotchas', label: 'Conventions & gotchas' },
         { id: 'reference', label: 'Quick reference' },
       ]}
-      editPath="apps/web/app/docs/guides/building-a-template/page.tsx"
+      editPath="sparx/apps/web/app/docs/guides/building-a-template/page.tsx"
       updated="2026-06-05"
       prev={{ title: 'Quickstart', href: '/docs/quickstart' }}
       next={{ title: 'Create an order', href: '/docs/api/orders/create' }}
@@ -423,7 +423,7 @@ export default function BuildingATemplatePage() {
 
       <DocSection id="location" title="Where a template lives">
         <p>Each template is one TypeScript file plus a one-line registration:</p>
-        <CodeBlock tabs={[{ label: 'packages/blueprints/', code: FILE_TREE }]} />
+        <CodeBlock tabs={[{ label: 'wizeworks/packages/blueprints/', code: FILE_TREE }]} />
         <p>
           The manifest is <strong>declarative data</strong> — no code runs at install time, which
           keeps the marketplace safe. It’s plain TypeScript objects validated by{' '}
@@ -894,7 +894,7 @@ export default function BuildingATemplatePage() {
           <Step n={1} title="It validates on build">
             <p>
               <InlineCode>parseBlueprint()</InlineCode> runs when the module loads, so{' '}
-              <InlineCode>pnpm --filter @sparx/blueprints typecheck</InlineCode> and the package
+              <InlineCode>pnpm --filter @wizeworks/blueprints typecheck</InlineCode> and the package
               tests catch a malformed manifest, a dangling handle, or a missing asset id
               immediately.
             </p>
@@ -1006,9 +1006,11 @@ export default function BuildingATemplatePage() {
           </li>
         </ul>
         <p>
-          For the full schema, read <InlineCode>packages/blueprints/src/manifest.ts</InlineCode>.
-          For a complete worked example, read{' '}
-          <InlineCode>packages/blueprints/src/blueprints/retail-store-blog.ts</InlineCode>.
+          For the full schema, read{' '}
+          <InlineCode>wizeworks/packages/blueprints/src/manifest.ts</InlineCode>. For a complete
+          worked example, read{' '}
+          <InlineCode>wizeworks/packages/blueprints/src/blueprints/retail-store-blog.ts</InlineCode>
+          .
         </p>
       </DocSection>
     </DocArticle>

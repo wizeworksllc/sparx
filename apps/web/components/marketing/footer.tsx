@@ -1,5 +1,5 @@
 import { Badge, Footer as SilicaFooter, FooterTitle, Link, Text } from '@wizeworks/silicaui-react';
-import { Wordmark } from '@sparx/ui';
+import { Wordmark } from '@sparx/brand/react';
 import { SparkFooterPeek } from '@sparx/brand/react';
 import type { MarketingModule } from './primitives';
 import { MODULES, MODULE_HEX } from './modules-catalog';

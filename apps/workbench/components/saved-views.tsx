@@ -53,7 +53,7 @@ import {
   useToast,
 } from '@wizeworks/silicaui-react';
 import { Check, Columns3, Star, Trash2 } from 'lucide-react';
-import { useMutation, useQuery, useQueryClient } from '@sparx/query';
+import { useMutation, useQuery, useQueryClient } from '@wizeworks/query';
 import { api } from '../lib/api/client';
 import { afterCommit, afterMenuClose } from '../lib/defer';
 import { useConfirm } from '../lib/confirm';

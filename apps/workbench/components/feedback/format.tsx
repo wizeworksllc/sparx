@@ -6,17 +6,17 @@
 import { Badge } from '@wizeworks/silicaui-react';
 import { Heart, HelpCircle, Lightbulb, TriangleAlert, type LucideIcon } from 'lucide-react';
 import {
-    FEEDBACK_STATUS_LABELS,
-    type FeedbackCategory,
-    type FeedbackStatus,
-    type FeedbackSubmission,
+  FEEDBACK_STATUS_LABELS,
+  type FeedbackCategory,
+  type FeedbackStatus,
+  type FeedbackSubmission,
 } from '../../lib/api/feedback';
 
 export const CATEGORY_ICON: Record<FeedbackCategory, LucideIcon> = {
-    idea: Lightbulb,
-    problem: TriangleAlert,
-    question: HelpCircle,
-    praise: Heart,
+  idea: Lightbulb,
+  problem: TriangleAlert,
+  question: HelpCircle,
+  praise: Heart,
 };
 
 /**
@@ -26,12 +26,12 @@ export const CATEGORY_ICON: Record<FeedbackCategory, LucideIcon> = {
  * praise is a success. Color by MEANING — never for decoration.
  */
 export const CATEGORY_COLOR: Record<FeedbackCategory, 'primary' | 'warning' | 'info' | 'success'> =
-{
+  {
     idea: 'primary',
     problem: 'warning',
     question: 'info',
     praise: 'success',
-};
+  };
 
 /**
  * Status is its own color axis, and this ladder reads as PROGRESS: arrived →
@@ -46,7 +46,7 @@ export const CATEGORY_COLOR: Record<FeedbackCategory, 'primary' | 'warning' | 'i
  * took the trouble to send it.
  */
 const STATUS_COLOR: Record<FeedbackStatus, 'info' | 'neutral' | 'accent' | 'warning' | 'success'> =
-{
+  {
     new: 'info',
     triaged: 'neutral',
     planned: 'accent',
@@ -56,20 +56,20 @@ const STATUS_COLOR: Record<FeedbackStatus, 'info' | 'neutral' | 'accent' | 'warn
     shipped: 'success',
     declined: 'neutral',
     answered: 'success',
-};
+  };
 
 export function FeedbackStatusBadge({ status }: { status: FeedbackStatus }) {
-    return (
-        <Badge color={STATUS_COLOR[status]} variant="soft" size="sm">
-            {FEEDBACK_STATUS_LABELS[status]}
-        </Badge>
-    );
+  return (
+    <Badge color={STATUS_COLOR[status]} variant="soft" size="sm">
+      {FEEDBACK_STATUS_LABELS[status]}
+    </Badge>
+  );
 }
 
 /** The list title: the explicit subject, else the first line of the message. */
 export function deriveTitle(submission: Pick<FeedbackSubmission, 'subject' | 'body'>): string {
-    if (submission.subject?.trim()) return submission.subject.trim();
-    const firstLine = submission.body.split('\n')[0]?.trim() ?? '';
-    if (!firstLine) return 'Feedback';
-    return firstLine.length > 80 ? `${firstLine.slice(0, 77)}…` : firstLine;
+  if (submission.subject?.trim()) return submission.subject.trim();
+  const firstLine = submission.body.split('\n')[0]?.trim() ?? '';
+  if (!firstLine) return 'Feedback';
+  return firstLine.length > 80 ? `${firstLine.slice(0, 77)}…` : firstLine;
 }

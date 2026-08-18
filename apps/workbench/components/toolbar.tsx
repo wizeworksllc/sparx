@@ -38,12 +38,10 @@ import {
   Globe,
   LogOut,
   MessageSquarePlus,
-  Moon,
   Search,
   Star,
-  Sun,
 } from 'lucide-react';
-import { signOut } from '@sparx/auth/client';
+import { signOut } from '@wizeworks/auth/client';
 import { Wordmark } from '@sparx/brand/react';
 import {
   switchSite,
@@ -55,8 +53,9 @@ import {
 import { clearToken } from '../lib/api/token';
 import { resetClient } from '../lib/api/client';
 import { deferTick } from '../lib/defer';
-import type { Theme } from '../lib/theme';
+import type { ThemeChoice } from '../lib/theme';
 import { useWorkbench } from '../lib/workbench/context';
+import { AppearanceMenu } from './appearance-menu';
 import { FeedbackButton } from './feedback/button';
 import { useFeedback } from './feedback/provider';
 import { NotificationCenter } from './notification-center';
@@ -66,10 +65,14 @@ import { launchTour } from '../lib/tour/first-run-tour';
 interface ToolbarProps {
   userName: string;
   userEmail: string;
-  theme: Theme;
+  /** The APPEARANCE the person picked, which is not the same as the one on
+   *  screen: `system` is a choice, and it resolves to one of the other two. The
+   *  control shows both — the tick marks the choice, the glyph shows what it
+   *  currently means. */
+  themeChoice: ThemeChoice;
   /** Canonical layout key for the current site — see workbench-shell boot. */
   siteKey: string;
-  onToggleTheme: () => void;
+  onSetTheme: (choice: ThemeChoice) => void;
   onOpenLauncher: () => void;
 }
 
@@ -85,9 +88,9 @@ function initials(name: string): string {
 export function Toolbar({
   userName,
   userEmail,
-  theme,
+  themeChoice,
   siteKey,
-  onToggleTheme,
+  onSetTheme,
   onOpenLauncher,
 }: ToolbarProps) {
   const { controller } = useWorkbench();
@@ -241,21 +244,7 @@ export function Toolbar({
           <FeedbackButton />
         </span>
 
-        <Tooltip content={theme === 'light' ? 'Dark theme' : 'Light theme'}>
-          <Button
-            variant="ghost"
-            size="sm"
-            shape="square"
-            aria-label={theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
-            onClick={onToggleTheme}
-          >
-            {theme === 'light' ? (
-              <Moon className="size-4" aria-hidden />
-            ) : (
-              <Sun className="size-4" aria-hidden />
-            )}
-          </Button>
-        </Tooltip>
+        <AppearanceMenu choice={themeChoice} onSetTheme={onSetTheme} />
 
         <span data-tour="account-menu" className="inline-flex">
           <DropdownMenu>

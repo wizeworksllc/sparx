@@ -8,7 +8,7 @@
 
    Follows the marketing.css convention: named layout/component primitives
    (not raw Tailwind utilities) referencing CSS variables from
-   packages/ui/src/tokens.css. The docs section reuses the site <Nav> and
+   sparx/packages/ui/src/tokens.css. The docs section reuses the site <Nav> and
    <Footer>; --docs-nav-h is the sticky offset under that header.
    ────────────────────────────────────────────────────────────── */
 

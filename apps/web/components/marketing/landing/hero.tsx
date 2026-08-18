@@ -12,7 +12,7 @@ import { HeroStoryRotator } from './hero-story';
  * The hero. Pure silicaui — no `primitives.tsx` (Display/Container/
  * mkt-* classes), no inline style objects, no hardcoded hex. The dark "ink" band is
  * a real DOM-scoped `data-theme="dark"` island (silicaui themes are scoped, not
- * global — see packages/brand/src/theme.css), so every color below is a plain
+ * global — see sparx/packages/brand/src/theme.css), so every color below is a plain
  * `color`/`variant` prop or a `bg-*`/`text-*` token class that resolves correctly on
  * its own — including the second CTA, which needs no override at all to render
  * light-on-dark.

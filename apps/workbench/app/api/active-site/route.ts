@@ -11,13 +11,13 @@
 // cookie policy.
 //
 // The value stays a PREFERENCE, not a control: api-rest re-resolves it under RLS
-// and fails closed to the tenant's primary property (see services/api-rest
+// and fails closed to the tenant's primary property (see wizeworks/services/api-rest
 // lib/property.ts), so a stale or unknown id can only ever name one of this same
 // tenant's sites. Authenticating here simply keeps the endpoint from being an
 // open cookie-writer for anonymous callers.
 
 import { NextResponse } from 'next/server';
-import { getSession } from '@sparx/auth';
+import { getSession } from '@wizeworks/auth';
 
 export const dynamic = 'force-dynamic';
 

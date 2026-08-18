@@ -18,7 +18,7 @@
 // matched", which is a claim about a pallet nobody has opened.
 // ══════════════════════════════════════════════════════════════════════════
 
-import { useMutation, useQuery, useQueryClient } from '@sparx/query';
+import { useMutation, useQuery, useQueryClient } from '@wizeworks/query';
 import { api } from '../../lib/api/client';
 import type { Tone } from './data';
 import { purchaseOrderKeys } from './purchase-orders-data';

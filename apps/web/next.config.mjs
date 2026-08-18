@@ -7,12 +7,12 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const config = {
   reactStrictMode: true,
   transpilePackages: [
-    '@sparx/app-kit',
-    '@sparx/ui',
+    '@wizeworks/app-kit',
+    '@wizeworks/ui',
     '@sparx/brand',
-    '@sparx/forms',
-    '@sparx/chat-widget',
-    '@sparx/story-schemas',
+    '@wizeworks/forms',
+    '@wizeworks/chat-widget',
+    '@wizeworks/story-schemas',
     '@wizeworks/silicaui-react',
   ],
   typedRoutes: true,
@@ -20,8 +20,8 @@ const config = {
   // node_modules and a server.js entrypoint.
   output: 'standalone',
   // Monorepo: tell Next.js to trace files starting at the repo root so
-  // workspace deps (@sparx/ui) are included in the standalone bundle.
-  outputFileTracingRoot: join(__dirname, '../../'),
+  // workspace deps (@wizeworks/ui) are included in the standalone bundle.
+  outputFileTracingRoot: join(__dirname, '../../../'),
 };
 
 export default config;

@@ -17,7 +17,7 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { KeyRound, LogIn, Mail, ShieldCheck, UserPlus } from 'lucide-react';
-import { authClient, emailOtp, signIn, twoFactor } from '@sparx/auth/client';
+import { authClient, emailOtp, signIn, twoFactor } from '@wizeworks/auth/client';
 import {
   Alert,
   Button,

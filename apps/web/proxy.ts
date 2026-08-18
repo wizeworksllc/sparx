@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { ATTR_COOKIES, newVisitorId } from '@sparx/attribution';
+import { newVisitorId } from '@wizeworks/attribution';
+import { SPARX_ATTR } from './lib/attribution-cookies';
 
 // Edge attribution seed (docs/80 §5.3, §7.2). Next 16 renamed the `middleware`
 // file convention to `proxy` (same Edge-runtime behaviour). Mints a first-party
@@ -11,10 +12,10 @@ import { ATTR_COOKIES, newVisitorId } from '@sparx/attribution';
 export function proxy(request: NextRequest): NextResponse {
   const response = NextResponse.next();
 
-  if (!request.cookies.has(ATTR_COOKIES.visitor)) {
+  if (!request.cookies.has(SPARX_ATTR.visitor)) {
     const host = request.nextUrl.hostname;
     const onSparx = host === 'sparx.works' || host.endsWith('.sparx.works');
-    response.cookies.set(ATTR_COOKIES.visitor, newVisitorId(), {
+    response.cookies.set(SPARX_ATTR.visitor, newVisitorId(), {
       domain: onSparx ? '.sparx.works' : undefined,
       path: '/',
       maxAge: 400 * 86_400, // Chrome's cap

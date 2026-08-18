@@ -17,7 +17,7 @@ import { MASCOT_BODY_PATH, MASCOT_FACE, MASCOT_STROKE_WIDTH, MASCOT_VIEWBOX } fr
  * Two-tone by design: an orange spark with a deep-navy face. On light surfaces
  * use `tone="light"` (the default); on dark surfaces use `tone="dark"` so the
  * face flips to white and stays legible over the open centre. Motion lives in
- * the consumer's CSS (`.spark-mascot*`, in apps/web/app/marketing.css) and
+ * the consumer's CSS (`.spark-mascot*`, in sparx/apps/web/app/marketing.css) and
  * honours prefers-reduced-motion.
  */
 

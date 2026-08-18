@@ -4,7 +4,7 @@
 // (seeded rows) — no page-component rewrite (docs/60 M3).
 //
 // This mirrors the dashboard's registry (apps/dashboard/.../marketplace/_registry.ts)
-// so both surfaces resolve categories identically; kept local to apps/web so the
+// so both surfaces resolve categories identically; kept local to sparx/apps/web so the
 // marketing site takes no shared-package dependency. `accent` is catalog data
 // (the category's stripe/icon color), applied as an inline style — not a control
 // re-skin (docs/23 §15).

@@ -4,7 +4,7 @@
 # at workbench.sparx.works. Produces a standalone bundle on Node 24 alpine.
 #
 # Built from the repo root context (per .github/workflows/build-images-gcp.yml):
-#   docker build -f apps/workbench/Dockerfile -t sparx/workbench:tag .
+#   docker build -f sparx/apps/workbench/Dockerfile -t sparx/workbench:tag .
 
 ARG NODE_VERSION=24-alpine
 
@@ -22,120 +22,120 @@ COPY pnpm-workspace.yaml pnpm-lock.yaml package.json tsconfig.base.json ./
 # needed even when this filter excludes the package they patch. The workbench is
 # the one app that actually consumes it — silicaui-react sits on Base UI.
 COPY patches ./patches
-COPY apps/workbench/package.json apps/workbench/
+COPY sparx/apps/workbench/package.json sparx/apps/workbench/
 # The workbench's direct workspace deps are deliberately few — it is a browser-
 # rendered app whose only server surface is Better Auth + the /api/token BFF:
-COPY packages/app-kit/package.json packages/app-kit/
-COPY packages/api-client/package.json packages/api-client/
-COPY packages/auth/package.json packages/auth/
-COPY packages/brand-core/package.json packages/brand-core/
-COPY packages/brand/package.json packages/brand/
+COPY wizeworks/packages/app-kit/package.json wizeworks/packages/app-kit/
+COPY wizeworks/packages/api-client/package.json wizeworks/packages/api-client/
+COPY wizeworks/packages/auth/package.json wizeworks/packages/auth/
+COPY wizeworks/packages/brand-core/package.json wizeworks/packages/brand-core/
+COPY sparx/packages/brand/package.json sparx/packages/brand/
 # The address table. Pure data, no dependencies of its own — but the catch-all
 # route resolves paths through it during the SERVER render, so a missing copy is
 # a boot-time failure, not a lazily-discovered one.
-COPY packages/links/package.json packages/links/
+COPY wizeworks/packages/links/package.json wizeworks/packages/links/
 # The move-in vendor registry. Read by the migration surfaces during the SERVER
 # render, same as the address table above — a missing copy fails at boot.
-COPY packages/migration/package.json packages/migration/
-COPY packages/query/package.json packages/query/
-# …and @sparx/auth's transitive closure. Its index re-exports server.ts →
-# tenant-events.ts, which pulls legal seeding; @sparx/email (a direct auth dep)
+COPY wizeworks/packages/migration/package.json wizeworks/packages/migration/
+COPY wizeworks/packages/query/package.json wizeworks/packages/query/
+# …and @wizeworks/auth's transitive closure. Its index re-exports server.ts →
+# tenant-events.ts, which pulls legal seeding; @wizeworks/email (a direct auth dep)
 # pulls the template packages. Every member must be present or the filtered
 # install leaves a dangling symlink that the build fails to resolve.
-COPY packages/attribution/package.json packages/attribution/
-COPY packages/db/package.json packages/db/
-COPY packages/email/package.json packages/email/
-COPY packages/events/package.json packages/events/
-COPY packages/legal/package.json packages/legal/
-COPY packages/legal-seed/package.json packages/legal-seed/
-COPY packages/legal-templates/package.json packages/legal-templates/
-COPY packages/modules/package.json packages/modules/
-COPY packages/builder-schemas/package.json packages/builder-schemas/
-COPY packages/cms-editor/package.json packages/cms-editor/
-COPY packages/ui/package.json packages/ui/
+COPY wizeworks/packages/attribution/package.json wizeworks/packages/attribution/
+COPY wizeworks/packages/db/package.json wizeworks/packages/db/
+COPY wizeworks/packages/email/package.json wizeworks/packages/email/
+COPY wizeworks/packages/events/package.json wizeworks/packages/events/
+COPY wizeworks/packages/legal/package.json wizeworks/packages/legal/
+COPY wizeworks/packages/legal-seed/package.json wizeworks/packages/legal-seed/
+COPY wizeworks/packages/legal-templates/package.json wizeworks/packages/legal-templates/
+COPY wizeworks/packages/modules/package.json wizeworks/packages/modules/
+COPY wizeworks/packages/builder-schemas/package.json wizeworks/packages/builder-schemas/
+COPY wizeworks/packages/cms-editor/package.json wizeworks/packages/cms-editor/
+COPY wizeworks/packages/ui/package.json wizeworks/packages/ui/
 # The surface layer's schema + catalog deps and their transitive @sparx closure.
 # The workbench is no longer "deliberately few" deps — its ~66 surfaces import
 # the commerce/crm/automation/story/marketplace/cms/sitebuilder schemas, the
 # silica catalog, site themes, and blueprints directly. Every member must be
 # present or the filtered install leaves a dangling symlink the build can't
 # resolve (the Module-not-found class of failure).
-COPY packages/automation-schemas/package.json packages/automation-schemas/
-COPY packages/blueprints/package.json packages/blueprints/
-COPY packages/cms-schemas/package.json packages/cms-schemas/
-COPY packages/commerce-schemas/package.json packages/commerce-schemas/
-COPY packages/crm-schemas/package.json packages/crm-schemas/
-COPY packages/field-schema/package.json packages/field-schema/
-COPY packages/integrations/package.json packages/integrations/
-COPY packages/marketplace-schemas/package.json packages/marketplace-schemas/
-COPY packages/silica-catalog/package.json packages/silica-catalog/
-COPY packages/silica-corrections/package.json packages/silica-corrections/
-COPY packages/site-themes/package.json packages/site-themes/
-COPY packages/sitebuilder-schemas/package.json packages/sitebuilder-schemas/
-COPY packages/story-schemas/package.json packages/story-schemas/
+COPY wizeworks/packages/automation-schemas/package.json wizeworks/packages/automation-schemas/
+COPY wizeworks/packages/blueprints/package.json wizeworks/packages/blueprints/
+COPY wizeworks/packages/cms-schemas/package.json wizeworks/packages/cms-schemas/
+COPY wizeworks/packages/commerce-schemas/package.json wizeworks/packages/commerce-schemas/
+COPY wizeworks/packages/crm-schemas/package.json wizeworks/packages/crm-schemas/
+COPY wizeworks/packages/field-schema/package.json wizeworks/packages/field-schema/
+COPY wizeworks/packages/integrations/package.json wizeworks/packages/integrations/
+COPY wizeworks/packages/marketplace-schemas/package.json wizeworks/packages/marketplace-schemas/
+COPY wizeworks/packages/silica-catalog/package.json wizeworks/packages/silica-catalog/
+COPY wizeworks/packages/silica-corrections/package.json wizeworks/packages/silica-corrections/
+COPY wizeworks/packages/site-themes/package.json wizeworks/packages/site-themes/
+COPY wizeworks/packages/sitebuilder-schemas/package.json wizeworks/packages/sitebuilder-schemas/
+COPY wizeworks/packages/story-schemas/package.json wizeworks/packages/story-schemas/
 # The social calendar renders its empty posting slots from `slotOccurrences`, so the
-# recurring-time maths is imported from @sparx/social rather than reimplemented — the
+# recurring-time maths is imported from @wizeworks/social rather than reimplemented — the
 # plan a person sees has to be the plan the filler runs. Its root barrel is pure, but the
-# package DECLARES @sparx/api-core, so api-core comes along for the filtered install
+# package DECLARES @wizeworks/api-core, so api-core comes along for the filtered install
 # (its own closure — cms-schemas, db, events — is already above).
-COPY packages/api-core/package.json packages/api-core/
-COPY packages/social/package.json packages/social/
-# The sequence editor imports @sparx/email-sequences/schemas — the client-safe zod
-# subpath, no db and no server code. The PACKAGE still declares @sparx/db and
-# @sparx/email-sends, and the filtered install resolves what a package DECLARES, not
+COPY wizeworks/packages/api-core/package.json wizeworks/packages/api-core/
+COPY wizeworks/packages/social/package.json wizeworks/packages/social/
+# The sequence editor imports @wizeworks/email-sequences/schemas — the client-safe zod
+# subpath, no db and no server code. The PACKAGE still declares @wizeworks/db and
+# @wizeworks/email-sends, and the filtered install resolves what a package DECLARES, not
 # what a surface imports, so email-sends has to be here too (db is already above).
-COPY packages/email-sends/package.json packages/email-sends/
-COPY packages/email-sequences/package.json packages/email-sequences/
-# Root postinstall runs `pnpm --filter @sparx/db db:generate`, which needs
+COPY wizeworks/packages/email-sends/package.json wizeworks/packages/email-sends/
+COPY wizeworks/packages/email-sequences/package.json wizeworks/packages/email-sequences/
+# Root postinstall runs `pnpm --filter @wizeworks/db db:generate`, which needs
 # both the schema source AND the prisma config file (the multi-file schema
 # lives in prisma/schema/, declared in prisma.config.ts).
-COPY packages/db/prisma packages/db/prisma
-COPY packages/db/prisma.config.ts packages/db/prisma.config.ts
+COPY wizeworks/packages/db/prisma wizeworks/packages/db/prisma
+COPY wizeworks/packages/db/prisma.config.ts wizeworks/packages/db/prisma.config.ts
 
 # Install only the @sparx/workbench subgraph (its deps + transitive workspace deps).
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
     pnpm install --frozen-lockfile --filter @sparx/workbench...
 
 # Source for every workspace dep + the app itself.
-COPY packages/app-kit packages/app-kit
-COPY packages/api-client packages/api-client
-COPY packages/auth packages/auth
-COPY packages/brand-core packages/brand-core
-COPY packages/brand packages/brand
-COPY packages/links packages/links
-COPY packages/migration packages/migration
-COPY packages/query packages/query
-COPY packages/attribution packages/attribution
-COPY packages/db packages/db
-COPY packages/email packages/email
-COPY packages/events packages/events
-COPY packages/legal packages/legal
-COPY packages/legal-seed packages/legal-seed
-COPY packages/legal-templates packages/legal-templates
-COPY packages/modules packages/modules
-COPY packages/builder-schemas packages/builder-schemas
-COPY packages/cms-editor packages/cms-editor
-COPY packages/ui packages/ui
-COPY packages/automation-schemas packages/automation-schemas
-COPY packages/blueprints packages/blueprints
-COPY packages/cms-schemas packages/cms-schemas
-COPY packages/commerce-schemas packages/commerce-schemas
-COPY packages/crm-schemas packages/crm-schemas
-COPY packages/field-schema packages/field-schema
-COPY packages/integrations packages/integrations
-COPY packages/marketplace-schemas packages/marketplace-schemas
-COPY packages/silica-catalog packages/silica-catalog
-COPY packages/silica-corrections packages/silica-corrections
-COPY packages/site-themes packages/site-themes
-COPY packages/sitebuilder-schemas packages/sitebuilder-schemas
-COPY packages/story-schemas packages/story-schemas
-COPY packages/api-core packages/api-core
-COPY packages/social packages/social
-COPY packages/email-sends packages/email-sends
-COPY packages/email-sequences packages/email-sequences
-COPY apps/workbench apps/workbench
+COPY wizeworks/packages/app-kit wizeworks/packages/app-kit
+COPY wizeworks/packages/api-client wizeworks/packages/api-client
+COPY wizeworks/packages/auth wizeworks/packages/auth
+COPY wizeworks/packages/brand-core wizeworks/packages/brand-core
+COPY sparx/packages/brand sparx/packages/brand
+COPY wizeworks/packages/links wizeworks/packages/links
+COPY wizeworks/packages/migration wizeworks/packages/migration
+COPY wizeworks/packages/query wizeworks/packages/query
+COPY wizeworks/packages/attribution wizeworks/packages/attribution
+COPY wizeworks/packages/db wizeworks/packages/db
+COPY wizeworks/packages/email wizeworks/packages/email
+COPY wizeworks/packages/events wizeworks/packages/events
+COPY wizeworks/packages/legal wizeworks/packages/legal
+COPY wizeworks/packages/legal-seed wizeworks/packages/legal-seed
+COPY wizeworks/packages/legal-templates wizeworks/packages/legal-templates
+COPY wizeworks/packages/modules wizeworks/packages/modules
+COPY wizeworks/packages/builder-schemas wizeworks/packages/builder-schemas
+COPY wizeworks/packages/cms-editor wizeworks/packages/cms-editor
+COPY wizeworks/packages/ui wizeworks/packages/ui
+COPY wizeworks/packages/automation-schemas wizeworks/packages/automation-schemas
+COPY wizeworks/packages/blueprints wizeworks/packages/blueprints
+COPY wizeworks/packages/cms-schemas wizeworks/packages/cms-schemas
+COPY wizeworks/packages/commerce-schemas wizeworks/packages/commerce-schemas
+COPY wizeworks/packages/crm-schemas wizeworks/packages/crm-schemas
+COPY wizeworks/packages/field-schema wizeworks/packages/field-schema
+COPY wizeworks/packages/integrations wizeworks/packages/integrations
+COPY wizeworks/packages/marketplace-schemas wizeworks/packages/marketplace-schemas
+COPY wizeworks/packages/silica-catalog wizeworks/packages/silica-catalog
+COPY wizeworks/packages/silica-corrections wizeworks/packages/silica-corrections
+COPY wizeworks/packages/site-themes wizeworks/packages/site-themes
+COPY wizeworks/packages/sitebuilder-schemas wizeworks/packages/sitebuilder-schemas
+COPY wizeworks/packages/story-schemas wizeworks/packages/story-schemas
+COPY wizeworks/packages/api-core wizeworks/packages/api-core
+COPY wizeworks/packages/social wizeworks/packages/social
+COPY wizeworks/packages/email-sends wizeworks/packages/email-sends
+COPY wizeworks/packages/email-sequences wizeworks/packages/email-sequences
+COPY sparx/apps/workbench sparx/apps/workbench
 
-# Generate Prisma client (@sparx/auth imports @sparx/db which re-exports it).
-RUN pnpm --filter @sparx/db db:generate
+# Generate Prisma client (@wizeworks/auth imports @wizeworks/db which re-exports it).
+RUN pnpm --filter @wizeworks/db db:generate
 
 # Stamp the release version into the client bundle. NEXT_PUBLIC_* is inlined at
 # build time, so the JS a browser tab is running carries the version it was built
@@ -163,8 +163,8 @@ ENV NEXT_PUBLIC_POSTHOG_HOST=$NEXT_PUBLIC_POSTHOG_HOST
 # that program no longer fits V8's DEFAULT old-space ceiling (~4 GB). It does not
 # fail as a type error — the build worker dies with `Ineffective mark-compacts
 # near heap limit` and `SIGABRT`, which reads as a broken build rather than a
-# box that ran short. The same wall has already been hit by `@sparx/api-rest`
-# (pre-push, CI) and `@sparx/api-mcp` (CI at 6144); this is the third.
+# box that ran short. The same wall has already been hit by `@wizeworks/api-rest`
+# (pre-push, CI) and `@wizeworks/api-mcp` (CI at 6144); this is the third.
 #
 # Each image builds on its own runner (release.yml's matrix, max-parallel 6), so
 # 8192 is one build against 16 GB rather than six sharing it.
@@ -198,4 +198,4 @@ USER nextjs
 
 EXPOSE 3000
 
-CMD ["node", "apps/workbench/server.js"]
+CMD ["node", "sparx/apps/workbench/server.js"]

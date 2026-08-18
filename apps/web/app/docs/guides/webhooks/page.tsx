@@ -105,7 +105,7 @@ export default function WebhooksPage() {
         { id: 'manage', label: 'Manage subscriptions' },
         { id: 'catalog', label: 'Full event catalog' },
       ]}
-      editPath="apps/web/app/docs/guides/webhooks/page.tsx"
+      editPath="sparx/apps/web/app/docs/guides/webhooks/page.tsx"
       updated="2026-06-05"
       prev={{ title: 'Building a template', href: '/docs/guides/building-a-template' }}
       next={{ title: 'Importing from another platform', href: '/docs/guides/migrating' }}
@@ -380,7 +380,7 @@ export default function WebhooksPage() {
       <DocSection id="catalog" title="Full event catalog">
         <p>
           For reference, here is the platform’s event taxonomy (defined in{' '}
-          <InlineCode>@sparx/events</InlineCode>), grouped by domain. The subset available for{' '}
+          <InlineCode>@wizeworks/events</InlineCode>), grouped by domain. The subset available for{' '}
           <DocLink href="#events">webhook subscription</DocLink> is called out above; the rest are
           consumed internally — by platform workers and MCP — as modules adopt the shared bus.
         </p>

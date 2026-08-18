@@ -2,7 +2,7 @@
  *
  * Extracted from globals.css so that a second shell can mount the same surfaces
  * without copying it. The workbench is now rendered by two apps — sparx's own
- * shell (apps/workbench) and the Piggles console (piggles/apps/workbench) — and
+ * shell (sparx/apps/workbench) and the Piggles console (piggles/apps/workbench) — and
  * the surfaces are shared platform code that neither may fork
  * (piggles/CLAUDE.md RULE #0). Their supporting CSS is part of that contract:
  * a surface that renders correctly under one shell and unstyled under the other

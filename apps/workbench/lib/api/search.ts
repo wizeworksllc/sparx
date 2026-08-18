@@ -16,7 +16,7 @@
 // from the palette — taking products from both would list each one twice.
 
 import { useEffect, useMemo, useState } from 'react';
-import { useQuery } from '@sparx/query';
+import { useQuery } from '@wizeworks/query';
 import { api } from './client';
 
 /** A normalized hit, uniform across both backends — what the palette renders. */

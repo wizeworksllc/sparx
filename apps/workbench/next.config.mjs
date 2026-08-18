@@ -32,35 +32,35 @@ function devMediaPatterns() {
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
-  // @sparx/api-client ships raw TypeScript (main points at src/index.ts), so it
+  // @wizeworks/api-client ships raw TypeScript (main points at src/index.ts), so it
   // must be transpiled rather than treated as a prebuilt dependency. workbench
   // is its first consumer — it had never been through a bundler before.
   transpilePackages: [
-    '@sparx/app-kit',
+    '@wizeworks/app-kit',
     '@wizeworks/silicaui-react',
     '@wizeworks/silicaui-charts',
     // The rich-text editor (bootcamp description) ships a client TipTap surface.
     '@wizeworks/silicaui-editor',
     '@sparx/brand',
-    '@sparx/api-client',
+    '@wizeworks/api-client',
     // The CMS block editor ships raw TypeScript/TSX (its exports point at
     // ./src/*), so it must be transpiled rather than treated as prebuilt — and
-    // so must @sparx/ui, which it imports `cn` from and which also ships source.
-    '@sparx/cms-editor',
-    '@sparx/ui',
+    // so must @wizeworks/ui, which it imports `cn` from and which also ships source.
+    '@wizeworks/cms-editor',
+    '@wizeworks/ui',
     // The visual site builder (builder.studio) mounts silica's <Builder> over a
     // sparx BuilderHost; these ship raw TypeScript from ./src.
-    '@sparx/builder-schemas',
-    '@sparx/silica-catalog',
-    '@sparx/site-themes',
+    '@wizeworks/builder-schemas',
+    '@wizeworks/silica-catalog',
+    '@wizeworks/site-themes',
     // The social calendar imports `slotOccurrences` — a RUNTIME value, unlike the
     // type-only schema packages above, whose imports erase at compile time. So this one
     // ships source that actually has to be compiled. It is imported via the narrow
-    // `@sparx/social/cadence` entrypoint rather than the package barrel: the barrel's
+    // `@wizeworks/social/cadence` entrypoint rather than the package barrel: the barrel's
     // internal `./thing.js` specifiers are not rewritten to `.ts` by Turbopack, so
     // reaching for the barrel here fails the production build even though dev and
     // typecheck pass. `cadence.ts` has no relative imports at all.
-    '@sparx/social',
+    '@wizeworks/social',
   ],
   typedRoutes: false,
   // Tenant media lives on a DIFFERENT origin from the workbench, so every
@@ -85,7 +85,7 @@ const config = {
     ],
   },
   output: 'standalone',
-  outputFileTracingRoot: join(__dirname, '../../'),
+  outputFileTracingRoot: join(__dirname, '../../../'),
 };
 
 export default config;

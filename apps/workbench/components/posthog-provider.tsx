@@ -14,6 +14,7 @@ import { PostHogProvider as PHProvider } from 'posthog-js/react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useReportWebVitals } from 'next/web-vitals';
 import { Suspense, useEffect } from 'react';
+import { useAnalyticsGranted } from '../lib/consent';
 
 function WebVitals() {
   useReportWebVitals((metric) => {
@@ -48,13 +49,33 @@ function PageViews() {
 }
 
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
+  // CONSENT-GATED, on a decision this app records but does not assume.
+  //
+  // This used to call `posthog.init()` guarded only by the build mode and the
+  // presence of a key — neither of which is consent. Autocapture, pageviews, web
+  // vitals and an `identify` carrying first-touch attribution all started on
+  // mount, for everybody, unasked.
+  //
+  // `false` while the read is in flight and `false` when no record exists, which
+  // is the direction this is allowed to be wrong in. <ConsentAsk> is what turns
+  // the second case into an answer; until it does, nothing runs.
+  const granted = useAnalyticsGranted();
+
   useEffect(() => {
+    if (!granted) return;
     // Never init off a non-production build — `pnpm dev` runs with
     // NODE_ENV !== 'production', and the shared key would otherwise pump
     // localhost traffic into the production project and drown real signal.
     if (process.env.NODE_ENV !== 'production') return;
     const key = process.env.NEXT_PUBLIC_POSTHOG_KEY;
     if (!key) return;
+
+    // `posthog.init` is not idempotent — a second call on the same key warns and
+    // re-registers capture handlers. The effect re-runs whenever `granted`
+    // flips, so the already-loaded check is what keeps a cache refetch from
+    // double-initialising a live session.
+    if (posthog.__loaded) return;
+
     posthog.init(key, {
       api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST ?? 'https://us.i.posthog.com',
       person_profiles: 'identified_only',
@@ -63,7 +84,7 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
       capture_pageview: false,
       capture_pageleave: true,
     });
-  }, []);
+  }, [granted]);
 
   return (
     <PHProvider client={posthog}>

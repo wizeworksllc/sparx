@@ -15,7 +15,7 @@ import {
   FieldStatus,
   NativeSelect,
 } from '@wizeworks/silicaui-react';
-import { rule, rules, useFieldValidation } from '@sparx/forms';
+import { rule, rules, useFieldValidation } from '@wizeworks/forms';
 import { registerForBootcamp, type RsvpState } from './actions';
 
 const INITIAL: RsvpState = { status: 'idle' };

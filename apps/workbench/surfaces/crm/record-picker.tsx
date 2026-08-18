@@ -15,7 +15,7 @@
 // three and rank them against each other for no reason.
 
 import { useMemo } from 'react';
-import { useQuery } from '@sparx/query';
+import { useQuery } from '@wizeworks/query';
 import { Combobox } from '@wizeworks/silicaui-react';
 import { api } from '../../lib/api/client';
 import { objectLabel } from './associations-data';

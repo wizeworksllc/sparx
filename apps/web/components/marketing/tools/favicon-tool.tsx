@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { toast } from '@sparx/ui';
+import { toast } from '@wizeworks/ui';
 import { EmptyState, FileUpload, Input, Switch } from '@wizeworks/silicaui-react';
 import { ImageUp } from 'lucide-react';
 import { Text } from '../primitives';

@@ -18,8 +18,8 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { SidebarProvider } from '@wizeworks/silicaui-react';
-import { mintWindowId, openBus, type BusMessage } from '../lib/bus';
-import { applyThemeToDocument, readTheme, THEME_STORAGE_KEY, type Theme } from '../lib/theme';
+import { mintWindowId, openBus } from '../lib/bus';
+import { useWorkbenchTheme } from '../lib/use-theme';
 import { useActiveSiteId, useSites } from '../lib/api/shell-data';
 import { WorkbenchProvider } from '../lib/workbench/context';
 import { BackNavigation } from '../lib/workbench/nav-history';
@@ -39,6 +39,7 @@ import { RecentsRecorder } from './recents-recorder';
 import { UpdateNotifier } from './update-notifier';
 import { FeedbackProvider } from './feedback/provider';
 import { DeepLinkArrival } from './deep-link-arrival';
+import { ConsentAsk } from './consent-ask';
 import { PaneWaiting } from './pane-waiting';
 import { FirstRunTour } from '../lib/tour/first-run-tour';
 import { ModuleTourOffers } from '../lib/tour/module-tour-offers';
@@ -71,7 +72,10 @@ export function WorkbenchShell({
   windowIdRef.current ??= mintWindowId();
   const windowId = windowIdRef.current;
 
-  const [theme, setTheme] = useState<Theme>('light');
+  // Light, dark, or the machine's own preference — owned end to end by the
+  // hook, in every window. See lib/use-theme.ts for why the resolved theme is
+  // read back off the document rather than mirrored in state here.
+  const { choice: themeChoice, theme, setChoice: setThemeChoice } = useWorkbenchTheme();
   const [launcherOpen, setLauncherOpen] = useState(false);
   const [browsing, setBrowsing] = useState<WorkbenchModule | null>(null);
   // The module the panel RENDERS, which lags `browsing` by design: on close it
@@ -82,7 +86,6 @@ export function WorkbenchShell({
   const [pinned, setPinned] = useState(false);
   const [railExpanded, setRailExpanded] = useState(false);
   const [navOpen, setNavOpen] = useState(false);
-  const postRef = useRef<((message: BusMessage) => void) | null>(null);
   const isCompact = useIsCompact();
 
   // Capture the address this page load arrived with, HERE, in the outermost
@@ -166,21 +169,11 @@ export function WorkbenchShell({
     if (browsing) setPanelModule(browsing);
   }, [browsing]);
 
-  // Read the persisted theme after mount rather than during render — the
-  // pre-paint script has already applied it to <html>, so this only syncs React
-  // state and never causes a flash.
   useEffect(() => {
-    setTheme(readTheme());
-  }, []);
-
-  useEffect(() => {
-    const bus = openBus((message) => {
-      if (message.type === 'theme.changed') {
-        setTheme(message.theme);
-        applyThemeToDocument(document, message.theme);
-      }
-    });
-    postRef.current = bus.post;
+    // Presence only. Appearance travels on this same channel but is handled by
+    // useWorkbenchTheme, which opens its own subscription — every window needs
+    // it, including the popouts that never mount this shell.
+    const bus = openBus(() => undefined);
     bus.post({ type: 'window.hello', id: windowId, role: 'main' });
 
     const onUnload = () => {
@@ -191,24 +184,8 @@ export function WorkbenchShell({
     return () => {
       window.removeEventListener('pagehide', onUnload);
       bus.close();
-      postRef.current = null;
     };
   }, [windowId]);
-
-  const toggleTheme = useCallback(() => {
-    setTheme((current) => {
-      const next: Theme = current === 'light' ? 'dark' : 'light';
-      applyThemeToDocument(document, next);
-      try {
-        localStorage.setItem(THEME_STORAGE_KEY, next);
-      } catch {
-        // Storage blocked — the theme still applies for this session.
-      }
-      // Detached windows are separate documents; they repaint via the bus.
-      postRef.current?.({ type: 'theme.changed', theme: next });
-      return next;
-    });
-  }, []);
 
   // Note: ⌘K/Ctrl+K is bound by <CommandPalette> itself (its `hotkey` prop
   // defaults on). Binding it here too would toggle twice per press and the
@@ -251,11 +228,11 @@ export function WorkbenchShell({
           <MobileShell
             userName={userName}
             userEmail={userEmail}
-            theme={theme}
+            themeChoice={themeChoice}
             siteKey={siteKey}
             navOpen={navOpen}
             onNavOpenChange={setNavOpen}
-            onToggleTheme={toggleTheme}
+            onSetTheme={setThemeChoice}
             onOpenLauncher={openLauncher}
           />
           <ChromeBoundary region="launcher" whatStopped="Search has stopped working." silent>
@@ -283,6 +260,10 @@ export function WorkbenchShell({
           <UpdateNotifier />
           {/* Listens for controller visits and records them to /v1/me/recents. */}
           <RecentsRecorder />
+          {/* Renders nothing unless there is NO analytics decision on file — see
+              components/consent-ask. On both shells, because the question is
+              about the person, not the device. */}
+          <ConsentAsk />
         </FeedbackProvider>
       </WorkbenchProvider>
     );
@@ -309,9 +290,9 @@ export function WorkbenchShell({
             <Toolbar
               userName={userName}
               userEmail={userEmail}
-              theme={theme}
+              themeChoice={themeChoice}
               siteKey={siteKey ?? 'default'}
-              onToggleTheme={toggleTheme}
+              onSetTheme={setThemeChoice}
               onOpenLauncher={openLauncher}
             />
           </ChromeBoundary>
@@ -465,6 +446,8 @@ export function WorkbenchShell({
           <UpdateNotifier />
           {/* Listens for controller visits and records them to /v1/me/recents. */}
           <RecentsRecorder />
+          {/* Renders nothing unless there is NO analytics decision on file. */}
+          <ConsentAsk />
         </div>
       </FeedbackProvider>
     </WorkbenchProvider>

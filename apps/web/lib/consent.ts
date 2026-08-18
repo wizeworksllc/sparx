@@ -1,6 +1,6 @@
 // Platform (marketing-site) cookie-consent contract.
 //
-// The site has its own tenant-scoped consent system (apps/site/lib/consent.ts
+// The site has its own tenant-scoped consent system (wizeworks/apps/site/lib/consent.ts
 // + a ConsentRecord table FK'd to a tenant). The marketing site has no tenant, so
 // this is a deliberately lighter, CLIENT-ONLY variant: the `sparx_consent_state`
 // cookie IS the record. It shares the site's cookie name + JSON shape so the

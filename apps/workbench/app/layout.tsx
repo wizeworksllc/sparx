@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
-import { QueryProvider } from '@sparx/query/provider';
+import { QueryProvider } from '@wizeworks/query/provider';
 import { ImperativeAlertDialogProvider, ToastProvider } from '@wizeworks/silicaui-react';
 import { PostHogProvider } from '../components/posthog-provider';
 import { CrashListeners } from '../components/crash-listeners';
@@ -30,9 +30,18 @@ export const viewport: Viewport = {
   maximumScale: 1,
 };
 
+// NO `data-theme` on <html>, and that is load-bearing rather than an omission.
+// React owns every attribute it renders and re-asserts it whenever the element
+// is created, so a hardcoded value here is a second writer racing the pre-paint
+// script — which is how the workbench could end up showing light while the
+// stored choice, and the toggle's own label, both said dark. The theme script is
+// the only thing that puts an appearance on this document at load;
+// lib/use-theme.ts is the only thing that changes it afterwards.
+// `suppressHydrationWarning` is its counterpart: the attribute the client sees
+// was never in the server's markup. See lib/theme.ts.
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-theme="light" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         {/* Adobe Fonts (Typekit) kit serving Europa, the platform's heading font
             (--font-heading in @sparx/brand/theme.css). */}
@@ -40,7 +49,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="stylesheet" href="https://use.typekit.net/rzb8qcq.css" />
       </head>
       <body>
-        {/* Applies the persisted theme to <html> before paint. `beforeInteractive`
+        {/* Resolves the persisted choice — including `system`, against this
+            machine — and applies it to <html> before paint. `beforeInteractive`
             puts it in the server HTML ahead of hydration, so React never
             reconciles a content-bearing <script> (React 19 warns on that). */}
         <Script id="sparx-theme-init" strategy="beforeInteractive">
@@ -53,10 +63,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             layout's own JSX has already rendered by then, so globals.css is
             there and a real screen is possible. See components/root-boundary. */}
         <RootBoundary>
-          {/* Devtools toggle bottom-right: the default bottom-left floats exactly
-              over the rail footer and swallowed its clicks in dev. Pass
-              `devtools={false}` to drop the floating button altogether. */}
-          <QueryProvider devtools devtoolsButtonPosition="bottom-right">
+          {/* No query devtools. Its launcher is a fixed button with no off
+              switch of its own: bottom-left it floated over the rail footer and
+              swallowed its clicks, bottom-right it sat over the workspace and
+              turned up in product screenshots. It is not a tool this team uses,
+              so it is off rather than relocated. */}
+          <QueryProvider devtools={false}>
             {/* Product analytics: inits PostHog in the browser, captures SPA
               route-change pageviews, and forwards Core Web Vitals. No-ops
               outside production and when no key is baked, so it's safe to wrap

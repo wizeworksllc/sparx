@@ -3,7 +3,7 @@
 Portraits for the **customer record** device on `/crm` — the avatar on the
 unified record card that crossfades through `EXAMPLE_BUSINESSES`.
 
-One file per entry in [`apps/web/lib/example-businesses.ts`](../../lib/example-businesses.ts);
+One file per entry in [`sparx/apps/web/lib/example-businesses.ts`](../../lib/example-businesses.ts);
 the filename matches the `crm.avatar` field on that entry.
 
 ## Why a photograph and not a monogram

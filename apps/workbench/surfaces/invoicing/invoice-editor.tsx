@@ -16,7 +16,7 @@
 // reasons live in ./save.ts.
 
 import { useEffect, useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@sparx/query';
+import { useMutation, useQuery, useQueryClient } from '@wizeworks/query';
 import {
   Alert,
   Button,

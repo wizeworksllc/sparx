@@ -13,11 +13,11 @@
 // `lifetimeCents`, `payoutMinCents`). It is formatted to a currency string at the
 // display edge with `formatCents` and never divided by hand at a call site.
 
-import { useMutation, useQuery, useQueryClient } from '@sparx/query';
-import { ApiError } from '@sparx/api-client';
+import { useMutation, useQuery, useQueryClient } from '@wizeworks/query';
+import { ApiError } from '@wizeworks/api-client';
 import { api } from '../../lib/api/client';
 
-/* ── Enums (mirror @sparx/partner-schemas, kept local so a pane never imports the
+/* ── Enums (mirror @wizeworks/partner-schemas, kept local so a pane never imports the
       backend graph — the literals can't drift because the server validates) ──── */
 
 export type PartnerTier = 'informal' | 'registered' | 'certified';

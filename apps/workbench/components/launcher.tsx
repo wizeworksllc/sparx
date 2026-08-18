@@ -32,7 +32,7 @@ import {
   resolveTitle,
   type OpenTarget,
 } from '../lib/surfaces/registry';
-import { routeAcceptsId, routeForEntity } from '@sparx/links';
+import { routeAcceptsId, routeForEntity } from '@wizeworks/links';
 import {
   surfaceIsVisible,
   useKnownModules,

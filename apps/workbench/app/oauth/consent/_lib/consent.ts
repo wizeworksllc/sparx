@@ -7,7 +7,7 @@
 // issue a token for any resource other than our MCP server.
 
 import 'server-only';
-import { getRegisteredMcpClient, type RegisteredMcpClient } from '@sparx/auth';
+import { getRegisteredMcpClient, type RegisteredMcpClient } from '@wizeworks/auth';
 
 export interface AuthorizeParams {
   responseType: string;

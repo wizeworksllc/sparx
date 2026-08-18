@@ -40,7 +40,7 @@ import { timezoneOptions, type TimezoneOption } from '../../lib/timezones';
 import { PaneToolbar, PANE_SHELL } from '../../components/pane-toolbar';
 import { FormSection } from '../../components/form-section';
 import { api } from '../../lib/api/client';
-import { useMutation, useQueryClient } from '@sparx/query';
+import { useMutation, useQueryClient } from '@wizeworks/query';
 import type { SurfaceContext } from '../../lib/surfaces/registry';
 import {
   describeHours,

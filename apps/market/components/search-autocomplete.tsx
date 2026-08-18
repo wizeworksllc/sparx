@@ -9,7 +9,7 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Search, Store, Tag } from 'lucide-react';
-import { marketCategoryLabel } from '@sparx/commerce-schemas';
+import { marketCategoryLabel } from '@wizeworks/commerce-schemas';
 import { Input } from '@wizeworks/silicaui-react';
 
 import { fetchSuggestions, type SuggestResult } from '@/lib/suggest-client';

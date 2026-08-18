@@ -48,6 +48,13 @@
 // independently-opened workbench tab has its own module instance. A dockview
 // popout shares this module by reference and needs no message at all.
 //
+// ── Sharing a following pane ─────────────────────────────────────────────
+//
+// "Send me that" means the product on screen, so a following pane copies a link
+// that PINS the product it is currently showing. It does that by declaring the
+// params for links only (`useShareAs`, lib/workbench/share-as.ts) — its own
+// descriptor is untouched, so the pane goes on following after the copy.
+//
 // ── The four states, and why a pane may not invent a fifth ───────────────
 //
 // `useProductScope` returns a discriminated union. Everything that is not
@@ -98,6 +105,7 @@ import { Button, EmptyState, Heading, Text } from '@wizeworks/silicaui-react';
 import { Package, PackageX, Search, ServerCrash } from 'lucide-react';
 import { useWorkbench } from '../../lib/workbench/context';
 import { usePaneId } from '../../lib/workbench/dirty';
+import { useShareAs } from '../../lib/workbench/share-as';
 import { PaneToolbar, PANE_SHELL } from '../../components/pane-toolbar';
 import type { OpenTarget, SurfaceContext } from '../../lib/surfaces/registry';
 import { useProduct, type Product } from './products-data';
@@ -291,6 +299,14 @@ export function useProductScope(ctx: SurfaceContext, options: ProductScopeOption
   const product = effective ? (query.data ?? null) : null;
 
   const isFollowing = pinned === null;
+
+  // "Send me that" means the product on screen. A following pane has no
+  // productId in its own params — that absence IS what makes it follow — so
+  // `buildPath` returns null and the copy-link control hides, which takes away
+  // the one thing anybody actually wants to send. Declaring the params for LINKS
+  // only fixes the address without touching the descriptor, so the pane goes on
+  // following after the copy. See lib/workbench/share-as.ts.
+  useShareAs(isFollowing && effective ? { ...ctx.params, productId: effective } : null);
 
   useEffect(() => {
     ctx.setTitle(product ? `${options.label} · ${product.title}` : options.label);

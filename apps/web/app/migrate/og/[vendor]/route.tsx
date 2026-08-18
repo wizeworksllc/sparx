@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og';
 import { BRAND } from '@sparx/brand';
-import { ENTITY_LABEL, vendorCapability } from '@sparx/migration';
+import { ENTITY_LABEL, vendorCapability } from '@wizeworks/migration';
 import { MIGRATE_STORIES, getStory } from '@/components/marketing/migrate/stories';
 import { OgWordmark } from '@/lib/og-wordmark';
 

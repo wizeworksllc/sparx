@@ -1,6 +1,6 @@
 import { timingSafeEqual } from 'node:crypto';
 import { NextResponse } from 'next/server';
-import { auth } from '@sparx/auth';
+import { auth } from '@wizeworks/auth';
 
 // Internal, service-to-service password reset for a staff user. Better Auth lives
 // in this workbench process (app/api/auth/[...all]), so api-rest — which runs the
@@ -8,7 +8,7 @@ import { auth } from '@sparx/auth';
 // instead, authenticated with the shared internal secret (SPARX_INTERNAL_JWT_SECRET,
 // already shared workbench↔api-rest), and we call auth.api.requestPasswordReset —
 // which publishes the `password-reset` email via the sendResetPassword callback
-// (packages/auth/src/server.ts), exactly as the self-service forgot-password flow.
+// (wizeworks/packages/auth/src/server.ts), exactly as the self-service forgot-password flow.
 //
 // Fail-closed: no secret configured → 401. Only reachable in-cluster (ClusterIP),
 // never from a browser. We never reveal whether the email exists — a reset request

@@ -17,7 +17,7 @@
 // exactly one place.
 // ══════════════════════════════════════════════════════════════════════════
 
-import { useQuery } from '@sparx/query';
+import { useQuery } from '@wizeworks/query';
 import { api } from '../../lib/api/client';
 import { type StockMovement, type Tone } from './data';
 

@@ -46,7 +46,7 @@ import { useModuleStates } from '../../lib/api/shell-data';
 import { CustomPropertiesPanel } from './custom-properties-panel';
 import { AssociationsPanel } from './associations-panel';
 import { customerName, lifecycleStageMeta, useCustomers } from './customers-data';
-import { useQuery } from '@sparx/query';
+import { useQuery } from '@wizeworks/query';
 import { api } from '../../lib/api/client';
 import { ModuleScope } from '../../components/module-scope';
 import {

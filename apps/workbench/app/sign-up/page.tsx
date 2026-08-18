@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
-import { getSession } from '@sparx/auth';
+import { getSession } from '@wizeworks/auth';
 import { AuthWrapper } from '../../components/auth/auth-wrapper';
 import { safeInternalPath } from '../../lib/safe-path';
 

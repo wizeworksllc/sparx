@@ -6,15 +6,15 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
-  transpilePackages: ['@wizeworks/silicaui-react', '@sparx/brand', '@sparx/app-kit'],
+  transpilePackages: ['@wizeworks/silicaui-react', '@sparx/brand', '@wizeworks/app-kit'],
   typedRoutes: false,
   output: 'standalone',
-  outputFileTracingRoot: join(__dirname, '../../'),
+  outputFileTracingRoot: join(__dirname, '../../../'),
   images: {
     // Marketplace product/merchant media is served via api-rest's redirecting
     // /v1/public/media endpoint (a 302), which the built-in optimizer can't
     // process — so we drive next/image through a custom loader. See
-    // lib/image-loader.ts (mirrors apps/site).
+    // lib/image-loader.ts (mirrors wizeworks/apps/site).
     loader: 'custom',
     loaderFile: './lib/image-loader.ts',
   },

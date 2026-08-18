@@ -24,7 +24,7 @@ import {
   Text,
 } from '@wizeworks/silicaui-react';
 import { Plus, Tag } from 'lucide-react';
-import { useQuery } from '@sparx/query';
+import { useQuery } from '@wizeworks/query';
 import { api } from '../../lib/api/client';
 import type { OpenTarget, SurfaceContext } from '../../lib/surfaces/registry';
 import { PaneToolbar, PANE_SHELL } from '../../components/pane-toolbar';

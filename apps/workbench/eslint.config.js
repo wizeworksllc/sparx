@@ -1,5 +1,5 @@
-// apps/workbench ESLint — extends root + the same "no raw Tailwind re-skinning
-// in feature code" enforcement as apps/market / apps/site / apps/web.
+// sparx/apps/workbench ESLint — extends root + the same "no raw Tailwind re-skinning
+// in feature code" enforcement as sparx/apps/market / wizeworks/apps/site / apps/web.
 //
 // Note the deliberate carve-out below: the dock chrome (`lib/dock/**`) skins
 // dockview, a third-party layout engine whose own class names we must target to
@@ -7,7 +7,7 @@
 // "component library" work living in an app, so it is exempt from the
 // re-skinning rule — feature surfaces under `surfaces/**` are not.
 
-import rootConfig from '../../eslint.config.js';
+import rootConfig from '../../../eslint.config.js';
 
 export default [
   ...rootConfig,

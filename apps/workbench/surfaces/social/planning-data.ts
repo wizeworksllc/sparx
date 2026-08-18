@@ -16,7 +16,7 @@
 // Its own door rather than more of data.ts: a hashtag set is not a post, and
 // bundling them would give that file a second job.
 //
-// ── The endpoints (services/api-rest/.../v1/social) ────────────────────────
+// ── The endpoints (wizeworks/services/api-rest/.../v1/social) ────────────────────────
 //   GET    /v1/social/hashtag-sets            → the saved blocks        (viewer)
 //   PUT    /v1/social/hashtag-sets            → create or update one    (editor)
 //   DELETE /v1/social/hashtag-sets/:id        → remove one              (editor)
@@ -29,7 +29,7 @@
 //   POST   /v1/social/import                  → create the posts        (editor)
 // ══════════════════════════════════════════════════════════════════════════
 
-import { useMutation, useQuery, useQueryClient } from '@sparx/query';
+import { useMutation, useQuery, useQueryClient } from '@wizeworks/query';
 import { api } from '../../lib/api/client';
 import { socialKeys } from './data';
 

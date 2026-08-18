@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Check, Copy } from 'lucide-react';
-import { toast } from '@sparx/ui';
+import { toast } from '@wizeworks/ui';
 import {
   Button,
   Card,
@@ -29,7 +29,7 @@ import { parseHex, rgbToHex } from './lib/color';
  * radius — that is re-skinning a control, and because ~18 tools inherit their
  * look from `Panel`/`Field`, a skin invented here silently becomes the whole
  * /tools section's design system. Named layout classes (`.tool-*`) live in
- * app/marketing.css; apps/web is class-based, so prefer one of those over an
+ * app/marketing.css; sparx/apps/web is class-based, so prefer one of those over an
  * inline `style` prop.
  */
 

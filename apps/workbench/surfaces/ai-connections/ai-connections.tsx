@@ -60,7 +60,7 @@ import {
   Trash2,
   TriangleAlert,
 } from 'lucide-react';
-import { useQueryClient } from '@sparx/query';
+import { useQueryClient } from '@wizeworks/query';
 import { useConfirm } from '../../lib/confirm';
 import { useDirtySource } from '../../lib/workbench/dirty';
 import { afterPaneChange } from '../../lib/defer';

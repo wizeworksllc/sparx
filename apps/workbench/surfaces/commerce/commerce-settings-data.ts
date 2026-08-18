@@ -14,14 +14,14 @@
 // field back, not a diff.
 // ══════════════════════════════════════════════════════════════════════════
 
-import { useMutation, useQuery, useQueryClient } from '@sparx/query';
-import { ApiError } from '@sparx/api-client';
+import { useMutation, useQuery, useQueryClient } from '@wizeworks/query';
+import { ApiError } from '@wizeworks/api-client';
 import { api } from '../../lib/api/client';
 
 /* ── Shapes ─────────────────────────────────────────────────────────────── */
 
 /** What happens when a repeat order's card is declined (docs/142 §4.1). Mirrors
- *  `DunningPolicy` in @sparx/commerce-schemas — the shape the billing engine
+ *  `DunningPolicy` in @wizeworks/commerce-schemas — the shape the billing engine
  *  actually reads, not a second one for the form. */
 export interface DunningPolicy {
   maxAttempts: number;
@@ -96,7 +96,7 @@ export function settingsErrorMessage(error: unknown, fallback: string): string {
 }
 
 // The currencies the platform's Currency enum accepts. Kept in step with
-// @sparx/crm-schemas' Currency; a value the server would reject never reaches
+// @wizeworks/crm-schemas' Currency; a value the server would reject never reaches
 // the picker.
 export const CURRENCY_OPTIONS: { value: string; label: string }[] = [
   { value: 'USD', label: 'US Dollar (USD)' },

@@ -3,7 +3,7 @@
 // One record type — its name, and the extra details this business tracks on it.
 //
 // `{ key: 'new' }` invents a record type; `{ key }` manages one. Same surface,
-// because creating and editing are the same shape (apps/workbench/CLAUDE.md).
+// because creating and editing are the same shape (sparx/apps/workbench/CLAUDE.md).
 //
 // THIS IS THE SURFACE THAT MAKES docs/144 §3 REAL. Everything else in the
 // object registry — the validator, the segment source, the API, the MCP tools —

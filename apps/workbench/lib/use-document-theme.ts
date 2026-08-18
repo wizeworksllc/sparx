@@ -14,22 +14,22 @@
 import { useCallback, useSyncExternalStore } from 'react';
 
 export function useDocumentTheme(): 'light' | 'dark' {
-    const subscribe = useCallback((onChange: () => void) => {
-        const observer = new MutationObserver(onChange);
-        observer.observe(document.documentElement, {
-            attributes: true,
-            attributeFilter: ['data-theme'],
-        });
-        return () => {
-            observer.disconnect();
-        };
-    }, []);
+  const subscribe = useCallback((onChange: () => void) => {
+    const observer = new MutationObserver(onChange);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
-    return useSyncExternalStore(
-        subscribe,
-        () => (document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'),
-        // Server render can't know the persisted choice; the pre-paint theme script
-        // has already set the attribute before this ever mounts on the client.
-        () => 'light'
-    );
+  return useSyncExternalStore(
+    subscribe,
+    () => (document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'),
+    // Server render can't know the persisted choice; the pre-paint theme script
+    // has already set the attribute before this ever mounts on the client.
+    () => 'light'
+  );
 }

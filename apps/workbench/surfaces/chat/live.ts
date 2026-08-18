@@ -19,7 +19,7 @@
 // the socket drops.
 
 import { io, type Socket } from 'socket.io-client';
-import { useQueryClient, type QueryClient } from '@sparx/query';
+import { useQueryClient, type QueryClient } from '@wizeworks/query';
 import { useEffect } from 'react';
 import { getTokenState, peekToken } from '../../lib/api/token';
 import { notifyTyping, setChatLive } from './live-status';
@@ -36,7 +36,7 @@ export { useChatConnected, useTypingIndicator } from './live-status';
 // api-rest can't be imported by the frontend (it would drag server deps into the
 // bundle), so the /ws/chat event maps are redeclared here — the same duplication
 // the widget and the REST DTOs already live with. Keep in sync with
-// services/api-rest/src/websocket/chat-protocol.ts. Payload shapes reuse the DTO
+// wizeworks/services/api-rest/src/websocket/chat-protocol.ts. Payload shapes reuse the DTO
 // types data.ts already mirrors.
 interface ServerToClientEvents {
   'message:new': (message: ChatMessage) => void;

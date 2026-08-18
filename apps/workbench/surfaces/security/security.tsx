@@ -1,13 +1,14 @@
 'use client';
 
-// Security — sign-in rules, the devices currently signed in, and a record of
-// who did what.
+// Security — sign-in rules, what is known about how you work, the devices
+// currently signed in, and a record of who did what.
 //
 // One centred column, deliberately NOT EditorLayout: this is not a form with a
-// summary rail, it is three self-contained concerns stacked in reading order —
-// the password you sign in with, the devices that are in right now, and the
-// history of what has been done. Each is its own card; none is a KPI worth a
-// rail.
+// summary rail, it is self-contained concerns stacked in reading order. The
+// column runs "how you get in" → "what is known about you" → "who is in right
+// now" → "what has been done": the password, two-step verification, the
+// analytics answer, the devices, the history. Each is its own card; none is a
+// KPI worth a rail.
 //
 // The queries the toolbar's Refresh reloads (devices + activity) are owned HERE
 // and passed down, so one control refreshes the whole pane rather than each card
@@ -20,12 +21,13 @@
 
 import { useEffect, useState } from 'react';
 import { Heading, Text } from '@wizeworks/silicaui-react';
-import { useSession } from '@sparx/auth/client';
+import { useSession } from '@wizeworks/auth/client';
 import { PaneToolbar, PANE_SHELL } from '../../components/pane-toolbar';
 import { RefreshButton } from '../../components/refresh-button';
 import type { SurfaceContext } from '../../lib/surfaces/registry';
 import { PasswordCard } from './password-card';
 import { TwoFactorCard } from './two-factor-card';
+import { AnalyticsCard } from './analytics-card';
 import { SessionsCard } from './sessions-card';
 import { ActivityCard } from './activity-card';
 import { ACTIVITY_PAGE, useActivity, useSessions } from './security-data';
@@ -75,14 +77,19 @@ export function SecuritySurface({ ctx }: { ctx: SurfaceContext }) {
               Security
             </Heading>
             <Text>
-              How you sign in, the devices signed in right now, and a record of what has been done
-              in your account.
+              How you sign in, what is measured about how you work, the devices signed in right now,
+              and a record of what has been done in your account.
             </Text>
           </div>
 
           <PasswordCard />
 
           <TwoFactorCard enabled={twoFactorEnabled} />
+
+          {/* Under the two proof-of-identity cards and above the device list:
+              the column runs from "how you get in" to "what is known about how
+              you work", and this is the first beat of the second half. */}
+          <AnalyticsCard />
 
           <SessionsCard
             sessions={sessions.data}

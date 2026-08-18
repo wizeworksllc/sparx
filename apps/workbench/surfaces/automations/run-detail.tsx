@@ -22,7 +22,7 @@ import {
   Timestamp,
 } from '@wizeworks/silicaui-react';
 import { ShieldCheck } from 'lucide-react';
-import type { GateLogEntry } from '@sparx/automation-schemas';
+import type { GateLogEntry } from '@wizeworks/automation-schemas';
 import { PaneToolbar, PANE_SHELL } from '../../components/pane-toolbar';
 import { FormSection } from '../../components/form-section';
 import type { SurfaceContext } from '../../lib/surfaces/registry';

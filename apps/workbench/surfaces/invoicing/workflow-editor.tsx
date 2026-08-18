@@ -25,7 +25,7 @@
 // the operator did.
 
 import { useEffect, useState } from 'react';
-import { useMutation } from '@sparx/query';
+import { useMutation } from '@wizeworks/query';
 import { arrayMove } from '@dnd-kit/sortable';
 import {
   Alert,

@@ -8,7 +8,7 @@
 // (synthetic id `<processor>~<date>`, site-scopable, with a sale count). Both ids are
 // stable + addressable — that is what lets a payout open in its own pane, not a modal.
 
-import { useQuery } from '@sparx/query';
+import { useQuery } from '@wizeworks/query';
 import { api } from '../../lib/api/client';
 
 export interface Payout {

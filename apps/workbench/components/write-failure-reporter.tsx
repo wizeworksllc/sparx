@@ -31,7 +31,7 @@
 // happened.
 
 import { useEffect } from 'react';
-import { useQueryClient } from '@sparx/query';
+import { useQueryClient } from '@wizeworks/query';
 import { useToast } from '@wizeworks/silicaui-react';
 import { describeWriteFailure } from '../lib/api/write-failure';
 import { readWriteMeta } from '../lib/api/write-meta';

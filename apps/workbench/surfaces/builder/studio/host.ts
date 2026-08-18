@@ -8,8 +8,8 @@
 //
 // Built fresh for the workbench, but off the SAME shared converters the storefront
 // render and the dashboard studio use (`createSilicaResolver` /
-// `createSilicaClassValidator` from @sparx/builder-schemas, the composites +
-// cores from @sparx/silica-catalog) — one catalog, one resolver, no drift.
+// `createSilicaClassValidator` from @wizeworks/builder-schemas, the composites +
+// cores from @wizeworks/silica-catalog) — one catalog, one resolver, no drift.
 
 import type { BuilderHost, PaletteGroup, ThemeGroup } from '@wizeworks/silicaui-builder/react';
 import type { ClassValidator, DataSource as SilicaDataSource } from '@wizeworks/silicaui-html';
@@ -18,14 +18,14 @@ import {
   createSilicaResolver,
   defaultSilicaFormat,
   type DataSources,
-} from '@sparx/builder-schemas';
+} from '@wizeworks/builder-schemas';
 import {
   HOST_COMPONENTS,
   SITE_CATALOG,
   SPARX_CATALOG,
   SPARX_THEME_GROUPS,
   validateResponsiveVocabulary,
-} from '@sparx/silica-catalog';
+} from '@wizeworks/silica-catalog';
 
 export interface StudioHostOptions {
   /** The pre-loaded placeholder data root the resolver reads bindings from

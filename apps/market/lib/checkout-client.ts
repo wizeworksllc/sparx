@@ -3,7 +3,7 @@
 // Client-side marketplace checkout API. Thin fetch wrappers over the public
 // market checkout surface (via the same-origin /api/sparx proxy). Single-merchant
 // per cart: every call carries `?merchant=<merchantSlug>` and replays the cart
-// ownership token (x-cart-token). Mirrors apps/site/lib/checkout-client.ts but
+// ownership token (x-cart-token). Mirrors wizeworks/apps/site/lib/checkout-client.ts but
 // scoped to /v1/public/market/checkout/* with the merchant query param.
 
 const API_BASE = '/api/sparx/v1/public/market';

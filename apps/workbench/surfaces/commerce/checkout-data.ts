@@ -11,8 +11,8 @@
 // Money is integer CENTS (cached totals on the session row); the surfaces divide
 // by 100 at the render edge and reuse `formatMoney` from ./data.
 
-import { useMutation, useQuery, useQueryClient } from '@sparx/query';
-import { ApiError } from '@sparx/api-client';
+import { useMutation, useQuery, useQueryClient } from '@wizeworks/query';
+import { ApiError } from '@wizeworks/api-client';
 import { api } from '../../lib/api/client';
 import type { Tone } from './data';
 import type { OrderAddress } from './data';

@@ -9,7 +9,7 @@
 // other side: the catalog-wide list of every repeat order, and the ONE screen
 // where those lifecycle verbs are the point — a subscription's own detail.
 //
-// The endpoints already exist (services/api-rest .../commerce/providers.ts):
+// The endpoints already exist (wizeworks/services/api-rest .../commerce/providers.ts):
 // the models, service and billing worker shipped long before any transport, so
 // list / get / pause / resume / cancel are all live. This is the first UI over
 // them.
@@ -18,7 +18,7 @@
 // because a pause changes the row in the list AND the state on the open detail.
 // ══════════════════════════════════════════════════════════════════════════
 
-import { useMutation, useQuery, useQueryClient, type QueryClient } from '@sparx/query';
+import { useMutation, useQuery, useQueryClient, type QueryClient } from '@wizeworks/query';
 import { api } from '../../lib/api/client';
 
 /* ── Shapes ─────────────────────────────────────────────────────────────── */

@@ -17,7 +17,7 @@
 // points at no order line at all has not PASSED the check, the check never ran.
 // ══════════════════════════════════════════════════════════════════════════
 
-import { useMutation, useQuery, useQueryClient } from '@sparx/query';
+import { useMutation, useQuery, useQueryClient } from '@wizeworks/query';
 import { api } from '../../lib/api/client';
 import type { Tone } from './data';
 

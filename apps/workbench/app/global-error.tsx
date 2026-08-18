@@ -5,11 +5,11 @@
 // the layout is caught by app/error.tsx, which can use real components; this
 // cannot assume globals.css or the silica plugin loaded, so the styles are
 // inline literal hexes — the one sanctioned exception to RULE #1, exactly as in
-// apps/web/app/global-error.tsx. An unstyled white page is the failure this
+// sparx/apps/web/app/global-error.tsx. An unstyled white page is the failure this
 // exists to prevent.
 
 import { useEffect } from 'react';
-import { isChunkLoadError, reloadOnceForStaleBuild } from '@sparx/app-kit';
+import { isChunkLoadError, reloadOnceForStaleBuild } from '@wizeworks/app-kit';
 import { reportCrash } from '../lib/analytics';
 
 export default function GlobalError({

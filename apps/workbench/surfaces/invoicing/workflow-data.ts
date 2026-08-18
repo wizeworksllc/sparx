@@ -20,8 +20,8 @@
 //     it has any id at all — using the index instead would make React reuse the
 //     wrong row's open/editing state the moment two stages swap places.
 
-import { useMutation, useQuery, useQueryClient } from '@sparx/query';
-import { ApiError } from '@sparx/api-client';
+import { useMutation, useQuery, useQueryClient } from '@wizeworks/query';
+import { ApiError } from '@wizeworks/api-client';
 import { api } from '../../lib/api/client';
 import type { DocumentStageType, DocumentWorkflowDetail } from './types';
 
@@ -139,7 +139,7 @@ export function blankStage(): StageDraft {
 /* ── Queries ─────────────────────────────────────────────────────────────── */
 
 /** Sortable columns — EXACTLY the server's whitelist (see the `sort_by` enum in
- *  services/api-rest/src/routes/v1/invoicing/workflows.ts). A key that is not in
+ *  wizeworks/services/api-rest/src/routes/v1/invoicing/workflows.ts). A key that is not in
  *  both places is a header that 400s. */
 export type WorkflowSortKey = 'name' | 'slug' | 'stages' | 'state' | 'updatedAt' | 'createdAt';
 

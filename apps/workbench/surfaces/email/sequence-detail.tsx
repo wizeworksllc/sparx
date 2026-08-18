@@ -35,7 +35,7 @@ import {
   useToast,
 } from '@wizeworks/silicaui-react';
 import { ArrowDown, ArrowUp, Clock, Mail, Plus, Power, Trash2, Users } from 'lucide-react';
-import type { SequenceStep } from '@sparx/email-sequences/schemas';
+import type { SequenceStep } from '@wizeworks/email-sequences/schemas';
 import { useActiveSiteId, useSites } from '../../lib/api/shell-data';
 import { useDirtySource } from '../../lib/workbench/dirty';
 import { useConfirm } from '../../lib/confirm';

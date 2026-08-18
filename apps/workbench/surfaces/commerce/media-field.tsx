@@ -16,7 +16,7 @@
 
 import { useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
-import { useQuery } from '@sparx/query';
+import { useQuery } from '@wizeworks/query';
 import {
   Button,
   Dialog,

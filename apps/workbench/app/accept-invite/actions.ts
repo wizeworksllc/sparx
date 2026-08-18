@@ -2,7 +2,7 @@
 
 import { headers } from 'next/headers';
 import { revalidatePath } from 'next/cache';
-import { auth, authPrisma, publishAuthEmail } from '@sparx/auth';
+import { auth, authPrisma, publishAuthEmail } from '@wizeworks/auth';
 
 // Server actions for the team-invitation acceptance flow (docs/114 §A.4). These
 // run through the Better Auth org plugin, which lives in this workbench process

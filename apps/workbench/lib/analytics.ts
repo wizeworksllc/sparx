@@ -9,7 +9,10 @@
 // build shipped without NEXT_PUBLIC_POSTHOG_KEY), so callers never have to guard.
 
 import posthog from 'posthog-js';
-import { ATTR_COOKIES, deserializeSnapshot } from '@sparx/attribution';
+import { attrCookies, deserializeSnapshot } from '@wizeworks/attribution';
+
+/** sparx's names — fixed forever; see @wizeworks/attribution's attrCookies. */
+const SPARX_ATTR = attrCookies('sparx');
 
 function readCookie(name: string): string | null {
   const match = new RegExp(`(?:^|;\\s*)${name}=([^;]+)`).exec(document.cookie);
@@ -28,7 +31,7 @@ function readCookie(name: string): string | null {
  */
 export function identifyFirstTouch(userId: string): void {
   if (!userId || !posthog.__loaded) return;
-  const first = deserializeSnapshot(readCookie(ATTR_COOKIES.first));
+  const first = deserializeSnapshot(readCookie(SPARX_ATTR.first));
   posthog.identify(
     userId,
     {},

@@ -16,7 +16,7 @@
 // only a list, a read, and the one POST that books a delivery.
 // ══════════════════════════════════════════════════════════════════════════
 
-import { useMutation, useQuery, useQueryClient } from '@sparx/query';
+import { useMutation, useQuery, useQueryClient } from '@wizeworks/query';
 import { api } from '../../lib/api/client';
 import { stockKeys, type Tone } from './data';
 import { purchaseOrderKeys } from './purchase-orders-data';

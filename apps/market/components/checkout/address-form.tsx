@@ -1,7 +1,7 @@
 'use client';
 
 // Reusable address form for marketplace checkout. Controlled — emits the full
-// Address on every change. Mirrors apps/site's address form, using silicaui
+// Address on every change. Mirrors wizeworks/apps/site's address form, using silicaui
 // Input + NativeSelect.
 
 import { Input, NativeSelect } from '@wizeworks/silicaui-react';

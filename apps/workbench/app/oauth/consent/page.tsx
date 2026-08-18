@@ -8,7 +8,7 @@ import {
   capBusinessScopes,
   MCP_SCOPE_CATALOG,
   type StaffRole,
-} from '@sparx/auth';
+} from '@wizeworks/auth';
 import {
   parseAuthorizeParams,
   validateAuthorizeRequest,

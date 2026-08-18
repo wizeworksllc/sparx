@@ -5,7 +5,7 @@
 
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getMarketCategory, MARKET_CATEGORIES } from '@sparx/commerce-schemas';
+import { getMarketCategory, MARKET_CATEGORIES } from '@wizeworks/commerce-schemas';
 
 import { CategoryIcon } from '@/components/category-icon';
 import { PlpView } from '@/components/plp-view';

@@ -47,7 +47,7 @@
 // with the other controls. That split is the whole point of there being two slots.
 //
 // The wire contract is DUPLICATED from api-rest (services never import each other, like
-// the chat client). Keep in sync with services/api-rest/src/websocket/builder-protocol.ts.
+// the chat client). Keep in sync with wizeworks/services/api-rest/src/websocket/builder-protocol.ts.
 
 import { useEditor, useSelection } from '@wizeworks/silicaui-builder/react';
 import type { Op, Peer } from '@wizeworks/silicaui-builder/react';

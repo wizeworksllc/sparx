@@ -5,7 +5,7 @@
 //
 // Read-only metrics for the reporting dashboard. Each endpoint answers one
 // question; the surface lays them out as tiles and charts. Shapes mirror the
-// CRM reporting service exactly (`@sparx/crm` reporting-service), named locally
+// CRM reporting service exactly (`@wizeworks/crm` reporting-service), named locally
 // because that package is not a dependency of this app.
 //
 //   /v1/crm/reports/snapshot         KPI headline
@@ -17,7 +17,7 @@
 //   /v1/crm/reports/segments         active segments by size
 // ══════════════════════════════════════════════════════════════════════════
 
-import { useQuery, useQueryClient } from '@sparx/query';
+import { useQuery, useQueryClient } from '@wizeworks/query';
 import { api } from '../../lib/api/client';
 
 /* ── Shapes (mirrored from the reporting service) ───────────────────────── */

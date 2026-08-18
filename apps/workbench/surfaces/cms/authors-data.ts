@@ -22,8 +22,8 @@
 // spelling of each field between the server and the screen.
 // ══════════════════════════════════════════════════════════════════════════
 
-import { useMutation, useQuery, useQueryClient } from '@sparx/query';
-import { ApiError } from '@sparx/api-client';
+import { useMutation, useQuery, useQueryClient } from '@wizeworks/query';
+import { ApiError } from '@wizeworks/api-client';
 import { api } from '../../lib/api/client';
 // Read-only import: the content module's byline-picker cache key, so a write
 // here can refresh the picker the content editor shows. We never mutate its

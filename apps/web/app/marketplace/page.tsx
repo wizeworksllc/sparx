@@ -3,7 +3,7 @@
 //
 // The move was originally motivated by a planned sparx.market → sparx.works/market
 // Caddy 301. That redirect no longer exists: sparx.market is now its own deployed
-// app (apps/market) serving a different product. The /market path stands on its
+// app (sparx/apps/market) serving a different product. The /market path stands on its
 // own merits — do not "restore" the redirect on the strength of this route.
 
 import { permanentRedirect } from 'next/navigation';

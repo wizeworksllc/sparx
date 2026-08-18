@@ -7,7 +7,7 @@
 // nothing if empty, so the page always renders. Solid fills only — no gradients.
 
 import type { Metadata } from 'next';
-import { marketCategoryLabel } from '@sparx/commerce-schemas';
+import { marketCategoryLabel } from '@wizeworks/commerce-schemas';
 
 import { HomeHero } from '@/components/home-hero';
 import { PromoStrip } from '@/components/home-promos';

@@ -5,11 +5,11 @@
 //
 // This mirrors the canonical platform sources — kept in sync by hand because the
 // marketing bundle must NOT import the server-coupled packages:
-//   • slugs + bundling graph: packages/modules/src/index.ts (ModuleSlug,
+//   • slugs + bundling graph: wizeworks/packages/modules/src/index.ts (ModuleSlug,
 //     BUNDLED_FREE, REQUIRES)
-//   • monthly prices:         packages/billing/src/price-catalog.ts
+//   • monthly prices:         wizeworks/packages/billing/src/price-catalog.ts
 //                             (MODULE_MONTHLY_CENTS — the dollar values below)
-//   • colors:                 packages/ui ModuleProvider / primitives MODULE_COLORS
+//   • colors:                 sparx/packages/ui ModuleProvider / primitives MODULE_COLORS
 //   • sidebar order:          apps/dashboard .../_shell/registry.ts (moduleManifests)
 //
 // Order here matches the dashboard sidebar so the marketing menu and the product

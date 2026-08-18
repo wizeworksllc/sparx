@@ -4,15 +4,15 @@
 // (mcp.sparx.works) advertises this origin as its authorization server.
 //
 // The workbench is the authorization server: it holds the staff Better Auth
-// instance (the mcp() plugin lives in the shared @sparx/auth), and app.sparx.works
+// instance (the mcp() plugin lives in the shared @wizeworks/auth), and app.sparx.works
 // resolves to this app. We build the document OURSELVES rather than proxying
 // Better Auth's helper because the plugin hardcodes `scopes_supported` to the
 // four OIDC scopes — it never surfaces our MCP business-scope vocabulary. The
 // endpoints below are the plugin's mcp() routes under /api/auth; /mcp/authorize
-// is guarded by the consent-grant `before` hook (packages/auth/src/server.ts),
+// is guarded by the consent-grant `before` hook (wizeworks/packages/auth/src/server.ts),
 // so advertising it directly is safe.
 
-import { MCP_ALL_OAUTH_SCOPES } from '@sparx/auth';
+import { MCP_ALL_OAUTH_SCOPES } from '@wizeworks/auth';
 
 /** Canonical public origin of the authorization server (the workbench, at
  *  app.sparx.works). Prefer the configured BETTER_AUTH_URL — the same value

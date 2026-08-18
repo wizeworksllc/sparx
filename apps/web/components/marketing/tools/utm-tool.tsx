@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Bookmark, Download, Link2 } from 'lucide-react';
-import { toast } from '@sparx/ui';
+import { toast } from '@wizeworks/ui';
 import { Alert, Button, EmptyState, Input, Switch } from '@wizeworks/silicaui-react';
 import { Workbench, ControlsPane, OutputPane, Panel, Field, CopyButton, CodeBlock } from './ui-kit';
 import { SavedLinks, type SavedLink } from './utm-saved-links';

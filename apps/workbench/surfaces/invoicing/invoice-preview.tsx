@@ -12,7 +12,7 @@
 // draft published it simply previews the saved document.
 
 import { useEffect, useState, useSyncExternalStore } from 'react';
-import { useQuery } from '@sparx/query';
+import { useQuery } from '@wizeworks/query';
 import { Loading } from '@wizeworks/silicaui-react';
 import { apiRequest } from '../../lib/api/client';
 import { draftKey, readDraft, subscribeDraft, type DraftValue } from '../../lib/drafts';

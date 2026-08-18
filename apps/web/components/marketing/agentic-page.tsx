@@ -26,7 +26,7 @@ import {
  * accent is AI pink). Section backgrounds alternate page → surface for rhythm,
  * with two dark THEME ISLANDS (`<Section surface="dark">` — the safety surface
  * and the close), never a painted near-black. The single connection endpoint
- * shown is real: services/api-mcp serves Streamable HTTP at mcp.sparx.works/v1,
+ * shown is real: wizeworks/services/api-mcp serves Streamable HTTP at mcp.sparx.works/v1,
  * authed by a scoped `sk_live_…` key issued in the dashboard. The literal
  * per-client config deliberately lives in the dashboard connect screen + /docs,
  * never hard-coded here (the key is per-tenant and secret; client configs change).
@@ -57,7 +57,7 @@ export function AgenticPage() {
 
 const AI = getModuleColor('ai');
 
-/** The real MCP transport endpoint — services/api-mcp, behind Caddy. */
+/** The real MCP transport endpoint — wizeworks/services/api-mcp, behind Caddy. */
 const ENDPOINT = 'mcp.sparx.works/v1';
 
 // ── HERO ────────────────────────────────────────────────────────────────────

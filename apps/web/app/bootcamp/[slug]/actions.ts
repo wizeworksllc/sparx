@@ -1,7 +1,7 @@
 'use server';
 
 // Server action for the internal bootcamp RSVP (docs/114 §B.5, D6). Runs on
-// apps/web's server and POSTs to the platform's own public API
+// sparx/apps/web's server and POSTs to the platform's own public API
 // (POST /v1/public/bootcamps/:slug/register) — which reserves the seat AND
 // creates a lead in the HOST partner's CRM (the graduate-attribution + dogfood
 // hook). Waitlists past capacity. Honeypot-guarded; the public API does the

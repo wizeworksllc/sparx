@@ -43,7 +43,7 @@ import { ADHOC, METHOD_META, PASSTHROUGH, type MarkupRuleSummary } from './line-
 import { useLineForm, type LineTypeOption } from './use-line-form';
 import { type DraftLine } from './totals';
 import { formatMoney } from './types';
-import type { BandMethod } from '@sparx/commerce-schemas';
+import type { BandMethod } from '@wizeworks/commerce-schemas';
 
 // Re-exported so existing importers (invoice-editor, line-items) keep their
 // `from './line-editor-modal'` path — the type just no longer lives here.

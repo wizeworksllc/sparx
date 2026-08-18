@@ -49,7 +49,7 @@ import { Faq, type FaqItem } from './faq';
  * PAYMENT FEE — the source of truth is docs/94 §8, NOT docs/17 §2. This file
  * used to cite a "0.5% → 0.3% → 0% ladder from billing §2"; that model was
  * removed on 2026-07-22 and never shipped. The shipped rule, implemented in
- * `packages/payments/src/fee.ts`, is: sparx Pay 0.5%, every other gateway and
+ * `wizeworks/packages/payments/src/fee.ts`, is: sparx Pay 0.5%, every other gateway and
  * every manual payment $0. Nothing about the fee varies with modules or spend.
  */
 export function CommercePage() {
@@ -260,7 +260,7 @@ function ReceiptCard({ business }: { business: ExampleBusiness }) {
           {/* A real product photograph, not a grey square. A receipt whose line
               items are empty placeholders reads as a wireframe of a shop; with
               the actual thing on it, it reads as a shop. Fixture set + licence:
-              apps/web/public/products/README.md.
+              sparx/apps/web/public/products/README.md.
 
               `alt=""` and aria-hidden: this is decoration inside a MOCKUP, and
               the product name sits in text immediately beside it — announcing
@@ -420,7 +420,7 @@ function FeeLadder() {
   // docs/92 says holds the ladder, does not exist anywhere in the codebase.
   //
   // The governing rule is docs/94 §8 (marked "Decided — do not relitigate"), and
-  // it is what `packages/payments/src/fee.ts` actually implements, test and all:
+  // it is what `wizeworks/packages/payments/src/fee.ts` actually implements, test and all:
   //
   //     sparx Pay (Stripe Connect)         → 0.5% of every payment
   //     any other gateway (Stripe direct,

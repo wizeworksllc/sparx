@@ -12,7 +12,7 @@
 
 import { useState } from 'react';
 import { Button } from '@wizeworks/silicaui-react';
-import { ChatWidget } from '@sparx/chat-widget';
+import { ChatWidget } from '@wizeworks/chat-widget';
 
 export interface MarketChatCtaProps {
   /** Browser-reachable api-rest origin (https://api.sparx.works). */

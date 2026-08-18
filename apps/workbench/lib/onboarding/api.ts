@@ -3,7 +3,7 @@
 // The onboarding data layer — every read and write the setup flows and the welcome
 // checklist run on, over the workbench's own browser api-rest client.
 //
-// Built fresh for the workbench (docs: apps/workbench/CLAUDE.md "build it, don't
+// Built fresh for the workbench (docs: sparx/apps/workbench/CLAUDE.md "build it, don't
 // port it"): the dashboard drives these same endpoints through server actions; here
 // they are react-query hooks and imperative actions in the browser. Reads are query
 // hooks; the many small writes each step makes are grouped under useOnboardingActions
@@ -14,7 +14,7 @@
 // pending/error state (a mutation, or local state around an action).
 
 import { useMemo } from 'react';
-import { useQuery, useQueryClient, type QueryClient } from '@sparx/query';
+import { useQuery, useQueryClient, type QueryClient } from '@wizeworks/query';
 import { api } from '../api/client';
 import { SWITCHBOARD_MODULES } from './modules';
 import type {

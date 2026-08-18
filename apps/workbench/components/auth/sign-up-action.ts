@@ -11,8 +11,8 @@
 // leaves the user signed OUT, so we sign them in here to set the session cookie.
 
 import { headers } from 'next/headers';
-import { signUpMerchant, SignUpError } from '@sparx/auth';
-import { auth } from '@sparx/auth/server';
+import { signUpMerchant, SignUpError } from '@wizeworks/auth';
+import { auth } from '@wizeworks/auth/server';
 
 export interface SignUpActionInput {
   name: string;

@@ -10,17 +10,17 @@
 // backend's terse enums and tool names into that language once, so both surfaces
 // speak alike.
 //
-// Both backends are already built (services/api-rest/src/routes/v1/ai/*). Reads
+// Both backends are already built (wizeworks/services/api-rest/src/routes/v1/ai/*). Reads
 // are viewer; prompt writes are editor; installing the default prompts and every
 // tool-policy write are admin. The surfaces mirror those bars with useViewer() so
 // they never put a control in front of someone the server will refuse — the
 // server stays the real gate.
 
-import { useMutation, useQuery, useQueryClient } from '@sparx/query';
-import { ApiError } from '@sparx/api-client';
+import { useMutation, useQuery, useQueryClient } from '@wizeworks/query';
+import { ApiError } from '@wizeworks/api-client';
 import { api } from '../../lib/api/client';
 
-/* ── Prompt library shapes (mirror services/api-rest/src/lib/ai/types.ts) ──── */
+/* ── Prompt library shapes (mirror wizeworks/services/api-rest/src/lib/ai/types.ts) ──── */
 
 export type PromptCategory =
   | 'persona'
@@ -111,7 +111,7 @@ export interface ToolPolicyDto {
   explicit: boolean;
 }
 
-/* ── Usage-report shapes (mirror services/api-rest/src/routes/v1/ai/reports.ts) ─
+/* ── Usage-report shapes (mirror wizeworks/services/api-rest/src/routes/v1/ai/reports.ts) ─
  *
  * These power the Overview — live MCP-usage aggregates over the audit trail. What
  * a connected AI app looked up or changed lands in that trail, so every figure

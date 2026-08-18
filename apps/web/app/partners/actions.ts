@@ -1,6 +1,6 @@
 'use server';
 
-// Server action for the /partners application (docs/114 §B.2). Runs on apps/web's
+// Server action for the /partners application (docs/114 §B.2). Runs on sparx/apps/web's
 // server and calls the platform's own public API server-to-server (POST
 // /v1/public/partners/apply) — so the browser never touches api-rest directly.
 // EVERY application lands in the review queue — no tier auto-approves (no unvetted
