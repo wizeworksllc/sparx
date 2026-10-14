@@ -1,9 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import {
   clockNote,
+  futureInstant,
   isoToWallClock,
   onClock,
   summaryOnClock,
+  wallClockFromNow,
   wallClockToIso,
 } from './publish-clock';
 
@@ -62,5 +64,48 @@ describe('changing a scheduled time starts from it (Piggles issue 942)', () => {
     expect(
       wallClockToIso(isoToWallClock('2026-10-08T05:00:00.000Z', 'Europe/London'), 'Europe/London')
     ).toBe('2026-10-08T05:00:00.000Z');
+  });
+});
+
+describe('a newsletter scheduled and sent on the business clock (Piggles persona issue 984)', () => {
+  // Friday morning in London, 9:00 AM British Summer Time.
+  const fridayNine = Date.parse('2026-10-09T08:00:00.000Z');
+
+  it('reads her Friday send on her clock in summer and in winter', () => {
+    // October is British Summer Time, an hour ahead of UTC.
+    expect(wallClockToIso('2026-10-16T08:30', 'Europe/London')).toBe('2026-10-16T07:30:00.000Z');
+    // December is Greenwich Mean Time, the same as UTC.
+    expect(wallClockToIso('2026-12-04T08:30', 'Europe/London')).toBe('2026-12-04T08:30:00.000Z');
+  });
+
+  it('says when it went out on her clock, not on a California laptop', () => {
+    // Sent at 08:20 UTC: the review read "1:20 AM" on a Pacific computer.
+    expect(onClock('2026-10-11T08:20:00.000Z', 'Europe/London')).toBe(
+      'Oct 11, 2026, 9:20 AM British Summer Time'
+    );
+    expect(onClock('2026-12-04T08:30:00.000Z', 'Europe/London')).toBe(
+      'Dec 4, 2026, 8:30 AM Greenwich Mean Time'
+    );
+  });
+
+  it('asks whether a time is still to come on her clock', () => {
+    // 08:30 in London is half an hour gone at 9:00 BST, though a Pacific laptop
+    // reading the same box would put it seven and a half hours ahead.
+    expect(futureInstant('2026-10-09T08:30', 'Europe/London', fridayNine)).toBeNull();
+    expect(futureInstant('2026-10-09T08:30', 'America/Los_Angeles', fridayNine)).toBe(
+      '2026-10-09T15:30:00.000Z'
+    );
+    // 09:30 in London is still to come.
+    expect(futureInstant('2026-10-09T09:30', 'Europe/London', fridayNine)).toBe(
+      '2026-10-09T08:30:00.000Z'
+    );
+    expect(futureInstant('not a time', 'Europe/London', fridayNine)).toBeNull();
+  });
+
+  it('opens the box a quarter of an hour ahead on her clock', () => {
+    expect(wallClockFromNow(15, 'Europe/London', fridayNine)).toBe('2026-10-09T09:15');
+    expect(wallClockFromNow(15, 'Europe/London', Date.parse('2026-12-04T08:00:00.000Z'))).toBe(
+      '2026-12-04T08:15'
+    );
   });
 });
