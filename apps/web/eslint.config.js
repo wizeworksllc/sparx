@@ -4,7 +4,7 @@
 // Marketing-only chrome that has no @wizeworksllc/ui primitive should use inline styles
 // referencing the CSS custom properties from tokens.css, NOT composed Tailwind.
 
-import rootConfig from '../../../eslint.config.js';
+import rootConfig from '../../eslint.config.js';
 
 export default [
   ...rootConfig,

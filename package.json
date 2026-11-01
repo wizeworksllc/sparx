@@ -1,0 +1,38 @@
+{
+  "name": "sparx",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "prepare": "git config core.hooksPath .githooks || true",
+    "build": "turbo run build --concurrency=1",
+    "dev": "turbo run dev --concurrency=10",
+    "lint": "turbo run lint --concurrency=1",
+    "test": "turbo run test --concurrency=1",
+    "typecheck": "turbo run typecheck --concurrency=1",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,css}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,css}\"",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "check": "node scripts/run-checks.mjs",
+    "check:platform": "node scripts/platform-checks.mjs",
+    "check:k8s": "node scripts/check-k8s.mjs",
+    "check:transpile-packages": "node scripts/check-transpile-packages.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "@types/node": "^25.9.5",
+    "eslint": "^9.39.5",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "prettier": "^3.9.6",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "turbo": "^2.10.12",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.69.0"
+  }
+}

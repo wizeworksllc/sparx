@@ -127,7 +127,7 @@ const config = {
     ],
   },
   output: 'standalone',
-  outputFileTracingRoot: join(__dirname, '../../../'),
+  outputFileTracingRoot: join(__dirname, '../../'),
 };
 
 export default config;

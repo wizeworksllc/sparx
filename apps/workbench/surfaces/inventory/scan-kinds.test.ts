@@ -16,26 +16,21 @@
 // to avoid. [[feedback_structural_checks_go_blind]]
 
 import { existsSync, readFileSync } from 'node:fs';
-import { dirname, join, resolve } from 'node:path';
+import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
+import { PLATFORM_ROOT, platformPath } from '../../test/platform-source';
 
-/** Walk up to the workspace root rather than counting `..`s. */
-function repoRoot(): string {
-  let dir = dirname(fileURLToPath(import.meta.url));
-  for (let i = 0; i < 12; i++) {
-    if (existsSync(join(dir, 'pnpm-workspace.yaml'))) return dir;
-    const up = resolve(dir, '..');
-    if (up === dir) break;
-    dir = up;
-  }
-  throw new Error('workspace root not found above this test');
-}
-
-const SERVER = join(repoRoot(), 'wizeworks', 'packages', 'inventory', 'src', 'services', 'scan.ts');
+// The server's list lives in the platform (test/platform-source.ts).
+const SERVER =
+  PLATFORM_ROOT === null
+    ? null
+    : platformPath('wizeworks', 'packages', 'inventory', 'src', 'services', 'scan.ts');
 
 /** The kinds `ALL_KINDS` lists, in order. */
 function serverKinds(): string[] {
+  if (SERVER === null) throw new Error('serverKinds called with no platform checkout');
+  if (!existsSync(SERVER)) throw new Error(`${SERVER} does not exist. Has scan.ts moved?`);
   const src = readFileSync(SERVER, 'utf8');
   const block = /export const ALL_KINDS: ScanKind\[\] = \[([\s\S]*?)\];/.exec(src);
   if (!block) throw new Error(`ALL_KINDS not found in ${SERVER} — has it moved or been renamed?`);

@@ -1,10 +1,16 @@
 # syntax=docker/dockerfile:1.7
 #
-# Multi-stage Next.js build for @sparx/workbench — the multi-window workbench
-# at workbench.sparx.works. Produces a standalone bundle on Node 24 alpine.
+# Multi-stage Next.js build for @sparx/workbench, the operator console (app.sparx.works).
+# A standalone bundle on Node 24 alpine, built from the repository root:
 #
-# Built from the repo root context (per .github/workflows/build-images-gcp.yml):
-#   docker build -f sparx/apps/workbench/Dockerfile -t sparx/workbench:tag .
+#   docker build -f apps/workbench/Dockerfile \
+#     --secret id=github_packages_token,env=GITHUB_PACKAGES_TOKEN \
+#     --secret id=fontawesome_npm_token,env=FONTAWESOME_NPM_TOKEN \
+#     -t sparx-workbench:tag .
+#
+# The platform libraries (@wizeworksllc/*) install from GitHub Packages at the
+# version package.json pins; none installs the database or an auth server. The
+# only workspace package is @sparx/brand, which is copied in below.
 
 ARG NODE_VERSION=24-alpine
 
@@ -16,83 +22,26 @@ WORKDIR /repo
 # ----- Install + build -----
 FROM base AS builder
 
-# Workspace metadata first — maximises layer cache reuse across source changes.
-COPY pnpm-workspace.yaml pnpm-lock.yaml package.json tsconfig.base.json ./
-COPY sparx/apps/workbench/package.json sparx/apps/workbench/
-# The workbench's direct workspace deps are deliberately few — it is a browser-
-# rendered app whose only server surface is the /api/auth proxy + the
-# /api/token BFF, both forwarding to api-rest (docs/154):
-COPY wizeworks/packages/app-kit/package.json wizeworks/packages/app-kit/
-COPY wizeworks/packages/api-client/package.json wizeworks/packages/api-client/
-COPY wizeworks/packages/auth-client-server/package.json wizeworks/packages/auth-client-server/
-# The database-free halves of platform packages (docs/153, Phase 3): the browser
-# auth client and role vocabularies, the module roster, the sequence schemas, and
-# the posting-cadence maths. This image installs no database layer and no auth
-# server; the packages they were split from stay with api-rest.
-COPY wizeworks/packages/auth-client/package.json wizeworks/packages/auth-client/
-COPY wizeworks/packages/email-sequence-schemas/package.json wizeworks/packages/email-sequence-schemas/
-COPY wizeworks/packages/module-roster/package.json wizeworks/packages/module-roster/
-COPY wizeworks/packages/social-cadence/package.json wizeworks/packages/social-cadence/
-COPY wizeworks/packages/brand-core/package.json wizeworks/packages/brand-core/
-COPY sparx/packages/brand/package.json sparx/packages/brand/
-# The address table. Pure data, no dependencies of its own — but the catch-all
-# route resolves paths through it during the SERVER render, so a missing copy is
-# a boot-time failure, not a lazily-discovered one.
-COPY wizeworks/packages/links/package.json wizeworks/packages/links/
-# The move-in vendor registry. Read by the migration surfaces during the SERVER
-# render, same as the address table above — a missing copy fails at boot.
-COPY wizeworks/packages/migration/package.json wizeworks/packages/migration/
-COPY wizeworks/packages/query/package.json wizeworks/packages/query/
-# Rich-text editing and the builder vocabulary the content surfaces render.
-COPY wizeworks/packages/attribution/package.json wizeworks/packages/attribution/
-COPY wizeworks/packages/builder-schemas/package.json wizeworks/packages/builder-schemas/
-COPY wizeworks/packages/cms-editor/package.json wizeworks/packages/cms-editor/
-COPY wizeworks/packages/ui/package.json wizeworks/packages/ui/
-# The surface layer's schema + catalog deps and their transitive @sparx closure.
-# The workbench is no longer "deliberately few" deps — its ~66 surfaces import
-# the commerce/crm/automation/story schemas, the
-# silica catalog and site themes directly. Every member must be
-# present or the filtered install leaves a dangling symlink the build can't
-# resolve (the Module-not-found class of failure).
-COPY wizeworks/packages/automation-schemas/package.json wizeworks/packages/automation-schemas/
-COPY wizeworks/packages/commerce-schemas/package.json wizeworks/packages/commerce-schemas/
-COPY wizeworks/packages/crm-schemas/package.json wizeworks/packages/crm-schemas/
-COPY wizeworks/packages/field-schema/package.json wizeworks/packages/field-schema/
-COPY wizeworks/packages/silica-catalog/package.json wizeworks/packages/silica-catalog/
-COPY wizeworks/packages/silica-corrections/package.json wizeworks/packages/silica-corrections/
-COPY wizeworks/packages/site-themes/package.json wizeworks/packages/site-themes/
-COPY wizeworks/packages/story-schemas/package.json wizeworks/packages/story-schemas/
+COPY pnpm-workspace.yaml pnpm-lock.yaml package.json tsconfig.base.json .npmrc ./
+COPY apps/workbench/package.json apps/workbench/
+# The one workspace member the app declares. The filtered install resolves
+# declarations, and a member left out leaves a dangling link the build cannot
+# resolve.
+COPY packages/brand/package.json packages/brand/
 
-# Install only the @sparx/workbench subgraph (its deps + transitive workspace deps).
+# Both tokens reach pnpm as env vars for this one command, read from BuildKit
+# secret mounts, so neither is COPYed or lands in a layer. Font Awesome falls
+# back to empty, which pnpm still counts as set: an UNSET variable makes pnpm
+# drop the whole .npmrc, registry lines included.
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
+    --mount=type=secret,id=fontawesome_npm_token \
+    --mount=type=secret,id=github_packages_token,required=true \
+    FONTAWESOME_NPM_TOKEN="$(cat /run/secrets/fontawesome_npm_token 2>/dev/null || true)" \
+    GITHUB_PACKAGES_TOKEN="$(cat /run/secrets/github_packages_token)" \
     pnpm install --frozen-lockfile --filter @sparx/workbench...
 
-# Source for every workspace dep + the app itself.
-COPY wizeworks/packages/app-kit wizeworks/packages/app-kit
-COPY wizeworks/packages/api-client wizeworks/packages/api-client
-COPY wizeworks/packages/auth-client-server wizeworks/packages/auth-client-server
-COPY wizeworks/packages/auth-client wizeworks/packages/auth-client
-COPY wizeworks/packages/email-sequence-schemas wizeworks/packages/email-sequence-schemas
-COPY wizeworks/packages/module-roster wizeworks/packages/module-roster
-COPY wizeworks/packages/social-cadence wizeworks/packages/social-cadence
-COPY wizeworks/packages/brand-core wizeworks/packages/brand-core
-COPY sparx/packages/brand sparx/packages/brand
-COPY wizeworks/packages/links wizeworks/packages/links
-COPY wizeworks/packages/migration wizeworks/packages/migration
-COPY wizeworks/packages/query wizeworks/packages/query
-COPY wizeworks/packages/attribution wizeworks/packages/attribution
-COPY wizeworks/packages/builder-schemas wizeworks/packages/builder-schemas
-COPY wizeworks/packages/cms-editor wizeworks/packages/cms-editor
-COPY wizeworks/packages/ui wizeworks/packages/ui
-COPY wizeworks/packages/automation-schemas wizeworks/packages/automation-schemas
-COPY wizeworks/packages/commerce-schemas wizeworks/packages/commerce-schemas
-COPY wizeworks/packages/crm-schemas wizeworks/packages/crm-schemas
-COPY wizeworks/packages/field-schema wizeworks/packages/field-schema
-COPY wizeworks/packages/silica-catalog wizeworks/packages/silica-catalog
-COPY wizeworks/packages/silica-corrections wizeworks/packages/silica-corrections
-COPY wizeworks/packages/site-themes wizeworks/packages/site-themes
-COPY wizeworks/packages/story-schemas wizeworks/packages/story-schemas
-COPY sparx/apps/workbench sparx/apps/workbench
+COPY packages/brand packages/brand
+COPY apps/workbench apps/workbench
 
 # Stamp the release version into the client bundle. NEXT_PUBLIC_* is inlined at
 # build time, so the JS a browser tab is running carries the version it was built
@@ -105,7 +54,7 @@ ENV NEXT_PUBLIC_APP_VERSION=$APP_VERSION
 
 # PostHog product analytics — browser-side only (NEXT_PUBLIC_*), so it's inlined
 # into the client bundle at build time. CI passes these to every image
-# (build-images-gcp.yml); a build without the key simply ships PostHog disabled (the
+# (release.yml); a build without the key simply ships PostHog disabled (the
 # provider bails on `if (!key) return`). HOST defaults to PostHog US cloud.
 ARG NEXT_PUBLIC_POSTHOG_KEY
 ENV NEXT_PUBLIC_POSTHOG_KEY=$NEXT_PUBLIC_POSTHOG_KEY
@@ -123,8 +72,9 @@ ENV NEXT_PUBLIC_POSTHOG_HOST=$NEXT_PUBLIC_POSTHOG_HOST
 # box that ran short. The same wall has already been hit by `@wizeworks/api-rest`
 # (pre-push, CI) and `@wizeworks/api-mcp` (CI at 6144); this is the third.
 #
-# Each image builds on its own runner (release.yml's matrix, max-parallel 6), so
-# 8192 is one build against 16 GB rather than six sharing it.
+# Each image builds on its own runner (release.yml's matrix), so 8192 is one
+# build against the runner's memory rather than three sharing it. This is the
+# image build on a CI runner only; never set it on a laptop.
 # Stable server-action ids across builds (SI-2). No secret = Next picks a random key, as before.
 RUN --mount=type=secret,id=next_actions_key \
     key="$(cat /run/secrets/next_actions_key 2>/dev/null || true)"; \
@@ -150,10 +100,10 @@ ENV APP_VERSION=$APP_VERSION
 RUN addgroup --system --gid 1001 nodejs \
  && adduser --system --uid 1001 --ingroup nodejs nextjs
 
-COPY --from=builder --chown=nextjs:nodejs /repo/sparx/apps/workbench/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /repo/sparx/apps/workbench/.next/static ./sparx/apps/workbench/.next/static
+COPY --from=builder --chown=nextjs:nodejs /repo/apps/workbench/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /repo/apps/workbench/.next/static ./apps/workbench/.next/static
 # public/ is NOT bundled into standalone output — copy it explicitly.
-COPY --from=builder --chown=nextjs:nodejs /repo/sparx/apps/workbench/public ./sparx/apps/workbench/public
+COPY --from=builder --chown=nextjs:nodejs /repo/apps/workbench/public ./apps/workbench/public
 
 USER nextjs
 
@@ -163,4 +113,4 @@ EXPOSE 3000
 ARG WIZELENS_RELEASE=local
 ENV WIZELENS_RELEASE=$WIZELENS_RELEASE
 
-CMD ["node", "sparx/apps/workbench/server.js"]
+CMD ["node", "apps/workbench/server.js"]

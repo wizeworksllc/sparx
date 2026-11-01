@@ -327,7 +327,7 @@ export default function BuildingATemplatePage() {
         { id: 'gotchas', label: 'Conventions & gotchas' },
         { id: 'reference', label: 'Quick reference' },
       ]}
-      editPath="sparx/apps/web/app/docs/guides/building-a-template/page.tsx"
+      editPath="apps/web/app/docs/guides/building-a-template/page.tsx"
       updated="2026-06-05"
       prev={{ title: 'Quickstart', href: '/docs/quickstart' }}
       next={{ title: 'Create an order', href: '/docs/api/orders/create' }}

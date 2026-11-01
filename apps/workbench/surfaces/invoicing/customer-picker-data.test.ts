@@ -124,7 +124,7 @@ function repoRoot(): string {
 // and reading across would make either product undeletable — which is the rule
 // `check:boundaries` exists to hold. Parity between the two is
 // `check:console-parity`'s job, not this file's.
-const APP = 'sparx/apps/workbench';
+const APP = 'apps/workbench';
 
 describe('the screens that name a person', () => {
   const read = (rel: string) => readFileSync(join(repoRoot(), APP, rel), 'utf8');

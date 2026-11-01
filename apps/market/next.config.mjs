@@ -43,7 +43,7 @@ const config = {
   // WizeLens patches node:http and reads its own files: load it from node_modules, not a bundle.
   serverExternalPackages: ['@wizeworks/lens-node'],
   output: 'standalone',
-  outputFileTracingRoot: join(__dirname, '../../../'),
+  outputFileTracingRoot: join(__dirname, '../../'),
   images: {
     // Marketplace product/merchant media is served via api-rest's redirecting
     // /v1/public/media endpoint (a 302), which the built-in optimizer can't

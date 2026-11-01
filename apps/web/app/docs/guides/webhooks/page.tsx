@@ -105,7 +105,7 @@ export default function WebhooksPage() {
         { id: 'manage', label: 'Manage subscriptions' },
         { id: 'catalog', label: 'Full event catalog' },
       ]}
-      editPath="sparx/apps/web/app/docs/guides/webhooks/page.tsx"
+      editPath="apps/web/app/docs/guides/webhooks/page.tsx"
       updated="2026-06-05"
       prev={{ title: 'Building a template', href: '/docs/guides/building-a-template' }}
       next={{ title: 'Importing from another platform', href: '/docs/guides/migrating' }}

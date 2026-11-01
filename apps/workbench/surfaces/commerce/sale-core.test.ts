@@ -189,7 +189,7 @@ function repoRoot(): string {
 
 describe('the till', () => {
   const read = (file: string) =>
-    readFileSync(join(repoRoot(), 'sparx/apps/workbench/surfaces/commerce', file), 'utf8');
+    readFileSync(join(repoRoot(), 'apps/workbench/surfaces/commerce', file), 'utf8');
 
   it('posts every line through saleItem', () => {
     expect(read('sale-data.ts')).toContain("api.post<Order>('/v1/orders', saleOrderBody(input))");

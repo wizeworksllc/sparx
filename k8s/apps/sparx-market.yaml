@@ -1,0 +1,145 @@
+# @sparx/market: the template and app marketplace. Next.js standalone server
+# on port 3000. Reads catalog data from api-rest (SPARX_API_REST_URL) and media
+# from the CDN below.
+#
+# Mirrors the `market` Deployment in `sparx-prod` (the platform's
+# k8s/apps/market.yaml with its Azure overlay applied), renamed with the
+# `sparx-` prefix so the two can run side by side while traffic moves. Not
+# listed in kustomization.yaml yet: see the note there.
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sparx-market
+  namespace: sparx
+  labels:
+    app: sparx-market
+    tier: web
+    brand: sparx
+spec:
+  replicas: 1
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: sparx-market
+  template:
+    metadata:
+      labels:
+        app: sparx-market
+        tier: web
+        brand: sparx
+    spec:
+      containers:
+        - name: sparx-market
+          image: ghcr.io/wizeworksllc/sparx-market:latest
+          # Always: the release pins an immutable SHA tag, so this costs one
+          # registry request and never serves a stale cached layer. The package
+          # is public, so no pull secret is needed (and none can expire).
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 3000
+          # The whole config is the ConfigMap (k8s/config/sparx-app-env.env).
+          # No Secret in envFrom: the two keyed values below are the only
+          # secrets this app takes, by name.
+          envFrom:
+            - configMapRef:
+                name: sparx-app-env
+          env:
+            - name: NODE_ENV
+              value: production
+            # The key this image was built with, so server-action ids match across releases (SI-2).
+            # Optional: without the NEXT_ACTIONS_KEY_MARKET secret, Next uses the key baked into the build.
+            - name: NEXT_SERVER_ACTIONS_ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: sparx-app-secrets
+                  key: NEXT_ACTIONS_KEY_MARKET
+                  optional: true
+            # WizeLens: send-only tracing to WizeLens Cloud. The ingest key is per
+            # app (vault `wizelens-key-market`); optional, so a missing key leaves
+            # the app running and untraced rather than failing.
+            - name: WIZELENS_ENABLED
+              value: 'true'
+            - name: WIZELENS_HUB
+              value: https://app.wizelens.com
+            - name: WIZELENS_SAMPLE_RATE
+              value: '0.25'
+            - name: WIZELENS_HUB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: sparx-app-secrets
+                  key: WIZELENS_KEY_MARKET
+                  optional: true
+            - name: SERVICE_NAME
+              value: market
+            - name: PORT
+              value: '3000'
+            - name: HOSTNAME
+              value: 0.0.0.0
+            - name: NEXT_TELEMETRY_DISABLED
+              value: '1'
+            - name: SPARX_MEDIA_CDN_URL
+              value: 'https://media.sparx.works'
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1001
+            runAsGroup: 1001
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ['ALL']
+            seccompProfile:
+              type: RuntimeDefault
+          # No CPU limit: CPU is compressible, and a cap only throttles a cold
+          # start. Memory is ceilinged, and the request is the measured resident
+          # size rounded up one step, so the kubelet never picks this pod first
+          # for eviction (the platform's Azure overlay explains the 2026-08-08
+          # outage that rule came from).
+          resources:
+            requests:
+              cpu: '25m'
+              # measured 88Mi in sparx-prod
+              memory: '96Mi'
+            limits:
+              memory: '640Mi'
+          # A static handler (app/api/health/route.ts) that answers with the process,
+          # so a slow api-rest never restarts this pod.
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 5
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          lifecycle:
+            preStop:
+              exec:
+                command: ['/bin/sh', '-c', 'sleep 10']
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sparx-market
+  namespace: sparx
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+  selector:
+    app: sparx-market

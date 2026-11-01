@@ -56,7 +56,7 @@ export default function AuthenticationPage() {
         { id: 'lifecycle', label: 'Rotation & revocation' },
         { id: 'errors', label: 'Auth errors' },
       ]}
-      editPath="sparx/apps/web/app/docs/authentication/page.tsx"
+      editPath="apps/web/app/docs/authentication/page.tsx"
       updated="2026-06-05"
       prev={{ title: 'Quickstart', href: '/docs/quickstart' }}
       next={{ title: 'Webhooks & events', href: '/docs/guides/webhooks' }}

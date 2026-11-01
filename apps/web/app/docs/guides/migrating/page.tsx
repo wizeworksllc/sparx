@@ -272,7 +272,7 @@ export default function MigrationGuidePage() {
         { id: 'live', label: 'Live connections' },
         { id: 'entities', label: 'Every entity' },
       ]}
-      editPath="sparx/apps/web/app/docs/guides/migrating/page.tsx"
+      editPath="apps/web/app/docs/guides/migrating/page.tsx"
       updated="2026-08-13"
       prev={{ title: 'Webhooks & events', href: '/docs/guides/webhooks' }}
       next={{ title: 'Authentication', href: '/docs/authentication' }}

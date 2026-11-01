@@ -1,0 +1,30 @@
+# Every image builds from the repository root (`docker build -f apps/<app>/Dockerfile .`),
+# so this decides what the build context uploads. Each Dockerfile copies only
+# what it names; this keeps the rest from being sent at all.
+**/node_modules
+**/.next
+**/.turbo
+**/dist
+**/build
+**/coverage
+**/.cache
+**/*.tsbuildinfo
+**/.DS_Store
+*.log
+*.tmp
+
+# Never into an image: a local secret, or the repository's own history.
+**/.env
+**/.env.*
+!**/.env.example
+.git
+.github
+.githooks
+
+# Not read by any build. `docs/` is prose.
+docs
+k8s
+scripts
+*.md
+!apps/**/*.md
+!packages/**/*.md

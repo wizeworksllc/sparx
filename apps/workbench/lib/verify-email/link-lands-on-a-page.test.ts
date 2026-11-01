@@ -8,12 +8,16 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 
-const REPO = path.resolve(__dirname, '../../../../..');
-const SIGN_UP = path.join(REPO, 'wizeworks/packages/auth/src/sign-up.ts');
+import { platformPath, PLATFORM_ROOT } from '../../test/platform-source';
+
+// Sign-up is the platform's (test/platform-source.ts).
+const SIGN_UP =
+  PLATFORM_ROOT === null ? null : platformPath('wizeworks/packages/auth/src/sign-up.ts');
 const APP = path.resolve(__dirname, '../../app');
 
 describe('the confirm-your-email link', () => {
-  it('comes back to a page the console has', () => {
+  it.skipIf(SIGN_UP === null)('comes back to a page the console has', () => {
+    if (SIGN_UP === null) return;
     expect(fs.existsSync(SIGN_UP), SIGN_UP).toBe(true);
     const source = fs.readFileSync(SIGN_UP, 'utf8');
     const match = /sendVerificationEmail\(\{[\s\S]*?callbackURL:\s*'([^']+)'/.exec(source);

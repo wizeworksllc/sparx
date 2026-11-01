@@ -16,44 +16,30 @@
 // [[feedback_structural_checks_go_blind]]
 
 import { existsSync, readFileSync } from 'node:fs';
-import { dirname, join, resolve } from 'node:path';
+import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 
+import { PLATFORM_ROOT, platformPath } from '../../test/platform-source';
 import { STRENGTH_ORDER_SENTENCE, TRADE_PRICE_STRENGTH } from './trade-price-order';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 
-/** The repo root, found rather than counted: five `..`s is one tree move from
- *  scanning nothing and passing. */
-function repoRoot(): string {
-  let at = HERE;
-  for (let up = 0; up < 12; up += 1) {
-    if (existsSync(join(at, 'pnpm-workspace.yaml'))) return at;
-    const parent = dirname(at);
-    if (parent === at) break;
-    at = parent;
-  }
-  throw new Error(`No pnpm-workspace.yaml above ${HERE}. This test scanned nothing.`);
-}
-
-function read(...parts: string[]): string {
-  const path = resolve(repoRoot(), ...parts);
+/** A file in the platform's source (test/platform-source.ts). */
+function readPlatform(...parts: string[]): string {
+  const path = platformPath(...parts);
   if (!existsSync(path)) {
     throw new Error(`${path} does not exist. This test scanned nothing.`);
   }
   return readFileSync(path, 'utf8');
 }
 
-describe('the price that actually gets charged', () => {
-  const service = read(
-    'wizeworks',
-    'packages',
-    'commerce',
-    'src',
-    'services',
-    'pricing-service.ts'
-  );
+describe.skipIf(PLATFORM_ROOT === null)('the price that actually gets charged', () => {
+  // The body runs even when skipped, to list the tests, so the read waits for a checkout.
+  const service =
+    PLATFORM_ROOT === null
+      ? ''
+      : readPlatform('wizeworks', 'packages', 'commerce', 'src', 'services', 'pricing-service.ts');
 
   it('consults a signed agreement before the per-business waterfall', () => {
     const contract = service.indexOf("source: 'contract_price'");

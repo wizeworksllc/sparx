@@ -109,7 +109,7 @@ function repoRoot(): string {
 
 describe('the item picker', () => {
   const pane = () =>
-    readFileSync(join(repoRoot(), 'sparx/apps/workbench/surfaces/commerce/sale-lines.tsx'), 'utf8');
+    readFileSync(join(repoRoot(), 'apps/workbench/surfaces/commerce/sale-lines.tsx'), 'utf8');
 
   it('searches through this file rather than the name alone', () => {
     const body = pane();

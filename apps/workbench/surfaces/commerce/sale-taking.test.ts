@@ -66,10 +66,7 @@ function repoRoot(): string {
 
 describe('the till', () => {
   const pane = () =>
-    readFileSync(
-      join(repoRoot(), 'sparx/apps/workbench/surfaces/commerce/sale-detail.tsx'),
-      'utf8'
-    );
+    readFileSync(join(repoRoot(), 'apps/workbench/surfaces/commerce/sale-detail.tsx'), 'utf8');
 
   it('works out who is buying from the same field that prices them', () => {
     // `companyId`, not the employer somebody typed at checkout, and not `type`,

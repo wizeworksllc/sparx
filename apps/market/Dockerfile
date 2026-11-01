@@ -1,15 +1,16 @@
 # syntax=docker/dockerfile:1.7
 #
-# Multi-stage Next.js build for @sparx/market — the public sparx.market shopping
-# destination. Mirrors wizeworks/apps/site/Dockerfile (same standalone output shape), but a
-# much smaller workspace subgraph: sparx/apps/market renders NO tenant themes and NO
-# builder. Its UI layer is silicaui (silicaui + silicaui-react, from npm — NOT a
-# workspace package, so no COPY here; pnpm install pulls them from the registry),
-# leaving @wizeworksllc/commerce-schemas (which pulls @wizeworksllc/crm-schemas) as its only
-# workspace dep. There is no @sparx/site-ui stylesheet build step.
+# Multi-stage Next.js build for @sparx/market, the template and app marketplace.
+# A standalone bundle on Node 24 alpine, built from the repository root:
 #
-# Built from the repo root context (per .github/workflows/build-images-gcp.yml):
-#   docker build -f sparx/apps/market/Dockerfile -t sparx/market:tag .
+#   docker build -f apps/market/Dockerfile \
+#     --secret id=github_packages_token,env=GITHUB_PACKAGES_TOKEN \
+#     --secret id=fontawesome_npm_token,env=FONTAWESOME_NPM_TOKEN \
+#     -t sparx-market:tag .
+#
+# The platform libraries (@wizeworksllc/*) install from GitHub Packages at the
+# version package.json pins; none installs the database or an auth server. The
+# only workspace package is @sparx/brand, which is copied in below.
 
 ARG NODE_VERSION=24-alpine
 
@@ -21,47 +22,33 @@ WORKDIR /repo
 # ----- Install + build -----
 FROM base AS builder
 
-# Workspace metadata first — maximises layer cache reuse across source changes.
-COPY pnpm-workspace.yaml pnpm-lock.yaml package.json tsconfig.base.json ./
-COPY sparx/apps/market/package.json sparx/apps/market/
-# @sparx/brand (the silicaui theme — globals.css @imports @sparx/brand/theme.css),
-# @wizeworksllc/commerce-schemas (pure-zod: MARKET_CATEGORIES + the category taxonomy) and
-# its workspace deps, @wizeworksllc/crm-schemas and @wizeworksllc/field-schema (which now
-# also pulls @wizeworksllc/automation-schemas — the report builder reuses the
-# automation condition DSL rather than growing a second filter language).
-# silicaui +
-# silicaui-react are npm deps resolved by pnpm install below, so they need no COPY.
-COPY wizeworks/packages/app-kit/package.json wizeworks/packages/app-kit/
-COPY sparx/packages/brand/package.json sparx/packages/brand/
-COPY wizeworks/packages/brand-core/package.json wizeworks/packages/brand-core/
-COPY wizeworks/packages/ui/package.json wizeworks/packages/ui/
-COPY wizeworks/packages/silica-corrections/package.json wizeworks/packages/silica-corrections/
-COPY wizeworks/packages/commerce-schemas/package.json wizeworks/packages/commerce-schemas/
-COPY wizeworks/packages/automation-schemas/package.json wizeworks/packages/automation-schemas/
-COPY wizeworks/packages/crm-schemas/package.json wizeworks/packages/crm-schemas/
-COPY wizeworks/packages/field-schema/package.json wizeworks/packages/field-schema/
+COPY pnpm-workspace.yaml pnpm-lock.yaml package.json tsconfig.base.json .npmrc ./
+COPY apps/market/package.json apps/market/
+# The one workspace member the app declares. The filtered install resolves
+# declarations, and a member left out leaves a dangling link the build cannot
+# resolve.
+COPY packages/brand/package.json packages/brand/
 
-# Install only the @sparx/market subgraph (its deps + transitive workspace deps).
+# Both tokens reach pnpm as env vars for this one command, read from BuildKit
+# secret mounts, so neither is COPYed or lands in a layer. Font Awesome falls
+# back to empty, which pnpm still counts as set: an UNSET variable makes pnpm
+# drop the whole .npmrc, registry lines included.
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
+    --mount=type=secret,id=fontawesome_npm_token \
+    --mount=type=secret,id=github_packages_token,required=true \
+    FONTAWESOME_NPM_TOKEN="$(cat /run/secrets/fontawesome_npm_token 2>/dev/null || true)" \
+    GITHUB_PACKAGES_TOKEN="$(cat /run/secrets/github_packages_token)" \
     pnpm install --frozen-lockfile --filter @sparx/market...
 
-COPY wizeworks/packages/app-kit wizeworks/packages/app-kit
-COPY sparx/packages/brand sparx/packages/brand
-COPY wizeworks/packages/brand-core wizeworks/packages/brand-core
-COPY wizeworks/packages/ui wizeworks/packages/ui
-COPY wizeworks/packages/silica-corrections wizeworks/packages/silica-corrections
-COPY wizeworks/packages/commerce-schemas wizeworks/packages/commerce-schemas
-COPY wizeworks/packages/automation-schemas wizeworks/packages/automation-schemas
-COPY wizeworks/packages/crm-schemas wizeworks/packages/crm-schemas
-COPY wizeworks/packages/field-schema wizeworks/packages/field-schema
-COPY sparx/apps/market sparx/apps/market
+COPY packages/brand packages/brand
+COPY apps/market apps/market
 
 # Stripe.js publishable key — inlined into the client bundle at BUILD time, so it
 # must arrive as a build-arg (a pod env var is too late). sparx.market is
 # merchant-of-record: its charges are direct charges on sparx's own platform
 # account, so the platform key is the correct one. The market-specific override
 # exists for a separate market-facing Stripe account; it falls back to the shared
-# platform key in sparx/apps/market/components/checkout/payment-step.tsx.
+# platform key in apps/market/components/checkout/payment-step.tsx.
 ARG NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 ENV NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 ARG NEXT_PUBLIC_MARKET_STRIPE_PUBLISHABLE_KEY
@@ -88,18 +75,18 @@ RUN addgroup --system --gid 1001 nodejs \
  && adduser --system --uid 1001 --ingroup nodejs nextjs
 
 # Standalone bundle includes the minimal node_modules + server.js for the app.
-COPY --from=builder --chown=nextjs:nodejs /repo/sparx/apps/market/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /repo/sparx/apps/market/.next/static ./sparx/apps/market/.next/static
+COPY --from=builder --chown=nextjs:nodejs /repo/apps/market/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /repo/apps/market/.next/static ./apps/market/.next/static
 # public/ is NOT bundled into standalone output — copy it explicitly so the
 # default favicon fallback (favicon.ico, sparx-icon.svg) serves.
-COPY --from=builder --chown=nextjs:nodejs /repo/sparx/apps/market/public ./sparx/apps/market/public
+COPY --from=builder --chown=nextjs:nodejs /repo/apps/market/public ./apps/market/public
 
-# Next's incremental data cache lives at <distDir>/cache (sparx/apps/market/.next/cache).
+# Next's incremental data cache lives at <distDir>/cache (apps/market/.next/cache).
 # The standalone output ships .next/{standalone,static} but NOT a cache dir, so at
 # runtime the dir is absent — Next can't read/write the fetch Data Cache, which
 # silently degrades `next: { revalidate }` fetches. Create it writable up front.
-RUN mkdir -p ./sparx/apps/market/.next/cache \
- && chown -R nextjs:nodejs ./sparx/apps/market/.next
+RUN mkdir -p ./apps/market/.next/cache \
+ && chown -R nextjs:nodejs ./apps/market/.next
 
 USER nextjs
 
@@ -109,4 +96,4 @@ EXPOSE 3000
 ARG WIZELENS_RELEASE=local
 ENV WIZELENS_RELEASE=$WIZELENS_RELEASE
 
-CMD ["node", "sparx/apps/market/server.js"]
+CMD ["node", "apps/market/server.js"]

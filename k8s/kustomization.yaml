@@ -1,0 +1,49 @@
+# Everything sparx's apps run, applied in one `kubectl apply -k k8s/ --prune` by
+# .github/workflows/release.yml. The release pins each image to the commit's tag
+# with `kustomize edit set image` before applying, so `:latest` in the manifests
+# is only ever what a local `kubectl kustomize` shows.
+#
+# PRUNE IS SCOPED BY THE LABEL BELOW. Deleting a file here deletes what it
+# described on the next release. The Secret `sparx-app-secrets` is written by
+# the release from Key Vault without this label, so a prune never removes it.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: sparx
+
+labels:
+  - pairs:
+      app.kubernetes.io/part-of: sparx
+    includeSelectors: false
+
+# ── THE MOVE OUT OF sparx-prod, ONE APP AT A TIME ──────────────────────────
+#
+# The three apps still run in `sparx-prod`, released by the platform. Their
+# manifests for THIS namespace are written (apps/sparx-web.yaml,
+# apps/sparx-market.yaml, apps/sparx-workbench.yaml) but NOT listed, so a
+# release builds and publishes the images and applies only the namespace and
+# the ConfigMap. Nothing serves from here yet.
+#
+# An app moves when, in this order:
+#   1. wize-infrastructure gives its Caddy host two upstreams, this namespace
+#      first and the `sparx-prod` copy second, failing over when this one has
+#      no ready pod. Released BEFORE step 2.
+#   2. Its file is listed below. The next release starts its pods; Caddy sends
+#      traffic here the moment one is ready, with no gap.
+#   3. Once all three serve from here, the platform deletes its copies and the
+#      second upstream goes.
+# Order: web (no auth, no data), then market, then the workbench.
+resources:
+  - namespace.yaml
+
+# Hashed name (`sparx-app-env-<hash>`), and the Deployments' references are
+# rewritten to match: a change to a value is a new ConfigMap, so the pods that
+# read it roll on their own. A pod reads its environment only when it starts.
+configMapGenerator:
+  - name: sparx-app-env
+    envs:
+      - config/sparx-app-env.env
+
+images:
+  - name: ghcr.io/wizeworksllc/sparx-web
+  - name: ghcr.io/wizeworksllc/sparx-market
+  - name: ghcr.io/wizeworksllc/sparx-workbench

@@ -139,7 +139,7 @@
 /* Tailwind v4 needs to see @wizeworksllc/ui sources so utility classes used inside the
    (still-present) library are emitted in this app's CSS bundle. Removed in
    Phase 3 with @wizeworksllc/ui itself. silicaui-react emits only plugin classes. */
-@source '../../../packages/ui/src/**/*.{ts,tsx}';
+@source '../node_modules/@wizeworksllc/ui/src/**/*.{ts,tsx}';
 
 /* @wizeworksllc/chat-widget (the marketplace "Chat with {publisher}" CTA panel) —
    same reasoning: raw Tailwind utilities, no CSS of its own. */

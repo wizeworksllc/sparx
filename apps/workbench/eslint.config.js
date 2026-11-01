@@ -7,7 +7,7 @@
 // "component library" work living in an app, so it is exempt from the
 // re-skinning rule — feature surfaces under `surfaces/**` are not.
 
-import rootConfig from '../../../eslint.config.js';
+import rootConfig from '../../eslint.config.js';
 
 export default [
   ...rootConfig,

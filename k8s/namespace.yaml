@@ -1,0 +1,17 @@
+# sparx's apps are a CO-TENANT on `aks-sparx-prod-cus`, like Piggles, wize.works,
+# kanNINJA and silicaui: their own namespace, deployed from their own
+# repository. What they share with the platform is api-rest (in `sparx-prod`,
+# reached by its full Service name) and the one Caddy ingress, which
+# wize-infrastructure owns and which reaches in here by Service name too.
+#
+# No NetworkPolicy. Neither namespace these apps talk to (`sparx-prod` for
+# api-rest, `wize-infrastructure` for Caddy) runs one, so the default allow is
+# what both directions rely on. Adding a default-deny here means allowing
+# Caddy's namespace in by name first.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: sparx
+  labels:
+    app.kubernetes.io/name: sparx
+    app.kubernetes.io/part-of: sparx

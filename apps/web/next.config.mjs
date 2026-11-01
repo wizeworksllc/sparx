@@ -55,7 +55,7 @@ const config = {
   output: 'standalone',
   // Monorepo: tell Next.js to trace files starting at the repo root so
   // workspace deps (@wizeworksllc/ui) are included in the standalone bundle.
-  outputFileTracingRoot: join(__dirname, '../../../'),
+  outputFileTracingRoot: join(__dirname, '../../'),
   async headers() {
     return [
       {

@@ -216,7 +216,7 @@ describe('the group a record hit sits under', () => {
 
   // This console only — reading the other one's tree would make either product
   // undeletable (`check:boundaries`). The same test lives over there.
-  it.each(['sparx/apps/workbench/components/launcher-entries.ts'])(
+  it.each(['apps/workbench/components/launcher-entries.ts'])(
     '%s resolves a title rather than stringifying the field',
     (file) => {
       // A surface may title itself with a FUNCTION of its params — the till reads

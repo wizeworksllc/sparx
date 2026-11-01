@@ -1,10 +1,16 @@
 # syntax=docker/dockerfile:1.7
 #
-# Multi-stage Next.js build for the @sparx/web marketing site.
-# Produces a minimal standalone bundle (~150MB) on Node 24 alpine.
+# Multi-stage Next.js build for the @sparx/web marketing site (sparx.works).
+# A standalone bundle on Node 24 alpine, built from the repository root:
 #
-# Built from the repo root context (per .github/workflows/build-images-gcp.yml):
-#   docker build -f sparx/apps/web/Dockerfile -t sparx/web:tag .
+#   docker build -f apps/web/Dockerfile \
+#     --secret id=github_packages_token,env=GITHUB_PACKAGES_TOKEN \
+#     --secret id=fontawesome_npm_token,env=FONTAWESOME_NPM_TOKEN \
+#     -t sparx-web:tag .
+#
+# The platform libraries (@wizeworksllc/*) install from GitHub Packages at the
+# version package.json pins; none installs the database or an auth server. The
+# only workspace package is @sparx/brand, which is copied in below.
 
 ARG NODE_VERSION=24-alpine
 
@@ -16,52 +22,30 @@ WORKDIR /repo
 # ----- Install + build -----
 FROM base AS builder
 
-# Workspace metadata first — maximises layer cache reuse across source changes.
-COPY pnpm-workspace.yaml pnpm-lock.yaml package.json tsconfig.base.json ./
-COPY sparx/apps/web/package.json sparx/apps/web/
-COPY wizeworks/packages/app-kit/package.json wizeworks/packages/app-kit/
-COPY wizeworks/packages/brand-core/package.json wizeworks/packages/brand-core/
-COPY wizeworks/packages/ui/package.json wizeworks/packages/ui/
-COPY sparx/packages/brand/package.json sparx/packages/brand/
-# @wizeworksllc/forms — client form-validation engine behind silica's FieldStatus (react peer only).
-COPY wizeworks/packages/forms/package.json wizeworks/packages/forms/
-COPY wizeworks/packages/legal/package.json wizeworks/packages/legal/
-COPY wizeworks/packages/attribution/package.json wizeworks/packages/attribution/
-COPY wizeworks/packages/chat-widget/package.json wizeworks/packages/chat-widget/
-COPY wizeworks/packages/site-themes/package.json wizeworks/packages/site-themes/
-COPY wizeworks/packages/story-schemas/package.json wizeworks/packages/story-schemas/
-# The vendor registry behind /migrate — the hub, each per-vendor page and the OG
-# route all read it at render time, so it is a boot-time dep, not a build aid.
-COPY wizeworks/packages/migration/package.json wizeworks/packages/migration/
-# The market's component previews render real catalog nodes — globals.css also
-# @imports/@sources silica-catalog by relative path, so BOTH must be present.
-COPY wizeworks/packages/builder-schemas/package.json wizeworks/packages/builder-schemas/
-COPY wizeworks/packages/silica-catalog/package.json wizeworks/packages/silica-catalog/
-COPY wizeworks/packages/silica-corrections/package.json wizeworks/packages/silica-corrections/
+COPY pnpm-workspace.yaml pnpm-lock.yaml package.json tsconfig.base.json .npmrc ./
+COPY apps/web/package.json apps/web/
+# The one workspace member the app declares. The filtered install resolves
+# declarations, and a member left out leaves a dangling link the build cannot
+# resolve.
+COPY packages/brand/package.json packages/brand/
 
-# Install only the @sparx/web subgraph (its deps + transitive workspace deps).
+# Both tokens reach pnpm as env vars for this one command, read from BuildKit
+# secret mounts, so neither is COPYed or lands in a layer. Font Awesome falls
+# back to empty, which pnpm still counts as set: an UNSET variable makes pnpm
+# drop the whole .npmrc, registry lines included.
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
+    --mount=type=secret,id=fontawesome_npm_token \
+    --mount=type=secret,id=github_packages_token,required=true \
+    FONTAWESOME_NPM_TOKEN="$(cat /run/secrets/fontawesome_npm_token 2>/dev/null || true)" \
+    GITHUB_PACKAGES_TOKEN="$(cat /run/secrets/github_packages_token)" \
     pnpm install --frozen-lockfile --filter @sparx/web...
 
-COPY wizeworks/packages/app-kit wizeworks/packages/app-kit
-COPY wizeworks/packages/brand-core wizeworks/packages/brand-core
-COPY wizeworks/packages/ui wizeworks/packages/ui
-COPY sparx/packages/brand sparx/packages/brand
-COPY wizeworks/packages/forms wizeworks/packages/forms
-COPY wizeworks/packages/legal wizeworks/packages/legal
-COPY wizeworks/packages/attribution wizeworks/packages/attribution
-COPY wizeworks/packages/chat-widget wizeworks/packages/chat-widget
-COPY wizeworks/packages/site-themes wizeworks/packages/site-themes
-COPY wizeworks/packages/story-schemas wizeworks/packages/story-schemas
-COPY wizeworks/packages/migration wizeworks/packages/migration
-COPY wizeworks/packages/builder-schemas wizeworks/packages/builder-schemas
-COPY wizeworks/packages/silica-catalog wizeworks/packages/silica-catalog
-COPY wizeworks/packages/silica-corrections wizeworks/packages/silica-corrections
-COPY sparx/apps/web sparx/apps/web
+COPY packages/brand packages/brand
+COPY apps/web apps/web
 
 # PostHog analytics — NEXT_PUBLIC_* is inlined at build time, so the key must be
 # present during `next build`; runtime env can't reach an already-bundled client
-# JS. Passed as a build-arg from build-images-gcp.yml. Absent ⇒ the provider no-ops
+# JS. Passed as a build-arg from release.yml. Absent ⇒ the provider no-ops
 # (`if (!key) return`), so a build without the arg simply ships PostHog disabled.
 # HOST carries the canonical default so a plain `docker build` needs no arg.
 ARG NEXT_PUBLIC_POSTHOG_KEY
@@ -90,11 +74,11 @@ RUN addgroup --system --gid 1001 nodejs \
  && adduser --system --uid 1001 --ingroup nodejs nextjs
 
 # Standalone bundle includes the minimal node_modules + server.js for the app.
-COPY --from=builder --chown=nextjs:nodejs /repo/sparx/apps/web/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /repo/sparx/apps/web/.next/static ./sparx/apps/web/.next/static
+COPY --from=builder --chown=nextjs:nodejs /repo/apps/web/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /repo/apps/web/.next/static ./apps/web/.next/static
 # public/ is NOT bundled into standalone output — copy it explicitly so the
 # manifest icons (android-chrome-*.png) and schema logo (icon.png) serve.
-COPY --from=builder --chown=nextjs:nodejs /repo/sparx/apps/web/public ./sparx/apps/web/public
+COPY --from=builder --chown=nextjs:nodejs /repo/apps/web/public ./apps/web/public
 
 USER nextjs
 
@@ -104,4 +88,4 @@ EXPOSE 3000
 ARG WIZELENS_RELEASE=local
 ENV WIZELENS_RELEASE=$WIZELENS_RELEASE
 
-CMD ["node", "sparx/apps/web/server.js"]
+CMD ["node", "apps/web/server.js"]

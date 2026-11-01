@@ -1,0 +1,118 @@
+name: CI
+
+# The gate every change passes: on each pull request, and again at the start of
+# every release (release.yml calls this workflow before it builds anything).
+#
+# ── THE LAYOUT, AND WHY ────────────────────────────────────────────────────
+#
+# This repository installs the platform as published packages, but the
+# platform's checks over sparx's apps (console parity, the brand check, the
+# layout and copy guards) and a few of the workbench's tests read the platform's
+# source (the scan kinds api-rest accepts, the order it charges prices in, the
+# page sign-up links to). So the job checks the platform out at `platform/` and
+# THIS repository at `platform/sparx/`, the layout both had before sparx's apps
+# moved out (docs/153, Phase 5). This repository's tree is exactly the old
+# sparx/ subtree, so:
+#
+#   - the platform's checks join `sparx/...` onto the platform root, so they
+#     run unchanged and read these apps (scripts/platform-checks.mjs).
+#   - PLATFORM_DIR points the tests and the local checks at the same checkout.
+#
+# Every command for this repository runs in `platform/sparx`. pnpm, turbo,
+# Prettier and ESLint all stop at this repository's own root, so the platform
+# checkout around it is never installed, linted or formatted.
+#
+# No heap cap. This repository is public, so its runner is the larger GitHub
+# class, and Node's default heap (sized from the machine's memory) fits the
+# workbench's type-aware lint there.
+
+on:
+  pull_request:
+  workflow_call:
+    secrets:
+      FONTAWESOME_NPM_TOKEN:
+        required: false
+
+permissions:
+  contents: read
+  # Reads the @wizeworksllc/* packages from GitHub Packages with GITHUB_TOKEN.
+  packages: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  verify:
+    name: Format, lint, typecheck, test & checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PLATFORM_DIR: ${{ github.workspace }}/platform
+      # Both tokens are read by .npmrc. pnpm IGNORES the whole file when either
+      # variable is unset, registry lines included, so an empty Font Awesome
+      # token is still passed rather than left out.
+      GITHUB_PACKAGES_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      FONTAWESOME_NPM_TOKEN: ${{ secrets.FONTAWESOME_NPM_TOKEN }}
+    defaults:
+      run:
+        working-directory: platform/sparx
+    steps:
+      # The platform is public, so no token. Its main is what these apps are
+      # checked against, which is the same main the platform packages publish from.
+      - name: Check out the platform (wizeworksllc/platform)
+        uses: actions/checkout@v4
+        with:
+          repository: wizeworksllc/platform
+          ref: main
+          path: platform
+
+      # Until the platform's own cleanup lands, its tree still carries the old
+      # copy of these apps at `sparx/`. Removed first, so nothing of it survives
+      # under this checkout and no check reads a stale app.
+      - name: Clear the platform's old copy of sparx
+        working-directory: ${{ github.workspace }}
+        run: rm -rf platform/sparx
+
+      - name: Check out sparx inside it
+        uses: actions/checkout@v4
+        with:
+          path: platform/sparx
+
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: platform/sparx/package.json
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: platform/sparx/.nvmrc
+          cache: pnpm
+          cache-dependency-path: platform/sparx/pnpm-lock.yaml
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Structural checks
+        run: pnpm check
+
+      - name: Format
+        run: pnpm format:check
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test
+
+      # The platform's checks over these apps. Most are plain Node; some parse
+      # TypeScript, and the platform checkout is never installed, so they borrow
+      # this repository's compiler.
+      - name: Platform checks (the platform's, run against these apps)
+        run: |
+          set -euo pipefail
+          mkdir -p "$PLATFORM_DIR/node_modules"
+          ln -sfn "$PWD/node_modules/typescript" "$PLATFORM_DIR/node_modules/typescript"
+          node scripts/platform-checks.mjs

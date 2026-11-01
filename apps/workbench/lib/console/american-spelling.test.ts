@@ -40,7 +40,7 @@ import { describe, expect, it } from 'vitest';
 
 // The repo's one list of British spellings, shared with
 // `scripts/check-american-spelling.mjs`. Plain data, no side effects.
-import { BRITISH_WORDS } from '../../../../../scripts/british-words.mjs';
+import { BRITISH_WORDS } from '../../../../scripts/british-words.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOTS = [resolve(HERE, '..', '..', 'surfaces'), resolve(HERE, '..', 'surfaces')];

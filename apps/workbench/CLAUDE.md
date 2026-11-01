@@ -1,11 +1,11 @@
-# sparx/apps/workbench
+# apps/workbench
 
-Read [docs/123-workbench.md](../../docs/123-workbench.md) before building a surface here.
+Read [docs/123-workbench.md](https://github.com/wizeworksllc/platform/blob/main/docs/123-workbench.md) before building a surface here.
 
 ## Color: read the root DESIGN.md
 
 [../../DESIGN.md](../../DESIGN.md) is the **platform** design language — one system across the
-workbench, `sparx/apps/web` and `sparx/apps/market` — and is binding for every surface in this app. Read it
+workbench, `apps/web` and `apps/market` — and is binding for every surface in this app. Read it
 before you type a `color=` prop.
 
 The one-line version: **neutral has to be earned, exactly like a modal.** There are 27 registered
@@ -25,7 +25,7 @@ outside the box and not just copying code from the dashboard app. The dashboard 
 ## Pane or modal?
 
 **A pane is the default. A modal has to earn it.** Full rule + the worked examples
-in [docs/123-workbench.md](../../docs/123-workbench.md) §"Pane or modal?" — read it
+in [docs/123-workbench.md](https://github.com/wizeworksllc/platform/blob/main/docs/123-workbench.md) §"Pane or modal?" — read it
 before you pick.
 
 The reason is structural: `hasUnsavedWork()`, `usePaneDirty` and the per-site

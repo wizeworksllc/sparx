@@ -45,6 +45,6 @@
     "vitest": "^4.1.12"
   },
   "dependencies": {
-    "@wizeworksllc/ui": "workspace:*"
+    "@wizeworksllc/ui": "1.262.0"
   }
 }

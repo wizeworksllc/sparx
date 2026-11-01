@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# Pre-push guard: the same gate CI runs, against the working tree, so a red check
+# blocks the push here instead of on a pull request. Wired by `pnpm install`
+# (the root `prepare` script sets core.hooksPath to .githooks).
+#
+# NEVER STRICTER THAN CI, which is what keeps it from being bypassed: the tests
+# run with CI=true, and the checks and tests that read the platform's source skip
+# (and say so) when there is no platform checkout beside this repository. CI
+# always has one. `--no-verify` is not an acceptable way past a red check.
+set -e
+
+# Runs through the shared queue when it is present, so a push does not compete
+# with another session's build for the same machine.
+AGENT_QUEUE_RUN="${AGENT_QUEUE_RUN:-G:/code/@wizeworks/agent-queue/run.mjs}"
+if [ "$AGENT_QUEUE_HELD" != "1" ] && [ -f "$AGENT_QUEUE_RUN" ]; then
+  HOOK_BASH="bash"
+  command -v cygpath >/dev/null 2>&1 && HOOK_BASH="$(cygpath -w "$BASH")"
+  exec node "$AGENT_QUEUE_RUN" "$HOOK_BASH" "$0" "$@"
+fi
+
+if [ -t 1 ]; then
+  GREY=$'\033[90m'; RED=$'\033[31m'; GREEN=$'\033[32m'; RESET=$'\033[0m'
+else
+  GREY=""; RED=""; GREEN=""; RESET=""
+fi
+step() { printf "${GREY}→${RESET} %s\n" "$1"; }
+ok()   { printf "${GREEN}✓${RESET} %s\n" "$1"; }
+fail() { printf "${RED}✗ %s${RESET}\n" "$1"; exit 1; }
+
+step "pre-push: verifying tree before push"
+
+step "pnpm install --frozen-lockfile (lockfile drift check)"
+pnpm install --frozen-lockfile --ignore-scripts --silent < /dev/null \
+  || fail "pnpm-lock.yaml out of sync with a package.json. Run \`pnpm install\` and commit the lockfile. (Installing needs GITHUB_PACKAGES_TOKEN and FONTAWESOME_NPM_TOKEN set: an unset one makes pnpm ignore .npmrc.)"
+ok "lockfile in sync"
+
+untracked=$(git ls-files --others --exclude-standard | wc -l | tr -d '[:space:]')
+if [ "$untracked" -gt 0 ]; then
+  printf "  %s untracked file(s) in the tree: the checks below can see them and CI cannot\n" "$untracked"
+fi
+
+step "structural checks"
+node scripts/run-checks.mjs --quiet || fail "a structural check failed (above). Run \`pnpm check\` to see them all"
+ok "structural checks"
+
+step "format"
+pnpm format:check >/dev/null 2>&1 || fail "formatting. Run \`pnpm format\`"
+ok "format"
+
+step "lint"
+pnpm lint >/dev/null 2>&1 || fail "lint. Run \`pnpm lint\` to see it"
+ok "lint"
+
+step "typecheck"
+pnpm typecheck >/dev/null 2>&1 || fail "typecheck. Run \`pnpm typecheck\` to see it"
+ok "typecheck"
+
+step "test (CI=true)"
+CI=true pnpm test >/dev/null 2>&1 || fail "tests. Run \`pnpm test\` to see them"
+ok "test"
+
+ok "pre-push: all green"
