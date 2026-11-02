@@ -17,11 +17,9 @@ labels:
 
 # ── THE MOVE OUT OF sparx-prod, ONE APP AT A TIME ──────────────────────────
 #
-# The three apps still run in `sparx-prod`, released by the platform. Their
-# manifests for THIS namespace are written (apps/sparx-web.yaml,
-# apps/sparx-market.yaml, apps/sparx-workbench.yaml) but NOT listed, so a
-# release builds and publishes the images and applies only the namespace and
-# the ConfigMap. Nothing serves from here yet.
+# Each app is listed below once it serves from here; an app not listed still
+# runs in `sparx-prod`, released by the platform, and a release only builds and
+# publishes its image. Listed so far: web.
 #
 # An app moves when, in this order:
 #   1. wize-infrastructure gives its Caddy host two upstreams, this namespace
@@ -34,6 +32,7 @@ labels:
 # Order: web (no auth, no data), then market, then the workbench.
 resources:
   - namespace.yaml
+  - apps/sparx-web.yaml
 
 # Hashed name (`sparx-app-env-<hash>`), and the Deployments' references are
 # rewritten to match: a change to a value is a new ConfigMap, so the pods that
