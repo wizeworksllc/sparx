@@ -78,14 +78,19 @@ let full = '';
 try {
   cpSync(K8S, scratch, { recursive: true });
   const kustomization = join(scratch, 'kustomization.yaml');
-  const listed = readFileSync(kustomization, 'utf8').replace(
+  const source = readFileSync(kustomization, 'utf8');
+  // An app that already serves from here is listed; add only the rest.
+  const unlisted = apps.filter((f) => !source.includes(`  - apps/${f}\n`));
+  const listed = source.replace(
     /^ {2}- namespace\.yaml$/m,
-    ['  - namespace.yaml', ...apps.map((f) => `  - apps/${f}`)].join('\n')
+    ['  - namespace.yaml', ...unlisted.map((f) => `  - apps/${f}`)].join('\n')
   );
   writeFileSync(kustomization, listed);
   full = render(scratch);
 } catch (err) {
-  problems.push(`k8s/ with every app listed does not render: ${String(err.message).split('\n')[0]}`);
+  problems.push(
+    `k8s/ with every app listed does not render: ${String(err.message).split('\n')[0]}`
+  );
 } finally {
   rmSync(scratch, { recursive: true, force: true });
 }
@@ -98,7 +103,9 @@ const pinned = new Set(
 
 const deployments = full ? docsOf(full, 'Deployment') : [];
 if (full && deployments.length !== apps.length) {
-  problems.push(`${String(apps.length)} app files rendered ${String(deployments.length)} Deployments`);
+  problems.push(
+    `${String(apps.length)} app files rendered ${String(deployments.length)} Deployments`
+  );
 }
 for (const doc of deployments) {
   const name = nameOf(doc);
@@ -116,7 +123,9 @@ for (const doc of deployments) {
   if (floor === undefined) {
     problems.push(`${name}: no measured memory in check-k8s.mjs; measure it and add it`);
   } else if (memoryRequestMi(doc) < floor) {
-    problems.push(`${name}: requests ${String(memoryRequestMi(doc))}Mi, below the ${String(floor)}Mi it uses`);
+    problems.push(
+      `${name}: requests ${String(memoryRequestMi(doc))}Mi, below the ${String(floor)}Mi it uses`
+    );
   }
 }
 
