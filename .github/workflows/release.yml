@@ -323,6 +323,13 @@ jobs:
       # From inside the cluster, through each Service, at the path its own
       # readiness probe uses. The public hostnames depend on Caddy routes in
       # wize-infrastructure, so a green rollout here does not prove those.
+      #
+      # RETRIES, because a NEW Service's name may not resolve yet. Caddy asks for
+      # every `sparx-<app>.sparx` name on each request, long before the app is
+      # listed here, so CoreDNS holds a cached NXDOMAIN for up to 30 seconds after
+      # the Service appears. The first release of sparx-web failed on exactly
+      # that ("Could not resolve host") while the pod was serving. curl's
+      # --retry-all-errors retries a failed lookup too; 12 x 5s outlasts the cache.
       - name: Smoke test each Service
         run: |
           set -euo pipefail
@@ -331,7 +338,8 @@ jobs:
             echo "→ http://$d.$NAMESPACE.svc.cluster.local:3000$path"
             kubectl run "smoke-$d-$RANDOM" --namespace "$NAMESPACE" --image=curlimages/curl:8.10.1 \
               --restart=Never --rm -i --quiet --command -- \
-              curl -fsS --max-time 10 "http://$d.$NAMESPACE.svc.cluster.local:3000$path"
+              curl -fsS --max-time 10 --retry 12 --retry-delay 5 --retry-all-errors \
+              "http://$d.$NAMESPACE.svc.cluster.local:3000$path"
             echo
           done
 
