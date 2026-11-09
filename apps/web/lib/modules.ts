@@ -135,7 +135,7 @@ export const MODULES: Record<ModulePageSlug, ModuleMeta> = {
       {
         number: '03',
         title: 'Stripe payments.',
-        body: 'Take cards through sparx Pay for a flat 0.5%, or connect your own Stripe, PayPal, or Square account and pay sparx nothing on the payment at all.',
+        body: 'Take cards through sparx Pay for Stripe’s card fee plus a flat 0.5%, or connect your own Stripe, PayPal, or Square account and pay sparx nothing on the payment at all.',
       },
       {
         number: '04',
@@ -158,7 +158,7 @@ export const MODULES: Record<ModulePageSlug, ModuleMeta> = {
       period: '/mo',
       modifier: '',
       bundleNote:
-        'A flat $49/mo with Invoicing and Inventory bundled in free. Pair it with Builder for a hosted site or run it headless against the API. One toggle on one bill, off the moment you stop selling. The only payment fee is 0.5% on sparx Pay; bring your own card processor and there is none.',
+        'A flat $49/mo with Invoicing and Inventory bundled in free. Pair it with Builder for a hosted site or run it headless against the API. One toggle on one bill, off the moment you stop selling. The only sparx payment fee is 0.5% on sparx Pay, on top of Stripe’s card fee; bring your own card processor and sparx takes none.',
     },
   },
   cms: {

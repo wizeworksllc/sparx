@@ -62,9 +62,9 @@ export function StoryGetPaid({
           <Text className="max-w-[58ch] text-sm">
             Stripe is how the money reaches you: cards, wallets, and bank debits, paid straight to
             your bank. It’s the account that <span className="font-medium">receives</span> customer
-            payments, separate from your own sparx subscription. sparx Pay keeps a flat 0.5% of each
-            payment; connect your own card processor later under Payment providers and sparx takes
-            nothing.
+            payments, separate from your own sparx subscription. You pay Stripe’s card fee, and
+            sparx Pay keeps a flat 0.5% of each payment on top; connect your own card processor
+            later under Payment providers and sparx takes nothing.
           </Text>
         </div>
       )}

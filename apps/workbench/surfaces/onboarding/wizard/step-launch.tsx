@@ -201,7 +201,7 @@ export function StepLaunch({
         <ValuePoint
           icon={<Receipt className="text-module size-4" aria-hidden />}
           title="One login, one invoice"
-          body="Flat per-module pricing: no per-seat fees, no surprise overages. Card payments through sparx Pay carry one flat 0.5% fee; connect your own card processor under Payment providers and sparx takes nothing. Turn modules on and off anytime."
+          body="Flat per-module pricing: no per-seat fees, no surprise overages. Card payments through sparx Pay carry Stripe’s card fee plus one flat 0.5% to sparx; connect your own card processor under Payment providers and sparx takes nothing. Turn modules on and off anytime."
         />
         <ValuePoint
           icon={<TrendingUp className="text-module size-4" aria-hidden />}

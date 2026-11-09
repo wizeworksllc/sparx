@@ -56,12 +56,15 @@ function labelledKinds(): string[] {
 }
 
 describe('what a scan can be', () => {
-  it('finds a real list on both sides', () => {
+  // These two read the platform's scan.ts. Without a platform checkout beside
+  // this one (and no PLATFORM_DIR) they skip, as every other server comparison
+  // does, instead of failing the push.
+  it.skipIf(SERVER === null)('finds a real list on both sides', () => {
     expect(serverKinds().length).toBe(9);
     expect(consoleKinds().length).toBe(9);
   });
 
-  it('matches the server, in the same order', () => {
+  it.skipIf(SERVER === null)('matches the server, in the same order', () => {
     expect(consoleKinds()).toEqual(serverKinds());
   });
 
