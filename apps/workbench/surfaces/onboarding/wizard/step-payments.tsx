@@ -69,9 +69,10 @@ export function StepPayments({
           <p className="text-sm">
             This is the account that{' '}
             <span className="font-medium">receives money from your customers</span>, separate from
-            your own sparx subscription. sparx Pay keeps a flat 0.5% of each payment; connect your
-            own card processor later under Payment providers and sparx takes nothing. You can
-            connect it now or come back to it later; checkout simply stays off until you do.
+            your own sparx subscription. You pay Stripe’s card fee, and sparx Pay keeps a flat 0.5%
+            of each payment on top; connect your own card processor later under Payment providers
+            and sparx takes nothing. You can connect it now or come back to it later; checkout
+            simply stays off until you do.
           </p>
         </div>
       </div>

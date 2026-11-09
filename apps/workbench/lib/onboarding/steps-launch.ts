@@ -41,7 +41,7 @@ export async function purchaseDomain(input: PendingDomain): Promise<{ host: stri
 }
 
 // ── Step 5 — Payments ────────────────────────────────────────────────────────
-// sparx Pay = Stripe Connect EXPRESS (the same model as Settings → Payments). We
+// sparx Pay = Stripe Connect, Stripe-hosted (the same model as Settings → Payments). We
 // open Stripe's hosted Account Link in a popup (not a full-page redirect) so the
 // in-page onboarding keeps its state; the popup returns to
 // /onboarding/stripe-callback, which postMessages a "done" signal. There is no

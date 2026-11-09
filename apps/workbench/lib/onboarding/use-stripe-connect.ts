@@ -1,6 +1,6 @@
 'use client';
 
-// The sparx Pay (Stripe Connect EXPRESS) onboarding handshake, as a hook — so the
+// The sparx Pay (Stripe Connect) onboarding handshake, as a hook — so the
 // wizard's payments step and the story's "get paid" chapter share ONE copy of the
 // fiddly part (open Stripe's hosted onboarding in a popup, wait for the callback's
 // postMessage, then refresh status) and only differ in how they PRESENT it.
@@ -8,7 +8,7 @@
 // The workbench keeps its whole flow on one page, so it never full-page redirects to
 // Stripe (that would evaporate every in-page choice). It opens the Account Link in a
 // popup and waits for /onboarding/stripe-callback to postMessage back. There is no
-// OAuth code to exchange — the backend created + reconciles the Express account — so
+// OAuth code to exchange — the backend created + reconciles the connected account — so
 // on return we simply refresh sparx Pay status. Connecting is always optional; the
 // caller's CTA proceeds either way.
 

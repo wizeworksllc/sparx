@@ -1,10 +1,10 @@
 'use client';
 
-// sparx Pay (Stripe Connect Express) onboarding landing — the payments step's popup.
+// sparx Pay (Stripe Connect, Stripe-hosted onboarding) landing — the payments step's popup.
 //
 // Stripe returns the popup here after the merchant finishes hosted onboarding
 // (return_url) or when the single-use Account Link expires (refresh_url). Unlike the
-// old OAuth flow there is NO code/state to hand back — the Express account is created
+// old OAuth flow there is NO code/state to hand back — the connected account is created
 // and reconciled entirely on the backend — so this page just signals "the popup came
 // back" to the workbench window that opened it, which then refreshes sparx Pay status.
 //

@@ -99,7 +99,7 @@ const COMMERCE_FAQ: FaqItem[] = [
     id: 'commerce-fees',
     question: 'Is there a per-transaction fee?',
     answer:
-      'Only if you take card payments through sparx Pay, where it is a flat 0.5% and sparx handles chargebacks and card-security compliance for you. Connect your own Stripe, PayPal, or Square account instead and sparx charges nothing. We are not in the payment, so there is nothing to charge for. Payments you take by check, cash, or bank transfer are free too. There is no tiered or plan-based fee.',
+      'Only if you take card payments through sparx Pay, where sparx keeps a flat 0.5% on top of Stripe’s standard card fee, and Stripe checks your business, covers fraud losses, and keeps card data safe. Connect your own Stripe, PayPal, or Square account instead and sparx charges nothing. We are not in the payment, so there is nothing to charge for. Payments you take by check, cash, or bank transfer are free too. There is no tiered or plan-based fee.',
   },
   {
     id: 'commerce-headless',
@@ -442,6 +442,13 @@ function FeeLadder() {
   // The old copy also had the fee "on top of your own Stripe processing", which
   // is backwards — bringing your own Stripe is precisely the case where sparx
   // charges nothing.
+  //
+  // FACT CORRECTION, 2026-11-09. sparx Pay now makes DIRECT charges on the
+  // merchant's own Stripe account, where Stripe carries the fraud losses (platform
+  // docs/94 amendment). So the merchant pays Stripe's card fee and sparx's 0.5%
+  // comes on top of it, and the merchant (with Stripe) handles chargebacks. The
+  // copy used to say sparx was the merchant of record and took the chargebacks;
+  // that stopped being true when Stripe refused the old account type.
   const doors = [
     {
       when: 'You use sparx Pay',
@@ -450,7 +457,7 @@ function FeeLadder() {
       pctInk: 'text-info',
       barFill: 'bg-info',
       barW: '100%',
-      body: 'Card payments handled end to end. sparx is the merchant of record, which means we take the chargebacks, the card-security paperwork, and the setup. You take the money.',
+      body: 'Card payments set up in minutes. Stripe checks your business, covers fraud losses, keeps card data safe, and pays out to your bank. You pay Stripe’s standard card fee, sparx keeps 0.5%, and the rest is yours.',
     },
     {
       when: 'You bring your own',
@@ -484,7 +491,7 @@ function FeeLadder() {
     <Section surface="accent" padding="lg">
       <SectionHeader
         headline="We only take a cut when we move the money"
-        lede="There is one payment fee at sparx and no version of it depends on how much you spend with us. Use sparx Pay and it is half a percent. Use your own card processor, or get paid by check, and it is nothing."
+        lede="There is one payment fee at sparx and no version of it depends on how much you spend with us. Use sparx Pay and it is half a percent, on top of Stripe’s card fee. Use your own card processor, or get paid by check, and it is nothing."
       />
       <div className="mt-13 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {doors.map((r) => (
